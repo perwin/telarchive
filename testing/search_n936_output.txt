@@ -1,0 +1,27 @@
+	SIMBAD (Simbad 4, France):  Found object coordinates: RA = 02 27 37.34, Dec = -01 09 23.3
+
+Searching archives for ngc 936 (RA = 02 27 37.34, dec = -01 09 23.3), with search box =  4.0 arcmin...
+Multithreading disabled...
+	ING Archive (old interface): Data exists! (14 observations found)
+		11 images, 3 spectra
+		JKT -- FWHL (8), AGBX (3);  INT -- IDS (3)
+	UKIRT Archive: Data exists! (130 observations found)
+	ESO Archive: Data exists! (465 observations found)
+		215 images, 250 spectra, 0 polarimetry, 0 IFU, 0 MOS
+		MPI-2.2 -- WFI (5);  ESO-NTT -- SOFI (365);  ESO-VLT -- ISAAC (52), FORS1 (31), FORS2 (12)
+	HST Archive (at ESO): Data exists! (7 observations found)
+		-- 1 WFPC2, 6 ACS/HRC
+	CFHT Archive: No data found.
+	AAT Archive: Data exists! (One observation/association)
+		-- 0 images, 0 spectra, 0 polarimetry
+	Sloan Digital Sky Survey (DR7) Coordinate-Search Server: Imaging data exists!
+		83 separate fields found
+	NOAO Science Archive: No data found.
+	Multimission Archive at STScI (MAST): Data exists! (1 observations found)
+		IUE (1)
+	Gemini Science Archive: No data found.
+	SMOKA (Subaru Mitaka Okayama Kiso Archive): Data exists! (74 observations found)
+		63 images and 11 spectra
+		Subaru -- OHS/CISCO (48), Kiso -- 2k CCD (15), Subaru -- OHS/CISCO (11)
+	Spitzer archive: Data exists! (4 records found)
+		2 irsstare, 2 iracmapp

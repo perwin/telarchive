@@ -1,0 +1,23 @@
+How to create fetchsdss tarball for distribution:
+
+1. Edit the following files in telarchive_working/dist_setup, if necessary:
+
+fetchsdss_setup.py -- update version number; change email, etc. if necessary
+
+public_changelog.txt -- if necessary
+
+INSTALLATION_fetchsdss.txt -- only if something new & unusual
+
+README_fetchsdss.txt
+
+fetchsdss_MANIFEST.in -- to add new files or remove obsolete ones
+
+2. Run the following shell script in telarchive_working/dist_setup:
+$ ./prep_dist_fetchsdss.sh
+
+3. cd to dist_fetchsdss
+
+4. Generate new tarball
+$ python setup.py sdist
+
+

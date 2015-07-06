@@ -1,0 +1,31 @@
+Python script:
+
+read in line of galaxy data:
+   galaxy_name  sma_arcmin
+
+generate fetchsdss.py query (or call fetchsdss.main)
+
+modify fetchsdss.py to permit requesting additional data via SQL:
+   pixel coordinates of object nearest to (RA,dec) coordinates
+   photometry params (airmass, aa, kk)
+
+   if sma_arcmin was specified, check to see if top or bottom of galaxy
+   will be off-image, figure out which (top or bottom), and generate new
+   field number
+
+
+1. Restrict "telarchive" version/mode of sdss_sql_archive to just print 
+"Imaging data exists!"
+   A. Figure out how to derive __init__ method with calling of 
+superclass's __init__
+   B. Modify __init__ for sdss_sql_archive to permit optional 
+mode="fetchsdss" setup
+
+2. Use SDSS SQL page to verify proper SQL query to obtain additional data
+
+3. Work out modification of fetchsdss.py [expanded version of sdss 
+module?  option to factory function/constructor so that archive object 
+knows to request and print extra data?]
+
+
+

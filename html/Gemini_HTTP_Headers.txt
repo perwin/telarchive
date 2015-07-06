@@ -1,0 +1,176 @@
+http://www1.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/cadcbin/gsa/wdbi.cgi/gsa/gsa_science/query
+
+POST /cadcbin/gsa/wdbi.cgi/gsa/gsa_science/query HTTP/1.1
+Host: www1.cadc-ccda.hia-iha.nrc-cnrc.gc.ca
+User-Agent: Mozilla/5.0 (Macintosh; U; PPC Mac OS X Mach-O; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://www1.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/cadcbin/gsa/wdbi.cgi/gsa/gsa_science/form
+Content-Type: multipart/form-data; boundary=---------------------------143908991218233184702069366247
+Content-Length: 4648
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="fileupload"; filename=""
+Content-Type: application/octet-stream
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="wdbi_order"
+
+ut_date_time desc
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="max_rows_returned"
+
+5000
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="tab_tobject"
+
+on
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="tobject"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="simbad"
+
+simbad
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="box"
+
+00 10 00
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="tab_ra2000"
+
+on
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="ra2000"
+
+12 00 00
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="tab_dec2000"
+
+on
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="dec2000"
+
+-09 00 00
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="galactic_latitude"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="galactic_longitude"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="science_category"
+
+%
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="keywords"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="data_superset_name_op"
+
+~
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="data_superset_name"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="file_id_op"
+
+==
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="file_id"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="observing_program_id_op"
+
+~
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="observing_program_id"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="ra2000_max"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="ra2000_min"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="dec_max"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="dec_min"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="exposure"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="ut_date_time"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="release_date"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="telescope"
+
+%
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="instrument"
+
+%
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="mode"
+
+%
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="filters"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="pixel_scale"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="wavelength_min"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="wavelength_max"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="wavelength_central"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="spectral_resolution"
+
+
+-----------------------------143908991218233184702069366247
+Content-Disposition: form-data; name="ao_system"
+
+%
+-----------------------------143908991218233184702069366247--
+
+HTTP/1.x 200 OK
+Date: Mon, 13 Feb 2006 17:32:32 GMT
+Server: Apache/2.0.49 (Fedora)
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=ISO-8859-1
+----------------------------------------------------------

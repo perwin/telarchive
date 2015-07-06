@@ -1,0 +1,18 @@
+include README_fetchsdss.txt
+include COPYING.txt
+include INSTALLATION_fetchsdss.txt
+include do_fetchsdss.py
+include setup.py
+include telarchive/__init__.py
+include telarchive/basic_archive.py
+include telarchive/fetchsdss.py
+include telarchive/get_sdssfiles.py
+include telarchive/getcoords.py
+include telarchive/multipart_form.py
+include telarchive/sdss_coords_archive.py
+include telarchive/simbad_archive.py
+include telarchive/utils.py
+exclude telarchive/*unittest.py
+exclude telarchive/zibetti.py telarchive/test_modules.py
+exclude telarchive/getgsc2.py telarchive/gsc2_archive.py
+exclude telarchive/fetchsdss_old.py

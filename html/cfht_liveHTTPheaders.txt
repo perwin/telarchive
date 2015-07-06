@@ -1,0 +1,131 @@
+http://www1.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/cadcbin/cfht/wdbi.cgi/cfht/wfi/query
+
+POST /cadcbin/cfht/wdbi.cgi/cfht/wfi/query HTTP/1.1
+Host: www1.cadc-ccda.hia-iha.nrc-cnrc.gc.ca
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://www1.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/cadcbin/cfht/wdbi.cgi/cfht/wfi/form
+Content-Type: multipart/form-data; boundary=---------------------------9832538611398379591702445673
+Content-Length: 3181
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="wdbi_order"
+
+
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="max_rows_returned"
+
+5000
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="tobject"
+
+
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="simbad"
+
+none
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="box"
+
+00 04 00
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="tab_ra"
+
+on
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="ra"
+
+12 22 54.9
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="tab_dec"
+
+on
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="dec"
+
++15 49 21
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="expnum"
+
+
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="tab_instrument"
+
+on
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="instrument"
+
+%
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="tab_exposure"
+
+on
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="exposure"
+
+
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="tab_filter"
+
+on
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="filter"
+
+
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="photometric"
+
+%
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="tab_creation_date"
+
+on
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="creation_date"
+
+
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="tab_release_date"
+
+on
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="release_date"
+
+
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="tab_runid"
+
+on
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="runid"
+
+
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="tab_obstype"
+
+on
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="obstype"
+
+OBJECT
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="tab_category"
+
+on
+-----------------------------9832538611398379591702445673
+Content-Disposition: form-data; name="category"
+
+%
+-----------------------------9832538611398379591702445673--
+
+HTTP/1.x 200 OK
+Date: Mon, 31 Mar 2008 11:38:26 GMT
+Server: Apache/2.2.2 (Fedora)
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=UTF-8
+----------------------------------------------------------

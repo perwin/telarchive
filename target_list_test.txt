@@ -1,0 +1,3 @@
+# this is a test for the --targetfile option of archive_search.py
+NGC 936
+NGC 1022

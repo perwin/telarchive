@@ -1,0 +1,28 @@
+	SIMBAD (Simbad 4, France):  Found object coordinates: RA = 12 22 54.90, Dec = +15 49 20.6
+
+Searching archives for ngc 4321 (RA = 12 22 54.90, dec = +15 49 20.6), with search box =  4.0 arcmin...
+Multithreading disabled...
+	ING Archive (old interface): Data exists! (109 observations found)
+		67 images, 42 spectra
+		JKT -- AGBX (26);  INT -- PFCU (32), IDS (22);  WHT -- TAURUS_IM (8), INTEGRAL (4), TAURUS_ET (5), TAURUS_2 (1), CASS_AUX_PORT (1), ISIS_RED_ARM (6), ISIS_BLUE_ARM (4)
+	UKIRT Archive: Data exists! (193 observations found)
+	ESO Archive: Data exists! (651 observations found)
+		318 images, 171 spectra, 60 polarimetry, 0 IFU, 8 MOS
+		MPI-2.2 -- WFI (4);  ESO-NTT -- SOFI (225), EMMI/1.57 (9), EMMI (29), EMMI/2.6 (7);  ESO-VLT -- FORS1 (109), ISAAC (126), UVES (38), HAWKI (48)
+	HST Archive (at ESO): Data exists! (98 observations found)
+		-- 25 WFPC2, 14 WF, 11 ACS/HRC, 6 FOC, 32 STIS, 7 FOS
+	CFHT Archive: Data exists! (77 observations found)
+		MOS (25), HRC (41), PALILA (11)
+	AAT Archive: Data exists! (41 observations found)
+		-- 22 images, 21 spectra, 0 polarimetry
+	Sloan Digital Sky Survey (DR7) Coordinate-Search Server: Imaging data exists!
+		one field found
+	NOAO Science Archive: No data found.
+	Multimission Archive at STScI (MAST): Data exists! (305 observations found)
+		FUSE (1); GALEX (252); HUT (1); IUE (44); UIT (6); XMM-OM (1)
+	Gemini Science Archive: No data found.
+	SMOKA (Subaru Mitaka Okayama Kiso Archive): Data exists! (188 observations found)
+		170 images and 18 spectra
+		Kiso -- 1k CCD (26), Kiso -- 2k CCD (144), Subaru -- FOCAS (10), Okayama -- SNG (8)
+	Spitzer archive: Data exists! (19 records found)
+		2 mipsscan, 5 iracmap, 5 irsmap, 4 irspeakup, 2 irsstare, 1 mipssed

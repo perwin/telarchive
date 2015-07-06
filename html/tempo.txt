@@ -1,0 +1,39 @@
+http://das.sdss.org/www/cgi-bin/post_coords
+
+POST /www/cgi-bin/post_coords HTTP/1.1
+Host: das.sdss.org
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.0.3) Gecko/2008092414 Firefox/3.0.3
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://das.sdss.org/www/html/post_coords.html
+Content-Type: multipart/form-data; boundary=---------------------------127069708420285050201780975015
+Content-Length: 495
+-----------------------------127069708420285050201780975015
+Content-Disposition: form-data; name="inputFile"; filename=""
+Content-Type: application/octet-stream
+
+
+-----------------------------127069708420285050201780975015
+Content-Disposition: form-data; name="csvIn"
+
+#RA,Dec
+205.547,28.375
+  
+-----------------------------127069708420285050201780975015
+Content-Disposition: form-data; name="Submit"
+
+Submit Request
+-----------------------------127069708420285050201780975015--
+
+HTTP/1.x 200 OK
+Date: Wed, 12 Nov 2008 21:50:49 GMT
+Server: Apache/2.0.52 (Scientific Linux)
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=UTF-8
+----------------------------------------------------------

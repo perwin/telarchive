@@ -1,0 +1,23 @@
+
+Results from heasarc_spitzmastr: Spitzer Space Telescope Observation Log
+Coordinate system:  Equatorial
+|name                     |aot      |_Search_Offset                    |
+|NGC4321                  |iracmap  |0.003 (12 22 54.899, +15 49 20.57)|
+|NGC4321                  |iracmap  |0.003 (12 22 54.899, +15 49 20.57)|
+|NGC4321                  |irsmap   |0.007 (12 22 54.899, +15 49 20.57)|
+|NGC4321                  |irsmap   |0.007 (12 22 54.899, +15 49 20.57)|
+|NGC4321                  |irsmap   |0.007 (12 22 54.899, +15 49 20.57)|
+|NGC4321                  |irspeakup|0.007 (12 22 54.899, +15 49 20.57)|
+|NGC4321                  |mipsscan |0.007 (12 22 54.899, +15 49 20.57)|
+|NGC4321                  |mipsscan |0.007 (12 22 54.899, +15 49 20.57)|
+|NGC4321                  |mipssed  |0.007 (12 22 54.899, +15 49 20.57)|
+|SN 2006X                 |irspeakup|0.821 (12 22 54.899, +15 49 20.57)|
+|SN 2006X                 |irsstare |0.821 (12 22 54.899, +15 49 20.57)|
+|SN 2006X                 |iracmap  |0.821 (12 22 54.899, +15 49 20.57)|
+|SN 2006X                 |irspeakup|0.821 (12 22 54.899, +15 49 20.57)|
+|SN 2006X                 |irsstare |0.821 (12 22 54.899, +15 49 20.57)|
+|SN 2006X                 |iracmap  |0.821 (12 22 54.899, +15 49 20.57)|
+|SN 2006X                 |irspeakup|0.821 (12 22 54.899, +15 49 20.57)|
+|SN 2006X                 |iracmap  |0.821 (12 22 54.899, +15 49 20.57)|
+|NGC4321 SL extranuclear t|irsmap   |1.005 (12 22 54.899, +15 49 20.57)|
+|NGC4321 extranuclear targ|irsmap   |1.005 (12 22 54.899, +15 49 20.57)|

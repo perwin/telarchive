@@ -1,0 +1,249 @@
+http://archive.eso.org/wdb/wdb/eso/eso_archive_main/query
+
+POST /wdb/wdb/eso/eso_archive_main/query HTTP/1.1
+Host: archive.eso.org
+User-Agent: Mozilla/5.0 (Macintosh; U; PPC Mac OS X Mach-O; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://archive.eso.org/eso/eso_archive_main.html
+Content-Type: multipart/form-data; boundary=---------------------------168072824752491622650073
+Content-Length: 4947
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="instrument"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="dp_cat"
+
+SCIENCE%
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="target"
+
+ngc 821
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="resolver"
+
+simbad
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="ra"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="dec"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="box"
+
+00 10 00
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="deg_or_hour"
+
+hours
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="format"
+
+SexaHour
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="wdb_input_file"; filename=""
+Content-Type: application/octet-stream
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="night"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="stime"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="starttime"
+
+12
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="etime"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="endtime"
+
+12
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="prog_id"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="gto"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="pi_coi"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="obs_mode"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="title"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="category"
+
+SCIENCE
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="dp_type"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="dp_type_user"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="tab_dp_tech"
+
+on
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="dp_tech"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="dp_tech_user"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="dp_id"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="origfile"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="rel_date"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="obs_name"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="ob_id"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="exptime"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="filter_path"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="gris_path"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="grat_path"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="slit_path"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="tab_instrument"
+
+on
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="add"
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="sub"
+
+ SEARCH 
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="tab_stat_instrument"
+
+on
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="aladin_colour"
+
+aladin_instrument
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="oformat"
+
+tab
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="max_rows_returned"
+
+1000
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="order"
+
+
+-----------------------------168072824752491622650073--
+
+HTTP/1.x 200 OK
+Date: Sun, 26 Mar 2006 11:24:02 GMT
+Server: Apache/1.3.14 (Unix) mod_jk/1.2.0 mod_perl/1.24_01 PHP/4.3.0 mod_ssl/2.7.0 OpenSSL/0.9.6
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+Transfer-Encoding: chunked
+Content-Type: text/html
+----------------------------------------------------------
+http://archive.eso.org/wdb/html/query_btn.gif
+
+GET /wdb/html/query_btn.gif HTTP/1.1
+Host: archive.eso.org
+User-Agent: Mozilla/5.0 (Macintosh; U; PPC Mac OS X Mach-O; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://archive.eso.org/wdb/wdb/eso/eso_archive_main/query
+
+HTTP/1.x 200 OK
+Date: Sun, 26 Mar 2006 11:24:04 GMT
+Server: Apache/1.3.14 (Unix) mod_jk/1.2.0 mod_perl/1.24_01 PHP/4.3.0 mod_ssl/2.7.0 OpenSSL/0.9.6
+Last-Modified: Fri, 15 Sep 1995 15:35:04 GMT
+Etag: "618e8-124-30599d28"
+Accept-Ranges: bytes
+Content-Length: 292
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+Content-Type: image/gif
+----------------------------------------------------------
+http://archive.eso.org/icons/more.gif
+
+GET /icons/more.gif HTTP/1.1
+Host: archive.eso.org
+User-Agent: Mozilla/5.0 (Macintosh; U; PPC Mac OS X Mach-O; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://archive.eso.org/wdb/wdb/eso/eso_archive_main/query
+
+HTTP/1.x 200 OK
+Date: Sun, 26 Mar 2006 11:24:05 GMT
+Server: Apache/1.3.14 (Unix) mod_jk/1.2.0 mod_perl/1.24_01 PHP/4.3.0 mod_ssl/2.7.0 OpenSSL/0.9.6
+Last-Modified: Mon, 25 Sep 2000 08:44:12 GMT
+Etag: "6114-57-39cf105c"
+Accept-Ranges: bytes
+Content-Length: 87
+Keep-Alive: timeout=15, max=99
+Connection: Keep-Alive
+Content-Type: image/gif
+----------------------------------------------------------

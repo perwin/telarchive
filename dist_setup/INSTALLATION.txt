@@ -1,0 +1,107 @@
+** INSTALLATION:
+
+* Really Simple Installation:
+
+1. Unpack the .tar.gz archive (you've probably already done that)
+
+2. cd to the resulting telarchive-1.x directory
+
+3. A. For a standard system-wide installation (assuming you have root 
+privileges):
+   $ python setup.py install
+
+OR:
+
+3. B. For a personal installation into your home directory:
+   $ python setup.py install --home=~
+
+
+* What Gets Installed
+
+The main set of files to be installed are all in the "telarchive" directory
+(a Python "package") inside the distribution.  These can be installed
+automatically via the "setup.py" script or by manually copying the
+telarchive directory (see below).
+
+There is also an example script, "dosearch.py", which can be used to run a
+search.  This will also be automatically installed via the setup.py script, or
+can be manually installed somewhere convenient.  (In the examples below, and
+in the internal help text, it's assumed that a symbolic link named
+"telarchive" points to the actual dosearch.py script.)
+
+
+* Automated Installation -- Sitewide
+
+The setup.py file can be used to do an automated installation (via the 
+Python distutils package):
+
+$ python setup.py install
+
+A "default" installation will place the telarchive directory in the default
+system directory for Python libraries (assuming you have root access),
+which is usually something like ("2.x" = whatever latest version of Python
+2 is installed):
+   /usr/local/lib/python2.x/site-packages/
+
+The dosearch.py script will be installed in the default directory for 
+programs, which is usually something like:
+   /usr/local/bin/
+
+
+To change the "parent" directory for these installations, you can use the 
+"--prefix" option; e.g.:
+
+$ python setup.py install --prefix=/usr/share
+
+The telarchive package will then (in this example) go in:
+   /usr/share/lib/python2.x/site-packages/
+and the dosearch.py script in:
+   /usr/share/bin/
+
+
+For even finer control, the "--install-purelib" and "--install-scripts" 
+options can be used to specify, e.g.:
+
+$ python setup.py install --install-purelib=/usr/share/python/lib \
+--install-scripts=/usr/local/bin
+
+
+
+* Automated Installation -- Personal/Local
+
+If you don't want to (or can't) install telarchive systemwide, you can 
+install it into a local directory -- such as your home directory -- via 
+the "--home" option:
+
+$ python setup.py install --home=/alternate/path/
+
+which will place the telarchive directory in:
+   /alternate/path/lib/python/
+and the dosearch.py script in:
+   /alternate/path/bin/
+
+For example, to install everything within your home directory:
+
+$ python setup.py install --home=~
+
+For finer control, you can specify the exact paths for the telarchive 
+package and the dosearch.py script via the "--install-purelib" and 
+"--install-scripts" options, e.g.:
+
+$ python setup.py install --install-purelib=/home/username/python-libs \
+--install-scripts=/home/username/myscripts
+
+
+
+For more information on installing, try:
+
+$ python setup.py --help install
+
+
+NOTE: Since the telarchive package is a single directory of files, you can
+also copy the directory to its destination directly.
+
+E.g., if you keep Python files in "/home/username/lib/python":
+$ mv telarchive /home/username/lib/python
+
+And then you can copy dosearch.py someplace useful.

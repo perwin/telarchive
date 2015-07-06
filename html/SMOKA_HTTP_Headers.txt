@@ -1,0 +1,24 @@
+http://smoka.nao.ac.jp/servlet/search
+
+POST /servlet/search HTTP/1.1
+Host: smoka.nao.ac.jp
+User-Agent: Mozilla/5.0 (Macintosh; U; PPC Mac OS X Mach-O; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://smoka.nao.ac.jp/search.jsp
+Cookie: JSESSIONID=77A223FCF97BB631F24EBA56870D41B0
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 566
+object=&resolver=SIMBAD&ra=12%3A00%3A00&dec=-09%3A00%3A00&radius=10.0&equinox=J2000&gl=&gb=&el=&eb=&date_obs=&exptime=&observer=&prop_id=&frameid=&exp_id=&dataset=&action=Search&imagers=SUP&imagers=FCS&imagers=OHS&imagers=IRC&imagers=CIA&imagers=COM&imagers=CAC&imagers=MIR&imagers=KCC&imagers=KCD&imagers=OAS&spectrographs=FCS&spectrographs=HDS&spectrographs=OHS&spectrographs=IRC&spectrographs=CIA&spectrographs=COM&spectrographs=CSD&spectrographs=HID&data_typ=OBJECT&bandwidth_type=FILTER&band=&dispcol=FRAMEID&orderby=FRAMEID&diff=500&output_equinox=J2000&from=0
+HTTP/1.x 200 OK
+Date: Mon, 13 Feb 2006 21:11:58 GMT
+Server: Apache/2.0.52 (Unix) mod_jk2/2.0.4 DAV/2
+Content-Type: text/html;charset=US-ASCII
+Content-Length: 3941
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+----------------------------------------------------------

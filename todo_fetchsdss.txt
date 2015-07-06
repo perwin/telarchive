@@ -1,0 +1,9 @@
+TO-DO's for fetchsdss
+
+[] Gracefully handle non-existence of JPEG images
+	e.g., some (most?) images from Strip 82 don't have JPEG images
+	http://das.sdss.org/imaging/7195/40/Zoom/5/fpC-007195-5-40-0430-z00.jpeg
+	The actual returned data is a bit of HTML with "404 Not Found" as the
+	title; currently, fetchsdss saves this and names it as a jpeg file.
+
+   

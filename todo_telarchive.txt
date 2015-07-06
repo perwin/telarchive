@@ -1,0 +1,58 @@
+BUGS TO FIX, IMPROVEMENTS TO MAKE FOR TELARCHIVE:
+
+25 Feb 2010:
+
+<X> Possible bug in ESO archive searches:
+telarchive --coords="12h52m50.8s -42d39m36s"   [ngc 4751]
+	ESO Archive: Data exists! ("A total of 43 were found")
+		0 images, 19 spectra, 0 polarimetry, 24 IFU, 0 MOS
+		ESO-NTT -- SOFI (15), EMMI (4);  ESO-VLT -- SINFONI (24)
+
+BUT: actual querying of ESO archive shows that data *also* exists for NTT-SUSI2;
+also, some counts are wrong (NTT-EMMI should be 7, not 4)
+
+RESOLUTION: *Not* a bug -- confusion was caused by doing the manual search for
+all obs (including calibration); restricting search to "science" yields the same
+results as telarchive does.
+
+
+[X] Add Spitzer archive
+
+[X] Check whether current Spitzer archive access still works
+
+[] Look into possible UKIDSS archive module
+	Info:
+		http://www.ukidss.org/
+	
+	Possible forms to use:
+	[] http://surveys.roe.ac.uk:8080/wsa/getImage_form.jsp
+		this seems like it might be the best/simplest...
+	http://surveys.roe.ac.uk:8080/wsa/region_form.jsp
+		Requires choosing 1 of 5 different surveys
+	http://surveys.roe.ac.uk:8080/wsa/ImageList_form.jsp
+		Sample working query: RA = 10.0-10.1, Dec=5.0-5.2 ==> 21 lines
+		Note that there is a delay while progressive results are returned
+POST /wsa/ImageList database=UKIDSSDR4PLUS&po=y&dlFile=n&programmeID=all&userSelect=default&showConf=n&obsType=object&frameType=stack&filterID=all&minRA=10.0&formatRA=hours&maxRA=10.2&minDec=5.0&formatDec=degrees&maxDec=5.2&startDay=0&startMonth=0&startYear=0&endDay=0&endMonth=0&endYear=0&dep=0&mfid=&lmfid=&fsid=&rows=100
+	
+	If successful, email Octavi Fors <ofors@am.ub.es> [who requested this]
+
+
+[-] Add new ESO-HST archive interface
+
+[] Clean up HTML-analysis code -- move archive-specific code into archive
+modules, etc.
+
+
+SPECULATIVE:
+
+[] Look into issues for Python 3 compliance
+
+[] Look into Subversion and/or Mercurial splitting of project into Python 2/3
+branches?
+
+[] Optional cache for storing SIMBAD coordinates?
+	-- e.g., pickled dictionary mapping object names to coordinates
+	-- should also have a --nocache option to force direct lookup
+	-- how to handle differences in capitalization/spacing? (NGC 100 vs ngc 100 vs
+	NGC100 vs ngc100, etc.)
+

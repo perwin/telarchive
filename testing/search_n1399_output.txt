@@ -1,0 +1,27 @@
+	SIMBAD (Simbad 4, France):  Found object coordinates: RA = 03 38 29.32, Dec = -35 27 00.7
+
+Searching archives for ngc 1399 (RA = 03 38 29.32, dec = -35 27 00.7), with search box =  4.0 arcmin...
+Multithreading disabled...
+	ING Archive (old interface): No data found.
+	UKIRT Archive: Data exists! (2 observations found)
+	ESO Archive: Data exists! (800 observations found)
+		570 images, 167 spectra, 0 polarimetry, 45 IFU, 18 MOS
+		MPI-2.2 -- WFI (6);  ESO-NTT -- EMMI/1.47 (1), SOFI (350), EMMI #1 (19);  ESO-VLT -- FORS1 (34), ISAAC (78), FORS2 (12), SINFONI (45), NAOS+CONIC (197)
+	HST Archive (at ESO): Data exists! (103 observations found)
+		-- 24 WFPC2, 2 PC, 2 NICMOS, 6 ACS/WFC, 4 FOC, 39 STIS, 12 FOS
+	CFHT Archive: Data exists! (2 observations found)
+		HRC (2)
+	AAT Archive: Data exists! (416 observations found)
+		-- 11 images, 405 spectra, 0 polarimetry
+	Sloan Digital Sky Survey (DR7) Coordinate-Search Server: No data found.
+	NOAO Science Archive: No data found.
+	Multimission Archive at STScI (MAST): Data exists! (719 observations found)
+		EUVE (1); FUSE (2); GALEX (685); HUT (4); IUE (6); UIT (21)
+	Gemini Science Archive: Data exists! (22 observations found)
+		14 long-slit, 1 IFU, 7 imaging
+		PHOENIX (10), GMOS-S (12)
+	SMOKA (Subaru Mitaka Okayama Kiso Archive): Data exists! (29 observations found)
+		29 images and 0 spectra
+		Kiso -- 2k CCD (29)
+	Spitzer archive: Data exists! (5 records found)
+		1 iracmap, 3 mipsphot, 1 irsstare

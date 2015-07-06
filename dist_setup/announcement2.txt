@@ -1,0 +1,85 @@
+Hola a todos,
+
+I've recently updated my archive-searching script with the ability to search based
+on coordinates as well as object names.  So I thought this might be a good time to
+remind people about the script -- or to let new people know about its existence...
+
+It's basically a command-line script (written in Python) which simplifies searching
+various telescope archives to see if they might have data on a particular astronomical
+object.  This includes the HST archive, as well as the ING, ESO, UKIRT, CFHT, and AAT
+ground-based archives.  It won't *get* the data for you, of course, or even tell you much
+about it -- for that, you still need to visit the individual archive web pages.  But it
+will save you lots of clicking and typing if you just want to find out if there is *any*
+data available.
+
+Por ejemplo:
+
+To search for data within a 2-arcminute box centered on the planetary
+nebula NGC 7027:
+
+> archive_search "ngc 7027" 2.0
+
+Searching archives for ngc 7027, with search box =  2.0 arcmin...
+        ESO Archive: No data found
+        HST Archive (at ESO): Data exists! ("A total of 85 were retrieved")
+                -- 6 WFPC2, 24 WF, 1 PC, 13 NICMOS, 3 FOC, 25 STIS, 13 FOS
+        UKIRT Archive: Data exists! ("A total of 517 were retrieved")
+        CFHT Archive: Data exists! ("A total of 213 records were retrieved")
+        ING Archive: Data exists! ("A total of 577 were retrieved")
+                -- 143 images, 391 spectra, 43 unclassified
+        AAT Archive: No data found
+
+
+otro ejemplo:
+
+To search for data within a 6-minute box centered on RA = 02:27:37.7, Dec = -01:09:17
+(J2000 coordinates assumed):
+
+> archive_search --coords="02 27 37.7 -01 09 17" 6.0
+
+Searching archives for RA=02 27 37.7, dec=-01 09 17, with search box =  6.0 arcmin...
+        UKIRT Archive: No data found
+        ING Archive: Data exists! ("A total of 14 were retrieved")
+                -- 11 images, 3 spectra
+        HST Archive (at ESO): Data exists! (One observation/association)
+        CFHT Archive: No data found
+        AAT Archive: Data exists! ("A total of 2 were retrieved")
+                -- 0 images, 2 spectra, 0 polarimetry
+        ESO Archive: Data exists! ("A total of 382 were found")
+                -- 132 images, 250 spectra, 0 polarimetry
+
+
+As you can see, for *some* archives it is possible to learn a little about what
+is there.  For ESO , AAT, and ING, this means spectroscopy, imaging, and/or
+polarimetry (latter for ESO and AAT only); for HST, it usually means the actual
+instrument used.
+
+The simplest way to use this is to copy -- or make a symbolic link to -- a shell
+script called "archive_search", which is in my /home/erwin/bin directory.
+Then you can give it whatever name you like.  Por ejemplo:
+
+> ln -s /home/erwin/bin/archive_search ~/archive_search
+
+There are various options; type "archive_search --help" for a list.
+
+Some notes:
+   -- the default shell script ("archive_search") is set up for Solaris machines;
+if you want to use this on a Linux machine, just use (or copy or link)
+/home/erwin/bin/archive_search_linux
+
+   -- accessing the AAT archive is often very slow.  If your object is northern, you
+can probably speed up the search using the "--noaat" option.
+
+   -- the script normally runs in multi-threaded mode, which makes it faster. 
+BUT it is rather hard to interrupt or stop it (Control-C doesn't really work), due to
+peculiarities in Python's threading implementation.  If you like the ability to
+interrupt things easily, you can run the script with threading turned off, using
+the "--nothreading" option on the command-line.
+
+I hope you find it useful -- let me know if you have any questions or problems
+with it.  The coordinate-based search mode is new, and might still have some
+bugs, so please tell me if it misbehaves!
+
+cheers,
+
+Peter

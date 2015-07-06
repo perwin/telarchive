@@ -1,0 +1,13 @@
+
+
+Results from heasarc_spitzmastr: Spitzer Space Telescope Observation Log
+Coordinate system:  Equatorial
+|status  |aot     |_Search_Offset                |
+|observed|irsmap  |0.000 (196.054750,  -5.551611)|
+|observed|iracmap |0.000 (196.054750,  -5.551611)|
+|observed|mipssed |0.000 (196.054750,  -5.551611)|
+|observed|mipsphot|0.020 (196.054750,  -5.551611)|
+|observed|irsstare|0.020 (196.054750,  -5.551611)|
+|observed|mipsphot|0.020 (196.054750,  -5.551611)|
+|observed|irsstare|0.020 (196.054750,  -5.551611)|
+|observed|irsstare|4.212 (196.054750,  -5.551611)|

@@ -1,0 +1,46 @@
+NOTES TOWARDS A SCRIPT FOR FETCHING SDSS IMAGES:
+
+Usage:
+$ fetchsdss "object_name" filters
+$ fetchsdss "coordinates" filters
+
+[filters = g, ugr, griz, etc.; this will be passed unmodified to later stages]
+possible options for, e.g., other Data Products
+   -- default will be fpC (Corrected imaging frame) and bestTsField
+   -- options to specify other Data Products?
+
+[X]1. lookup coords with SIMBAD, convert to decimal degrees
+   -- steal this code from telarchive
+
+[X]2. query CAS server ("Imaging Query") for CSV list; check for non-detection
+http://cas.sdss.org/astro/en/tools/search/IQS.asp
+   OR: query footprint server -- what telarchive does; should return short 
+   HTML table of run/rerun/camcol/field info
+
+   Check output messageString from foot-print archive:
+   "Data: nnn nnn nnn nnn" = data found; extract
+
+   Output Format --> CSV [?]
+   Imaging --> BEST Imaging
+   Filter --> as appropriate [could be left as-is]
+   Position Constraints --> Proximity
+   text field --> "ra,dec,sep\n<ra_deg>,<dec_deg>,1.0\n"
+
+other settings should be unspecified or else set to defaults
+
+
+[X]3. submit to DAS server and wait for full reply
+http://das.sdss.org/DR3-cgi-bin/DAS
+
+Convert CSV output from CAS server to text-field input in web page (rather 
+than trying to save and fetch files)
+
+
+CONSTRUCTION NOTES:
+
+[X]1. Get coordinate lookup working, output sample "RA,Dec,1.0" string
+   Test this string manually with the CAS web page
+
+[X]2. CAS-query code: generate HTTP string
+   Query actual CAS server with good coords
+   Query actual CAS server with non-detected coords -- handle non-detection

@@ -1,0 +1,57 @@
+Hola a todos,
+
+I'd like to let people know about a software tool I've been working on, which I
+think other people might find useful.  It's basically a command-line script (written
+in Python) which simplifies searching various telescope archives to see if they
+might have data on a particular astronomical object.  (It won't *get* the data for you,
+of course -- for that, you still need to visit the individual archive web pages.  But it
+will save you lots of clicking and typing if you just want to find out if there is *any*
+data available).
+
+Por ejemplo:
+
+To search for data within a 2-arcminute box centered on the planetary
+nebula NGC 7027:
+
+> archive_search "ngc 7027" 2.0
+
+Searching archives for ngc 7027, with search box =  2.0 arcmin...
+        ESO Archive: No data found
+        HST Archive (at ESO): Data exists! ("A total of 85 were retrieved")
+                -- 6 WFPC2, 24 WF, 1 PC, 13 NICMOS, 3 FOC, 25 STIS, 13 FOS
+        UKIRT Archive: Data exists! ("A total of 432 were retrieved")
+        CFHT Archive: Data exists! ("A total of 213 records were retrieved")
+        ING Archive: Data exists! ("A total of 547 were retrieved")
+                -- 113 images, 391 spectra, 43 unclassified
+        AAT Archive: No data found
+
+
+As you can see, for *some* archives it is possible to learn a little about what
+is there.  For ESO , AAT, and ING, this means spectroscopy, imaging, and/or
+polarimetry (latter for ESO and AAT only); for HST, it means the actual instrument
+used.
+
+The simplest way to use this is to copy -- or make a symbolic link to -- a shell
+script called "archive_search", which is in my ~/bin directory.  Then you can
+give it whatever name you like.  Por ejemplo:
+
+> ln -s /home/erwin/bin/archive_search ~/archive_search
+
+There are various options; type "archive_search --help" for a list.
+
+A couple of notes:
+   -- accessing the AAT archive is *very* slow.  If your object is northern, you
+can speed up the search using the --noaat option.
+   -- the script can be run in multi-threaded mode, which makes it faster.  Use:
+
+> archive_search --threads
+
+BUT in that mode, it is hard to interrupt or stop it (Control-C doesn't really
+work).
+
+I hope you find it useful -- let me know if you have any questions or problems
+with it.
+
+cheers,
+
+Peter

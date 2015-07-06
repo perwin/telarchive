@@ -1,0 +1,47 @@
+http://archive.ast.cam.ac.uk/cgi-bin/wdb/ingarch/ingarch/query
+
+POST /cgi-bin/wdb/ingarch/ingarch/query HTTP/1.1
+Host: archive.ast.cam.ac.uk
+User-Agent: Mozilla/5.0 (Macintosh; U; PPC Mac OS X Mach-O; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://archive.ast.cam.ac.uk/ingarch/ingarch.html
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 276
+tab_object=on&object=ngc+500&simbad=simbad&box=00+10+00&tab_ra=on&ra=&tab_dec=on&dec=&tab_date_obs=on&date_obs=&tab_telescope=on&telescope=&detector=&instrument=&fitstape=&pattref=&photspec=0&photspec=1&fband=&wavelength=&photosys=&dispersion=&scionly=on&max_rows_returned=100
+HTTP/1.x 200 OK
+Date: Mon, 13 Feb 2006 21:55:28 GMT
+Server: Apache/2.0.46 (Unix)
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=ISO-8859-1
+----------------------------------------------------------
+http://archive.ast.cam.ac.uk/images/query_btn.gif
+
+GET /images/query_btn.gif HTTP/1.1
+Host: archive.ast.cam.ac.uk
+User-Agent: Mozilla/5.0 (Macintosh; U; PPC Mac OS X Mach-O; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://archive.ast.cam.ac.uk/cgi-bin/wdb/ingarch/ingarch/query
+
+HTTP/1.x 200 OK
+Date: Mon, 13 Feb 2006 21:55:29 GMT
+Server: Apache/2.0.46 (Unix)
+Last-Modified: Thu, 09 Jan 1997 20:17:13 GMT
+Etag: "960f2-dc-86d26440"
+Accept-Ranges: bytes
+Content-Length: 220
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+Content-Type: image/gif
+----------------------------------------------------------

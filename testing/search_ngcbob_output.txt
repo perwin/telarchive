@@ -1,0 +1,5 @@
+	SIMBAD (Simbad 4, France):  Simbad reports bad name: "Identifier not found in the database"
+
+   *** Unable to get coordinates for "ngc bob". *** 
+   Cannot search SDSS archive -- terminating search.
+

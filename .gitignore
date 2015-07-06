@@ -1,0 +1,10 @@
+.svn
+*.html
+*~
+*.pyc
+*.fits
+temp/*
+old_code/*
+regresstest_out*.txt
+changes.txt
+*.jpeg

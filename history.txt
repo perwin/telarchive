@@ -1,0 +1,290 @@
+fetchsdss -- 4 Aug 2010:
+
+Modified fetchsdss.py to include --getfirst options (retrieve first of multiple
+fields only).
+
+Removed "--dochecks" option, since SDSS archive server seems to be
+consistently describing tsField tables as "ASCII".
+
+
+telarchive/fetchsdss -- 29 May 2010:
+
+Fixed missing regex in archive_analyze.findNReturned which was causing failed
+detections for ESO and HST-ESO archives.
+
+Removed special "not using SDSS" processing from archive_search.py.  This
+means that *all* searches will now do SIMBAD coordinate lookup, and the
+user *cannot* specify (even unintentionally) a search which asks the
+individual archives to do their own coordinate lookup.  (In the future, we
+might restore this as an option, but only after cleaning up the HTML-parsing
+code.)
+
+Removed "textSearches" option from archives and achive_analyze.html (TextSearches
+class has been commented out).  The only thing textSearches was being used
+for was testing to see if archives succeeded or failed in their own coordinate
+lookup (target name resolution); since we no longer allow direct target-name
+searches (see above), this code is not used any more.  The code in question
+was rather out-of-date and causing problems when it was being used, and the
+back-and-forth nature of where it was defined and used was confusing.
+
+Updated regression-test comparison files in testing/.
+
+telarchive version bumped to 1.6.1
+
+
+
+telarchive/fetchsdss -- 3--5 May 2009:
+
+Tweaked getcoords.py: updated regex code for finding parameters in HTML
+output of SIMBAD to account for minor changes in output format.
+
+Telarchive version number updated to 1.5.1.
+(Fetchsdss version number updated to 1.0.1.)
+
+
+
+fetchsdss -- 24 Mar--12 April 2009:
+
+Created new SDSS archive module (sdss_coords_archive.py) to deal with new
+DR7 interface for coordinate searches.
+
+Created get_sdssfiles.py module to hold code related to retrieving
+individual image files from SDSS DAS (apparently the only way to get
+DR7 data); also created get_sdssfiles_unittest.py
+
+Numerous updates to fetchsdss.py to accomodate new archive, new search
+options (optionally *not* getting tsField file, getting JPEG only instead
+of in addition, etc.), new interface to get_sdssfiles.py, etc.
+
+Added extra tests to fetchsdss_unittest.py.
+
+Updated various archive-module unit tests to account for changes in
+output formatting, new observations in archives.
+
+Version number updated to 1.0.
+
+
+telarchive -- 3--6 Oct 2008/24 Mar--12 April 2009:
+[Oct 2008]
+Converted archive_search.py to use optparse for handling command-line options.
+Prior version of archive_search.py is now called archive_search_orig.py
+
+Updated hst_eso_archive.py to search for instrument names on a line-by-line
+basis (new function SearchLines() added) -- previously, we used re.findall()
+to search the whole block of HTML, but got fooled and overcounted when the
+instrument name was listed more than once per line.
+
+[Mar/April 2009]
+Added "XMM-OM" (XMM Optical Monitor) as a mission in mast_archive.py.
+
+Updated to use sdss_coords_archive.py for SDSS searching.
+
+Minor fix to archive_analyze.py to account for changed wording in SMOKA
+"can't resolve object name" text.
+
+Minor fixes to instrument-counting code (mostly to re objects) in eso_archive.py
+to better count instruments (e.g., counting "IMAGE,JITTER" as well as just "IMAGE";
+also now counting IFU and MOS separately).
+
+Updates to smoka_archive.py: changed coordinate-processing to eliminate spaces
+between coordinate pieces [despite what help pages say, archive complains if
+there are spaces]; added MTO and MTA imagers.
+
+Version number updated to 1.5.
+
+
+Thanks to Maximilian Fabricius for identifying a bug in the SDSS searches.
+
+
+
+
+telarchive and fetchsdss -- 31 Mar--3 April 2008:
+
+Updated cfht_archive.py to use new URL and form entries; also converted to
+use multipart/form posting, which is now the default method used by the CFHT
+archive web page.  As with the Gemini archive module, we now define a new
+class derived from the basic_archive class.
+
+Also added instrument processing for cfht_archive.py *and* gemini_archive.py:
+HTML returned by archive server is now analyzed to create a list of instruments
+and # exposures.
+
+Updated gemini_archive_unittest.py and cfht_archive_unittest.py to use current
+values for M83 or NGC 4321 (resp.) and to test instrument-counting.
+
+Fixed archive URL in smoka_archive.py; searches done with SMOKA now work again.
+
+Updated "object coordinates not found" text snippets in archive_analyze.py
+
+Reworked mast_archive.py to delete redefined AnalyzeHTML method; moved relevant
+search text into archive_analyze.py and fixed things so that failed SIMBAD/NED
+coordinate lookups are recognized, if we're using non-SDSS mode.
+
+Modified archive_analyze.py to print standardized "# observations found" text
+for each archive, instead of quoting their individual text.
+
+Changed a few old-style class definitions to new-style classes (derived from
+"object").
+
+Updated reference files used by do_regressiontests.sh (search_n936_output.txt,
+etc.).
+
+Updated version number to 1.4.
+
+
+
+telarchive and fetchsdss -- 30 Mar 2008:
+
+Updated footprint_archive.py to use SDSS DR6 footprint server; added
+footprint_archive_unittest.py.  Changed fetchsdss.py to use footprint_archive
+by default instead of sdss_sql_archive (bcs. footprint server finds fields
+which happen to lack any SDSS catalog objects, which SQL server would miss).
+
+Added "--sql" option to fetchsdss.py to use SDSS SQL server instead of
+footprint server for coordinate searches, in case something goes wrong
+with footprint server.
+
+Modified module_list.py to use footprint_archive instead of sdss_sql_archive
+as the SDSS archive class.  Tweaked archive_list.py to remove some excess
+duplication of archive names.  Explicit references to archive module names is
+now restricted to module_list.py (except for references to the two HST-archive
+module names still in archive_list.py).
+
+Modified do_regressiontest.sh so that "telarchive" is a variable, which
+can be changed to point to a local instance of archive_search.py (e.g.,
+the one in telarchive_working instead of the system default).
+
+
+
+telarchive and fetchsdss -- Oct 2007:
+
+Updated utils.py to allow processing of input coordinates in decimal
+degree format; updated utils_unittest.py to include testing this.
+Updated fetchsdss help strings to reflect this.
+
+Added "--silent" option to fetchsdss.py, which turns off printint of all
+messages except error messages.  Altered fetchsdss.main() to return
+dataFound, which is positive if data exist in SDSS archive, zero if data
+are not in archive, and negative for errors.
+
+Rationalized return values for fetchsdss.main() so that negative values = 
+problems with input or with finding coordinates or contacting server; 0 = 
+no data; 1 = data found.
+
+
+telarchive and fetchsdss -- July--Sept 2007:
+
+Updated SDSS queries to use Data Release 6 instead of DR5.  (Trivial 
+modifications of URLs and text messages in sdss_sql_archive.py, 
+sdss_das_archive.py, and fetchsdss.py).
+
+Fixed erroneous URL for old ING archive.
+
+Updated version number to 1.3.
+
+
+telarchive -- 22 Feb 2006:
+
+Modifications to dist_setup/README.txt to make personalized installations
+easier.
+
+Added a "scripts" specification to dist_setup/setup.py, so that 
+dosearch.py is automatically installed as part of the general installation.
+
+
+telarchive -- 26 Mar--July 2006 (v1.01):
+
+Modified archive_list.py so that ArchiveList() handles doAAT and doSDSS
+keywords as though they were boolean (can be 0 or False, 1 or True), 
+instead of assuming they must be 0 or 1.
+
+Modified archive_analyze.py to include checking ESO archive replies for 
+single-exposure responses, which were previouly missed.
+
+Modified hst_eso_archive.py to add an additional check for WFPC2 exposures 
+(when archive returns single-exposure page, formatting is different).
+
+Updated testing/search_n4321_output.txt [more data at ESO now]
+
+Tweaked do_regressiontests.sh to use *local* testing subdirectory.
+
+Initial work on version of archive_search.py which uses optparse module to 
+handle command-line options (instead of older getopt module) -- currently 
+called "archive_search2.py"
+
+Added history.txt file to keep list of change comments.
+
+Updated SDSS-related files to use DR5 instead of DR4.
+
+
+telarchive -- 10 Dec 2006:
+
+Updated simbad_archive.py and getcoords.py to use new Simbad interface
+(SIMBAD4).
+
+
+telarchive -- 15--25 Feb 2007 (v1.0.2):
+
+Fixed missing "ukirt" entry in shorthand_dict (module_list.py)
+
+Updated ukirt_archive.py to account for modified URL, parameters in 
+archive web page (URL slightly different; RA and Dec labels are now "ra" 
+and "dec"; submissions requires "mode=html_summary")
+
+Updated README and other files to mention problems with ING archive.
+
+
+telarchive -- 27 Feb 2007 (v1.1):
+
+Added preliminary support for Gemini Science Archive and
+SMOKA (just counting number of hits, no clever analysis yet).
+
+Added smoka_archive_unittest.py.
+
+Cosmetic fixes to comments (updating copyright dates, etc.);
+updated version-number string in archive_search.py;
+removed archive_search2.py from included modules of distribution.
+
+Updated browser masquerade to "Mozilla/5.0"
+
+
+[Later the same day:]
+Fixes to smoka_archive.py and smoka_archive_unittest.py to handle
+coordinate-based searches properly (SMOKA requires an empty "object" 
+field, among other things).
+
+Updates to distribution files (MANIFEST.in, README.txt, setup.py).
+
+Officially called "rc1" ("Release Candidate 1"; version string in
+archive_search.py).
+
+
+telarchive -- 7 May 2007 (v1.1.1):
+
+Switched ING archive URL to 
+"http://archive.ast.cam.ac.uk//cgi-bin/wdb/ingarch/ingarch/query"
+which is now working!  This is the "old" interface, which only tracks
+data up to about 2001, but is at least usable.
+
+Now called "1.1.1".
+
+
+telarchive/fetchsdss.py -- 8 May 2007 (v0.7):
+
+Updated command-line interface to be somewhat simpler to use (filter-list 
+not required; we default to "ugriz" if it's not supplied; etc.).
+
+
+telarchive + fetchsdss.py -- 6 June 2007 (v1.2):
+
+Updated MANIFEST.in and README.txt to include fetchsdss.py and related 
+modules.  Added README_fetchsdss.txt file and do_fetchsdss.py [sample 
+script to run fetchsdss.py without needing to know precise location of 
+fetchsdss.py].
+
+Updated telarchive package version to 1.2
+
+
+telarchive -- 19 June 2007 (v1.2):
+
+Updated version-string constant in archive_search.py to "1.2"

@@ -1,0 +1,135 @@
+Telarchive -- Version 1.7.4 (20 March 2015)
+
+Minor updates to restore access to Gemini Science Archive and AAT Archive.
+Automatic timeout (30sec) added to deal with non-responding archives; this
+can be altered using the --timeout command-line option.
+
+
+
+Telarchive -- Version 1.7.3 (9 April 2014)
+and
+Fetchsdss -- Version 1.2.2 (9 April 2014)
+
+Minor updates to restore access to search and retrieval of SDSS
+spectra and correct parsing of ESO archive results.  Added --nosuffix
+option to fetchsdss (tells fetchsdss to *not* include the run and field
+numbers in the output filenames)
+
+
+
+Fetchsdss -- Version 1.2.1 (11 Nov 2013)
+
+Minor update to fetchsdss to ensure it retrieves DR10 files instead of DR9;
+correct retrieval of tsField files (for DR7 data) when run number is less
+than 1000.
+
+
+
+Telarchive -- Version 1.7 (21 Sept 2013)
+and
+Fetchsdss -- Version 1.2 (21 Sept 2013)
+
+Both programs updated to work with SDSS DR10 as well as DR7; includes
+searching for SDSS DR10 spectra within 10 arcsec of object/coordinate
+position.
+
+New script fetchsdss_spectra.py to retrieve SDSS DR10 spectra.
+
+
+
+Telarchive -- Version 1.6.6 (7 March 2013)
+
+Minor update to telarchive to restore access to (and proper parsing of) ESO
+archive searches.
+
+
+
+Telarchive -- Version 1.6.5 (1 September 2011)
+and
+Fetchsdss -- Version 1.1 (1 September 2011)
+
+Updates to telarchive to restore funcationality of coordinate lookup via
+SIMBAD, Spitzer archive searches, and SMOKA archive searches (instrument
+counting is currently not working); HST archive searches switched from
+ESO (ST-ECF, now deprecated) to STScI archive.
+
+The same coordinate-lookup fix has been applied to fetchsdss; fetchsdss
+also has new "--getfirst" and "--getlast" options to retrieve the first
+or last field if multiple fields are available.
+
+
+
+Telarchive -- Version 1.6.1 (29 May 2010)
+
+Various minor bugfixes to telarchive, including missing regex in 
+archive_analyze.findNReturned which was causing failed detections for 
+ESO and HST-ESO archives.
+
+--archive=<archive_name> now uses SIMBAD coordinate lookup (as is the
+case for searching all archives); requesting that an individual archive to
+its own coordinate lookup for a target name is no longer possible.
+
+(Of interest only if you have worked on modifying telarchive code in the
+past: The AnalyzeHTML() interface no longer takes a second,
+"textSearches" argument, the textSearches data member of archive classes
+no longer exists, and the MakeTextSearches() method of basic_archive.py
+is gone as well.)
+
+
+
+Telarchive -- Version 1.6.0 (10 April 2010)
+and
+Fetchsdss -- Version 1.0.2 (10 April 2010):
+
+Telarchive now includes an archive for searching Spitzer obervations.
+
+Bugfix of fetchsdss "--max" option (now works properly); minor bugfixe
+in utils.py and input-checking in fetchsdss.
+
+
+
+Telarchive -- Version 1.5.1 (6 May 2009)
+and
+Fetchsdss -- Version 1.0.1 (6 May 2009):
+
+Minor changes to SIMBAD-querying code (getcoords.py) to account for changes
+in how SIMBAD formats its HTML output, which were preventing us from correctly
+reading object coordinates.
+
+
+
+Telarchive -- Version 1.5 (12 April 2009)
+and
+Fetchsdss -- Version 1.0 (12 April 2009):
+
+Both programs updated to work with SDSS DR7 (using new archive module
+sdss_coords_archive.py).
+
+Telarchive (archive_search.py) and fetchsdss now use optparse module to
+handle command-line parsing, allowing more flexible command-line use
+(options and arguments can now be interspersed).  This does require Python
+2.3 or higher, but we're assuming almost no one is still using version 2.2
+or earlier.
+
+Extensive changes to fetchsdss.py, mainly to allow retrieval of DR7 data:
+   -- We now retrieve individual images one-by-one, and downloaded filenames
+   have both the run number and field number appended if the user
+   supplies a root name (otherwise files have their full SDSS names).
+   -- New retrieval options include *not* getting the tsField FITS
+   tables, getting JPEGs in addition to or instead of FITS images, and
+   specifying a maximum number of separate fields to retrieve (useful
+   for cases where dozens of repeat observations exist, as in Stripe 82).
+   Note that the default maximum is 1, so that coordinates with multiple
+   observations are not automatically retrieved; the user has to specify
+   a maximum number (this is to prevent suprise downloads of 60+ fields
+   if the requested coordinates lie within a high-repeat area).
+   -- Downloaded .tar.gz file bundles are no longer available
+
+Various minor fixes and updates to eso_archive.py [more accurate
+instrument counting, IFU and MOS categories added to output listing],
+hst_eso_archive.py [more accurate instrument counting], mast_archive.py
+[now includes XMM Optical Monitor searches], and smoka_archive.py [now
+includes MITSuME robotic telescopes].
+
+Acknowledgments: Thanks to Maximilian Fabricius for identifying a bug in the
+SDSS searches!

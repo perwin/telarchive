@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE VOTABLE SYSTEM "http://us-vo.org/xml/VOTable.dtd">
+<VOTABLE version="v1.0">
+ <DESCRIPTION>
+   Multimission Archive at STScI (MAST)    archive.stsci.edu
+   send questions to: archive@stsci.edu
+ </DESCRIPTION>
+<DEFINITIONS>
+  <COOSYS ID="myJ2000" system="eq_FK5" equinox="2000." epoch="2000."/>
+</DEFINITIONS>
+<RESOURCE type="results">
+<INFO name="QUERY_STATUS" value="OK"></INFO>
+<PARAM ID="target" name="target" value=""></PARAM>
+<PARAM ID="radius" name="radius" datatype="float" unit="arcmin" value="5.0"></PARAM>
+<PARAM ID="RA" name="RA" datatype="float" unit="degrees" value="36.9060833333"></PARAM>
+<PARAM ID="DEC" name="DEC" datatype="float" unit="degrees" value="-1.15627777778"></PARAM>
+<PARAM ID="sci_start_time" name="sci_start_time" value=""></PARAM>
+<PARAM ID="sci_actual_duration" name="sci_actual_duration" value=""></PARAM>
+<PARAM ID="sci_pep_id" name="sci_pep_id" value=""></PARAM>
+<PARAM ID="sci_release_date" name="sci_release_date" value=""></PARAM>
+<PARAM ID="sci_data_set_name" name="sci_data_set_name" value=""></PARAM>
+<PARAM ID="sci_spec_1234" name="sci_spec_1234" value=""></PARAM>
+<PARAM ID="sci_obset_id" name="sci_obset_id" value=""></PARAM>
+<PARAM ID="sci_archive_date" name="sci_archive_date" value=""></PARAM>
+<PARAM ID="sci_target_descrip" name="sci_target_descrip" value=""></PARAM>
+<PARAM ID="sci_aper_1234" name="sci_aper_1234" value=""></PARAM>
+<PARAM ID="sci_aec" name="sci_aec" value="S"></PARAM>
+<PARAM ID="sci_pi_last_name" name="sci_pi_last_name" value=""></PARAM>
+<PARAM ID="extra_column_value_1" name="extra_column_value_1" value=""></PARAM>
+<PARAM ID="extra_column_value_2" name="extra_column_value_2" value=""></PARAM>
+<PARAM ID="ordercolumn1" name="ordercolumn1" value="ang_sep"></PARAM>
+<PARAM ID="ordercolumn2" name="ordercolumn2" value="sci_targname"></PARAM>
+<PARAM ID="ordercolumn3" name="ordercolumn3" value="sci_data_set_name"></PARAM>
+<PARAM ID="coordformat" name="coordformat" value="sex"></PARAM>
+<PARAM ID="max_records" name="max_records" value="1001"></PARAM>
+<PARAM ID="max_rpp" name="max_rpp" value="500"></PARAM>
+<PARAM ID="verb" name="verb" value="1"></PARAM>
+<PARAM ID="mission" name="mission" value="hst"></PARAM>
+<PARAM ID="found_rows" name="found_rows" value="9"></PARAM>
+<TABLE name="HST">
+<DESCRIPTION>MAST HST Search: 9 row(s) returned!</DESCRIPTION>
+<FIELD name="Dataset" datatype="char" ucd="ID_MAIN" arraysize="*"><DESCRIPTION>Data set name First character indicates instrument; L=COS; I=WFC3; J=ACS; N=NICMOS; O=STIS; U=WFPC2; W=WFPC; X=FOC; Y=FOS; Z=GHRS; F=FGS; V=HSP;
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Target Name" datatype="char" ucd="ID_TARGET" arraysize="*" ><DESCRIPTION>Observer assigned target name; uppercase; no blank characters;  spaces sometimes filled with - ; use with wildcards
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="RA (J2000)" datatype="double" ucd="POS_EQ_RA_MAIN" unit="degrees" ref="myJ2000" ><DESCRIPTION>Right Ascension (J2000)
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Dec (J2000)" datatype="double" ucd="POS_EQ_DEC_MAIN" unit="degrees" ref="myJ2000" ><DESCRIPTION>Declination (J2000)
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Ref" datatype="int" ucd="REFER_CODE" ><DESCRIPTION>The number of known literature references associated with the listed proposal ID (HST) or data set name.
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Start Time" datatype="char" ucd="TIME_DATE" arraysize="*" ><DESCRIPTION>Observation start time
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Stop Time" datatype="char" ucd="TIME_DATE" arraysize="*" ><DESCRIPTION>Observation stop time
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Exp Time" datatype="float" ucd="TIME_EXPTIME" unit="seconds"><DESCRIPTION>Exposure time
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Instrument" datatype="char" ucd="INST_ID" arraysize="*" ><DESCRIPTION>Instrument used
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Apertures" datatype="char" ucd="INST_APERT" arraysize="*" ><DESCRIPTION>Aperture configuration See  &amp;#60;a href=&amp;#34;/hst/aperturelist.html&amp;#34;&amp;#62; a complete list&amp;#60;/a&amp;#62;
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Filters/Gratings" datatype="char" ucd="INST_FILTER" arraysize="*" ><DESCRIPTION>Filter used. See &lt;a href=&quot;/hst/filterlist.html&quot;&gt;a more complete list&lt;/a&gt; Sometimes combined so wildcard search may be needed
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Proposal ID" datatype="int" ucd="OBS_ID" ><DESCRIPTION>Integer assign to each proposal
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Release Date" datatype="char" ucd="TIME_DATE" arraysize="*" ><DESCRIPTION>Date data become publicly available
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Preview Name" datatype="char" ucd="ID_DATA" arraysize="*" ><DESCRIPTION>Preview name (generally the same as the data set name)
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="High-Level Science Products" datatype="int" ><DESCRIPTION>Number of known High Level Science Products
+   </DESCRIPTION>
+</FIELD>
+<FIELD name="Ang Sep (')" datatype="float" ucd="POS_ANG_DIST_GENERAL" unit="arcmin"><DESCRIPTION>Angular Separation</DESCRIPTION></FIELD>
+<DATA>
+<TABLEDATA>
+<TR>
+<TD>J8Z457011</TD><TD>SN2003GS</TD><TD>36.9098333333</TD><TD>-1.15983333333</TD><TD>9</TD><TD>2004-09-29 20:30:28</TD><TD>2004-09-29 20:45:17</TD><TD>840.000</TD><TD>ACS</TD><TD>HRC-FIX</TD><TD>CLEAR1S;F435W</TD><TD>10272</TD><TD>2004-09-30 04:42:14</TD><TD>J8Z457011</TD><TD></TD><TD>0.310</TD>
+</TR>
+<TR>
+<TD>J8Z457021</TD><TD>SN2003GS</TD><TD>36.9098333333</TD><TD>-1.15983333333</TD><TD>9</TD><TD>2004-09-29 20:46:50</TD><TD>2004-09-29 20:53:43</TD><TD>360.000</TD><TD>ACS</TD><TD>HRC-FIX</TD><TD>F625W;CLEAR2S</TD><TD>10272</TD><TD>2004-09-30 04:44:14</TD><TD>J8Z457021</TD><TD></TD><TD>0.310</TD>
+</TR>
+<TR>
+<TD>J8Z458011</TD><TD>SN2003GS</TD><TD>36.9098333333</TD><TD>-1.15983333333</TD><TD>9</TD><TD>2004-10-11 07:39:45</TD><TD>2004-10-11 07:48:33</TD><TD>480.000</TD><TD>ACS</TD><TD>HRC-FIX</TD><TD>F555W;CLEAR2S</TD><TD>10272</TD><TD>2004-10-11 14:40:47</TD><TD>J8Z458011</TD><TD></TD><TD>0.310</TD>
+</TR>
+<TR>
+<TD>J8Z458021</TD><TD>SN2003GS</TD><TD>36.9098333333</TD><TD>-1.15983333333</TD><TD>9</TD><TD>2004-10-11 07:50:22</TD><TD>2004-10-11 08:03:10</TD><TD>720.000</TD><TD>ACS</TD><TD>HRC-FIX</TD><TD>CLEAR1S;F814W</TD><TD>10272</TD><TD>2004-10-11 14:42:18</TD><TD>J8Z458021</TD><TD></TD><TD>0.310</TD>
+</TR>
+<TR>
+<TD>J8Z460011</TD><TD>SN2003GS</TD><TD>36.9098333333</TD><TD>-1.15983333333</TD><TD>9</TD><TD>2005-06-19 19:12:33</TD><TD>2005-06-19 19:21:21</TD><TD>480.000</TD><TD>ACS</TD><TD>HRC-FIX</TD><TD>F555W;CLEAR2S</TD><TD>10272</TD><TD>2005-06-20 01:48:23</TD><TD>J8Z460011</TD><TD></TD><TD>0.310</TD>
+</TR>
+<TR>
+<TD>J8Z460021</TD><TD>SN2003GS</TD><TD>36.9098333333</TD><TD>-1.15983333333</TD><TD>9</TD><TD>2005-06-19 19:23:10</TD><TD>2005-06-19 19:35:58</TD><TD>720.000</TD><TD>ACS</TD><TD>HRC-FIX</TD><TD>CLEAR1S;F814W</TD><TD>10272</TD><TD>2005-06-20 01:49:53</TD><TD>J8Z460021</TD><TD></TD><TD>0.310</TD>
+</TR>
+<TR>
+<TD>U2JF0301T</TD><TD>NGC936-NUC</TD><TD>36.9100416667</TD><TD>-1.16280555556</TD><TD>11</TD><TD>1994-10-26 16:36:16</TD><TD>1994-10-26 16:36:32</TD><TD>16.000</TD><TD>WFPC2</TD><TD>PC1</TD><TD>F555W</TD><TD>5741</TD><TD>1995-10-27 17:54:59</TD><TD>U2JF0301T</TD><TD></TD><TD>0.458</TD>
+</TR>
+<TR>
+<TD>U2JF0302T</TD><TD>NGC936-NUC</TD><TD>36.9100416667</TD><TD>-1.16280555556</TD><TD>11</TD><TD>1994-10-26 16:38:16</TD><TD>1994-10-26 16:40:36</TD><TD>140.000</TD><TD>WFPC2</TD><TD>PC1</TD><TD>F555W</TD><TD>5741</TD><TD>1995-10-27 18:17:36</TD><TD>U2JF0302T</TD><TD></TD><TD>0.458</TD>
+</TR>
+<TR>
+<TD>U2JF0303T</TD><TD>NGC936-NUC</TD><TD>36.9100416667</TD><TD>-1.16280555556</TD><TD>11</TD><TD>1994-10-26 16:42:16</TD><TD>1994-10-26 16:44:36</TD><TD>140.000</TD><TD>WFPC2</TD><TD>PC1</TD><TD>F555W</TD><TD>5741</TD><TD>1995-10-27 18:22:44</TD><TD>U2JF0303T</TD><TD></TD><TD>0.458</TD>
+</TR>
+</TABLEDATA>
+</DATA>
+</TABLE>
+</RESOURCE>
+</VOTABLE>

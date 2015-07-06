@@ -1,0 +1,205 @@
+NOTES ON SDSS DR7 DATA ACCESS:
+
+Outline of possible plan for finding and retrieving data:
+
+[x]1. Submit coordinate list (via form/multipart) to http://das.sdss.org/www/cgi-bin/post_coords
+
+[x]2. Parse returned HTML:
+	A. Data found?
+	B. Extract list ID and run/rerun/camcol/field set
+
+3. If we want to get the data: Retrieve it directly from image hierarchy:
+http://das.sdss.org/imaging/<run>/<rerun>/calibChunks/<camcol>/tsField-00<run>-<camcol>-<rerun>-<field>.fit
+http://das.sdss.org/imaging/<run>/<rerun>/corr/<camcol>/fpC-00<run>-u3-<field>.fit.gz
+http://das.sdss.org/imaging/<run>/<rerun>/corr/<camcol>/fpC-00<run>-g3-<field>.fit.gz
+etc.
+
+
+Using urllib.urlretrieve: examine info_header returned
+Proper retrieval of image file:
+>>> infohdr = retrieve_sdssfiles.GetURL(pf, "/Beleriand/build/")
+>>> print infohdr
+Date: Fri, 27 Mar 2009 14:45:38 GMT
+Server: Apache/2.0.52 (Scientific Linux)
+Last-Modified: Wed, 23 Apr 2003 21:39:35 GMT
+ETag: "69d72edb-24fb8f-3330f3c0"
+Accept-Ranges: bytes
+Content-Length: 2423695
+Connection: close
+Content-Type: application/x-gzip
+Content-Encoding: x-gzip
+
+Proper retrieval of tsField FITS table file:
+>>> infohdr = retrieve_sdssfiles.GetURL(pf2, "/Beleriand/build/")
+>>> print infohdr
+Date: Fri, 27 Mar 2009 15:35:57 GMT
+Server: Apache/2.0.52 (Scientific Linux)
+Last-Modified: Wed, 21 May 2003 17:46:59 GMT
+ETag: "91d40947-7080-36e7cac0"
+Accept-Ranges: bytes
+Content-Length: 28800
+Connection: close
+Content-Type: image/x-fits
+
+Improper retrieval (bad filename spcification within URL [bad filter name]):
+>>> infohdr = retrieve_sdssfiles.GetURL(pf, "/Beleriand/build/")
+>>> print infohdr
+Date: Fri, 27 Mar 2009 15:32:31 GMT
+Server: Apache/2.0.52 (Scientific Linux)
+Content-Length: 334
+Connection: close
+Content-Type: text/html; charset=iso-8859-1
+
+
+
+* Coordinate list submission form:
+
+http://das.sdss.org/www/html/post_coords.html
+
+
+* Submission info from Live HTTP headers:
+http://das.sdss.org/www/cgi-bin/post_coords
+
+POST /www/cgi-bin/post_coords HTTP/1.1
+Host: das.sdss.org
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.0.7) Gecko/2009021906 Firefox/3.0.7
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://das.sdss.org/www/html/post_coords.html
+Content-Type: multipart/form-data; boundary=---------------------------168072824752491622650073
+Content-Length: 467
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="inputFile"; filename=""
+Content-Type: application/octet-stream
+
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="csvIn"
+
+141.077212, 34.513490
+
+-----------------------------168072824752491622650073
+Content-Disposition: form-data; name="Submit"
+
+Submit Request
+-----------------------------168072824752491622650073--
+
+HTTP/1.x 200 OK
+Date: Tue, 24 Mar 2009 14:24:29 GMT
+Server: Apache/2.0.52 (Scientific Linux)
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=UTF-8
+----------------------------------------------------------
+
+
+
+* Submitting a single ra,dec pair yields a page which lists run, rerun, camcol, fields
+Note that this can contain multiple "rerun" versions of the same field (e.g., rerun=20,
+rerun=40 or rerun=40,rerun=41)
+
+Most useful bit of HTML in that page is probably this:
+<tr class="segment">
+ <td class="segment"><a href="http://das.sdss.org/www/cgi-bin/segments?LIST=izdnuz&RUN=4646&RERUN=40&CAMCOL=3">http://das.sdss.org/www/cgi-bin/segments?LIST=izdnuz&RUN=4646&RERUN=40&CAMCOL=3</a></td>
+
+ <td class="run">4646</td>
+ <td class="rerun">40</td>
+ <td class="camcol">3</td>
+ <td class="fields">81  </td>
+</tr>
+
+[data-found page saved as html/sdss_dr7_post_coords_gooddata.html]
+[No-data page saved as html/sdss_dr7_post_coords_nodata.html]
+
+Using the LIST id ("izdnuz" in the example above), we can then send a query to
+   http://das.sdss.org/www/cgi-bin/dl_request_form?list=izdnuz
+which will return a page containing a form where we can request what sort of data
+we'd like (images, tables, etc.)
+
+Submission info from Live HTTP headers:
+http://das.sdss.org/www/cgi-bin/download-list?list=xYyudT&filter=u&filter=g&filter=r&filter=i&filter=z&type=corr&type=tsField&dlmethod=wget
+
+GET /www/cgi-bin/download-list?list=xYyudT&filter=u&filter=g&filter=r&filter=i&filter=z&type=corr&type=tsField&dlmethod=wget HTTP/1.1
+Host: das.sdss.org
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.0.3) Gecko/2008092414 Firefox/3.0.3
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://das.sdss.org/www/cgi-bin/dl_request_form?list=xYyudT
+
+HTTP/1.x 200 OK
+Date: Wed, 12 Nov 2008 21:57:56 GMT
+Server: Apache/2.0.52 (Scientific Linux)
+content-disposition: attachment; filename=sdss-wget-xYyudT.lis
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+Transfer-Encoding: chunked
+Content-Type: text/plain; charset=UTF-8
+----------------------------------------------------------
+
+
+
+This sends a .lis text file which looks like this:
+http://das.sdss.org/imaging/3836/41/calibChunks/3/tsField-003836-3-41-0251.fit
+http://das.sdss.org/imaging/3836/41/corr/3/fpC-003836-u3-0251.fit.gz
+http://das.sdss.org/imaging/3836/41/corr/3/fpC-003836-g3-0251.fit.gz
+http://das.sdss.org/imaging/3836/41/corr/3/fpC-003836-r3-0251.fit.gz
+http://das.sdss.org/imaging/3836/41/corr/3/fpC-003836-i3-0251.fit.gz
+http://das.sdss.org/imaging/3836/41/corr/3/fpC-003836-z3-0251.fit.gz
+
+Downloading one of these gives us a compressed FITS file, as advertised.
+It *may* be more reliable than the "latest calibration in headers" versions, below
+(on the grounds that the latter requires running a CGI script...)
+
+This is some potential Python code:
+tsFieldTemplate = "http://das.sdss.org/imaging/%(run)d/%(rerun)d/calibChunks/%(camcol)d/tsField-%(run)06d-%(camcol)d-%(rerun)d-%(field)04d.fit"
+baseTemplate = "http://das.sdss.org/imaging/%(run)d/%(rerun)d/corr/%(camcol)d/fpC-%(run)06d-%(filter)s%(camcol)d-%(field)04d.fit.gz"
+
+	for thisFieldDict in fieldList:
+		# thisFieldDict = {'run': x, 'rerun': xx, 'camcol': x, 'field': x, 'filter': ""}, where
+		# x = integers
+		tsFieldURL = tsFieldTemplate % thisFieldDict
+		for f in filterList:
+			thisFieldDict['filter'] = f
+			newURL = baseTemplate % thisFieldDict
+
+
+If we request the "latest calibration in headers" version of the images, the list
+looks like this:
+http://das.sdss.org/imaging/3836/41/calibChunks/3/tsField-003836-3-41-0251.fit
+http://das.sdss.org/www/cgi-bin/drC?RUN=3836&RERUN=41&CAMCOL=3&FIELD=251&FILTER=u
+http://das.sdss.org/www/cgi-bin/drC?RUN=3836&RERUN=41&CAMCOL=3&FIELD=251&FILTER=g
+http://das.sdss.org/www/cgi-bin/drC?RUN=3836&RERUN=41&CAMCOL=3&FIELD=251&FILTER=r
+http://das.sdss.org/www/cgi-bin/drC?RUN=3836&RERUN=41&CAMCOL=3&FIELD=251&FILTER=i
+http://das.sdss.org/www/cgi-bin/drC?RUN=3836&RERUN=41&CAMCOL=3&FIELD=251&FILTER=z
+
+Downloading one of these gives us an uncompressed FITS file, if all goes well.
+However, sometimes we get an exception (IOError)
+And sometimes we get an error message (saved as a FITS file!):
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>500 Internal Server Error</title>
+</head><body>
+<h1>Internal Server Error</h1>
+<p>The server encountered an internal error or
+misconfiguration and was unable to complete
+your request.</p>
+<p>Please contact the server administrator,
+ alcorn@fnal.gov and inform them of the time the error occurred,
+and anything you might have done that may have
+caused the error.</p>
+<p>More information about this error may be available
+in the server error log.</p>
+<hr>
+<address>Apache/2.0.52 (Scientific Linux) Server at das.sdss.org Port 80</address>
+</body></html>
+
+

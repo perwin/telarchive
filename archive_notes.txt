@@ -1,0 +1,393 @@
+March 2007: Current Archive notes:
+
+[] Check IRSA for posibly useful things: 
+
+``New data sets at the NASA/IPAC Infrared Science Archive (IRSA) include 
+"Cosmic Evolution Survey" (COSMOS) ancillary products from GALEX, KPNO 
+Ks-band imaging, and VLA; products from the Spitzer Legacy program 
+"Surveying the Agents of a Galaxy's Evolution" (SAGE), which is a survey 
+of the Large Magellanic Cloud; and source tables and images from the Two 
+Micron All-Sky Survey (2MASS) Extended Mission. These and other data 
+sets can be queried and downloaded at http://irsa.ipac.caltech.edu.''
+
+
+[] SDSS: possibility of multiple hits
+Occasionally, a galaxy will fall into two different images.  A good 
+example is NGC 3049, which shows up (well-centered) in 3518/40/6/55 and
+also (in the corner, but with center still on the chip) 3630/40/1/215.
+The DR5 Footprint Server correctly returns both.
+
+Currenly, fetchsdss only finds one of them...
+
+
+[] ING  Archive: NOT WORKING
+   -- old archive web page apparently no longer exists
+   -- new web page: must search 3 times, once/telescope
+
+Text to look for:
+   "Records 0 - 20 (total: 243)"
+Unfortunately, the new interface automatically limits you to 20 items per 
+page; to see more, you have to retrieve them page by page
+HOWEVER: The returned text is *actually* a bunch of Javascript which draws
+
+[x] HST at ESO -- works
+[x] SDSS DR5 -- works
+[x] NOAO Science Archive -- works
+[x] ESO archive -- works
+[x] Multimission archive -- works
+[x] AAT archive -- works
+[x] CFHT -- works
+[x] UKIRT -- was broken, now fixed
+
+
+
+March 2006: ESO Archive notes
+
+Current interface (http://archive.eso.org/eso/eso_archive_main.html)
+handles *all* telescopes, though the returned page can only specify (if 
+requested) the *instrument* -- we'd have to add a mapping of instrument to 
+telescope if we wanted to help the user by mentioning the telescope.
+
+At the bottom of the returned page, there is (if requested) a nice summary 
+of total number of observations and number by instrument (though not by 
+mode, so we'd still have to parse the main table to get the 
+imaging/spectroscopy/etc. information).
+
+This page appears to use multipart/form-data submission.
+
+Gotcha: when there is *one* observation only, the archive returns a 
+single-exposure table, similar to the HST single-exposure table, with *no* 
+summary at the bottom (and all user requests regarding extra info are 
+ignored; the table *always* has all available info).
+
+Our current module (which uses an older interface: 
+http://archive.eso.org/wdb/wdb/eso/observations/query), *also* fails to 
+catch single-observations cases!
+
+[26 March 2006: latter problem fixed, though no telescope/instrument/type 
+information is extracted; such information *is* available in the returned 
+HTML.]
+
+
+Jan 2006: CODING NOTES
+
+From Python-Dev:
+Jim Fulton wrote:
+> Yesterday, I needed to make a web request in a program (actually a test)
+> that could block indefinately, so I needed to set a socket timeout.
+> Unfortunately, AFAICT none of urllib, urllib2, httplib provide options to set
+> the timeout on the sockets they use.  I ended up having to roll my own
+> code to make the request.
+> 
+> It would be nice if high-level network modules, like the ones mentioned
+> above, had options to provide a timeout.  (For example, urlopen could
+> grow an optional timout argument.)
+> 
+> Thoughts?
+> 
+> If we think this is a good idea, then someone who has time could start chipping
+> away at it.  I'm happy to work on this *if* I can find time.  This would make
+> a nice easy sprint project at PyCon too.
+> 
+That's a very good idea. At present the only option one has is to set a 
+global socket.defaulttimout() or somehow monkey-patch the modules you 
+want to use, and neither of those options are entirely satisfactory.
+
+
+
+Nov 2005: NOTES ON VARIOUS ARCHIVES:
+
+Chandra:
+   Interface: http://cda.harvard.edu/chaser/mainEntry.do
+   Submitted: http://cda.harvard.edu/chaser/dispatchOcat.do;jsessionid=D4i2FpFBHk1n1RhHjNMSTooEhDrrCnoJkwJPD0YpysCdTp8Wul7a!-837762223
+   -- appears to be JavaScript!
+   -- Try accessing with JavaScript turned off and see what's there:
+searchOcat=&operation=Search&target=ngc+3379&lon=&lat=&radius=10&resolver=simbad-ned&inputCoordFrame=j2000&inputCoordEquinox=2000&obsidRangeList=&seqNum=&propNum=&propTitle=&piName=&observer=&startDate=&releaseDate=&expTime=&status=archived&status=observed&status=partially+observed&sortColumn=seqNum&sortOrder=ascending&maxResults=50&outputCoordFrame=j2000&outputCoordEquinox=2000&outputCoordUnits=sexagesimal
+
+XMM:
+   The main archive interface () is *not* usable because it is a Java 
+applet
+   Interface: http://heasarc.gsfc.nasa.gov/db-perl/W3Browse/w3table.pl?Observatory=XMM-NEWTON&Action=Advanced+Search
+   Submitted: http://heasarc.gsfc.nasa.gov/db-perl/W3Browse/w3query.pl
+
+
+[] Possibly a better interface to multiple X-ray missions is:
+http://heasarc.gsfc.nasa.gov/db-perl/W3Browse/w3browse.pl
+
+This is complicated, partly because it includes all sorts of *catalogs* as 
+well as observations, and some proposal-abstract listings as well.
+It will be *very* complicated to parse the output, probably.
+
+This includes (as options): "Most Requested X-Ray Missions" = ASCA, RXTE,
+BeppoSAX, XMM-Newton, Chandra, ROSAT; EUVE; assorted older UV and X-Ray 
+missions; Swift and other gamma-ray missions; FAUST/Atlas-1, ISO, FUSE, 
+IUE, UIT/Astro-1, HST, MSX, IRAS, Spitzer
+
+   -- some Chandra "observations" actually show up as "status = unobserved"
+   -- can be retrieved as "text table" or XML...
+
+
+[*] MAST has search interfaces for: Astro-HUT, Astro-UIT, Astro-WUPPE, 
+Copernicus, EUVE, FUSE, GALEX, HST, IUE, "ORFEUS", and VLA-FIRST
+
+More general interface: http://archive.stsci.edu/xcorr.php
+   -- this page *has* JavaScript, but works if JavaScript is disabled, so 
+it should be possible to use
+   -- A very nice "Summary field" is given near the bottom; this reports 
+the total found for each mission (or instrument in the case of HST) even 
+if "total rows returned" is small --> we should set "Maximum Records" = 1 
+to minimize the amount of HTML returned.
+   -- only the HTML option gives you the Summary (CSV or XML do not)
+
+
+NVSS [?]  = NRAO VLA Sky Survey = "a 1.4 GHz continuum survey covering the
+entire sky north of -40 deg declination."
+   -- this is "all sky with dec > -40, so there's not much point in using
+   this (if someone *really* wanted it, then we could insert a "dec > -40 ?"
+   check...
+
+FIRST
+
+Spitzer
+
+GALEX -- included in MAST search (above)
+
+
+
+Dec 2004: HOW OTHER PEOPLE CAN USE THIS ON THE IAC NETWORK:
+
+One way which seems to work is with the following as the "public" script 
+(copied by a user to their bin directory or whatever):
+
+[start file]
+#!/usr/bin/env python
+
+import sys
+
+if __name__ == '__main__':
+	sys.path.append("/home/erwin/python/")
+	sys.path.append("/home/erwin/python/telarchive/")
+	from telarchive import archive_search2
+	archive_search2.main( sys.argv )
+[end file]
+
+
+
+TO DO:
+
+
+ARCHIVES AND COORDINATE LOOKUP:
+
+  [] ING ARCHIVE, UKIRT, AAT, and CFHT like "hh mm ss.s" + "dd mm ss.s"
+            does *not* like "hh:mm:ss" + "dd:mm:ss"
+  [] ESO ARCHIVE also likes "hh mm ss.s" + "dd mm ss.s"; OR decimal degrees
+
+
+FUTURE FUNCTIONALITY:
+
+[] Allow proper multiple-object searches (e.g., "archive_search.py -f 
+object_list.dat")
+
+   -- definitely easier if we specify filename with a switch like "-f" 
+than if we try to be clever and have the program check for files; user 
+might want to search for an object even if there's a file named after the 
+object in the current directory...
+   -- file could allow possible overload of search radius
+      -- tricky to distinguish between object name + radius and object
+      name with multiple spaces
+   -- Question: how to distinguish between object names and coordinates?
+      -- one awkward option is to have separate switches:
+         e.g., "--fo" for file with object names, "--fc" for file with
+         coordinates.
+      -- simpler solution: prefix coordinates in the inputfile with
+         something like "coords: "; then for each line we check the
+         first
+
+   -- note that this requires a test at the start of each iteration:
+if new target is an object name, do coordinate lookup, then search;
+else go straight to search
+
+
+[] Allow single- or multiple-object searches with a *single* archive (maybe
+you want to know if HST observed your objects -- could be very useful with
+saving of HTML pages)
+
+[] CGI interface: web page which allows input and then does search and 
+prints page of results (test this on iBook/PB with e.g. Quixote?)
+
+
+
+NICE IDEAS, IF WE CAN MAKE THEM WORK:
+
+[] Individual archives handle parsing/analysis of HTML, using a basic 
+"AnalyzeHTML" function from archive_analyze.py, plus their own 
+textSearches functions and special functions; then we don't have to worry 
+about passing around "textSearches" in archive_search.py.
+So archive_search.SearchOneArchive would then work something like:
+
+	(messageString, nDataFound) = archive.AnalyzeHTML(resultText)
+
+
+[] SearchObject?  This stores target name and/or coords [and which we're
+   using by default], box size, and name-related searches.
+   Could also be Search/Analyze object: stores above, plus sets up stuff in
+   archive_analyze.py to do searches (using target name, knowing whether
+   we used target name or coords) --- but remember that SDSS will probably
+   require different kind of search.
+
+
+FUNCTION ANALYSIS:
+
+archive_analyze.AnalyzeHTML( htmlText, textSearches )
+   -- textSearches depend on target name, but *not* on individual archives;
+      they are used in AnalyzeHTML()
+   -- AnalyzeHTML calls various textSearches objects (compiled re objects)
+      *and* CountDataSets()
+   -- CountDataSets() *does* have some archive-specific parts
+   -- in general, there is a fair bit of archive-specific code here, but
+      it's in the form of alternate text templates to look for, so it's
+      probably not worth trying to split this out into archive-specific
+      things
+
+individual-archive special searches:
+   -- these are *defined* in archive_analyze.py, but not used there
+   -- they are placed into archive objects in archive_class.py
+   -- they are called from archive_search.py, as archive.DoSpecialSearches( 
+htmlText, nDataFound)
+
+
+Right now, archive_search.DoSearch() does this for each/all archive:
+
+   archiveList = archive_class.ArchiveList(targetName, coordsList, 
+		searchBox, whichHST, doAAT)
+   textSearches = archive_analyze.TextSearches(targetName)
+and then, looping over archives:
+   SearchOneArchive(currentArchive, textSearches, targetName, debugSetting)
+      [targetName is needed for possible HTML file saves, but textSearches
+       should be unnecessary; it just gets handed off to archive_analyze.AnalyzeHTML
+       inside SearchOneArchive]
+
+
+Things to set up once for each archive:
+   Basic archive parameters (url, dictionaries, special functions)
+
+Things to set up/reset for each target, for each archive:
+   Target name
+   Box Size
+   [Coords]
+   Text searches
+currently, ArchiveList.SetUpSearches does all this:
+   --- constructs well-formed box-size string, then calls 
+ArchiveList.InsertBoxSize(), which calls SingleArchive.InsertBoxSize() for 
+each of the individual archives
+   --- calls *either* ArchiveList.InsertName() *or* 
+ArchiveList.InsertCoords(), which call SingleArchive.InsertTarget() or 
+.InsertCoordinates() for each of the individual archives
+
+   ONE OPTION: Add construction of textSearch objects to this stage
+
+
+NOTES FOR REFACTORING THINGS INTO INDIVIDUAL-ARCHIVE FILES:
+
+How to refer to modules via strings:
+angles.RADIAN_TO_DEGREE can be done as: sys.modules['angles'].RADIAN_TO_DEGREE
+
+Thus, we could do things like:
+import ing_archive
+import eso_archive
+archive_module_list = ["ing_archive", "eso_archive"]
+
+for current_module in archive_module_list:
+	archiveURLList.append( sys.modules[current_module].url )
+
+Or even:
+archive_module_list = ["ing_archive", "eso_archive"]
+for current_module in archive_module_list:
+	exec("import " + current_module)
+	archiveURLList.append( sys.modules[current_module].url )
+
+
+# *** indices -- could be tricky, needing to be coordinated
+# Data for the archives:
+# Shorthand indexes (always use this order!):
+ING = 0
+
+
+# Individual archives use different form-labels for target name, RA, and Dec.
+# We set these up as dictionaries for more readable/intuitive access;
+# SingleArchive objects can use their own self.shortName attribute to index
+# the proper element in their self.params dictionary.
+
+# *** Thus, for the ING archive:
+shortName = 'ing'
+TARGET_LABEL = {shortName: 'object'}
+RA_LABEL = {shortName: 'ra'}
+DEC_LABEL = {shortName: 'dec'}
+
+
+# *** standard things:
+ARCHIVE_NAME = "ING Archive"
+ARCHIVE_SHORTNAME = "ing"
+ARCHIVE_URL = "http://archive.ast.cam.ac.uk/cgi-bin/wdb/ingarch/ingarch/query"
+DICT = {'object': DEFAULT_TARGET, 'ra': "", 'dec': "", 'tab_ra': "checked",
+		'tab_dec': "checked", 'box': DEFAULT_BOXSIZE_STRING,
+		'tab_photspec': 'checked', 'scionly': 'checked',
+		'max_rows_returned': MAX_ROWS_RETURNED}
+SEARCHES = archive_analyze.INGfunctions
+
+
+# *** Special searches of returned text [from archive_analyze.py]; this
+# is referenced via the "SingleArchive.DoSpecialSearches" method in
+# archive_class.py
+def FindINGImagesAndSpectra(inputText, nFound):
+	# Bits of text to search for, telling us whether data is image or spectrum:
+	photometryString = r"<td>P</td>"
+	spectroscopyString = r"<td>S</td>"
+
+	messageText = "\n\t\t-- "
+	nPhot = len(re.findall(photometryString, inputText))
+	nSpec = len(re.findall(spectroscopyString, inputText))
+	nUnknown = nFound - (nPhot + nSpec)
+	# Add up all the images and/or spectra:
+	if (nPhot == 1):
+		imName = " image, "
+	else:
+		imName = " images, "
+	messageText = messageText + str(nPhot) + imName
+	if (nSpec == 1):
+		spName = " spectrum"
+	else:
+		spName = " spectra"
+	messageText = messageText + str(nSpec) + spName
+	if (nUnknown > 0):
+		messageText = messageText + ", " + str(nUnknown) + " unclassified"
+
+	return messageText
+
+# Put all the functions in a list:
+INGfunctions = [FindINGImagesAndSpectra]
+
+
+# *** Also:
+#    [] Alternate "findnReturned" searches: STScI and ESO differ from
+# other archives; SDSS much more so.  Actually SDSS will probably be
+# just "data found/not found", though this might change in the future if
+# we consider spectroscopy, or multiple visits(?).  From archive_analyze.py:
+# These are searches to find the text wherein an archive tells us how many
+# data sets it found.  They are set up so that the numeral is stored in
+# group #1 of the result.
+findWereRetrieved = re.compile(r"of (\d+)(| record| records) were retrieved")
+findSTScIRecords = re.compile(r"(\d+) records \(\d+ proprietary\) returned")
+findESORecords = re.compile(r"A total of (\d+) were found")
+# ex: "A total of 10 were found"
+#
+#    Problem: currently, these are *defined* in archive_analyze.py
+
+#    [] Set up searches -- same method (base class?) for all archives *except*
+# SDSS; latter needs to get coordinates and set up search dictionary 
+# slightly differently.  Option to do coordinate lookup for everybody?
+
+# *** both of the above could default to a base functions, with individual-
+# archive modules overriding if need be.
+
+

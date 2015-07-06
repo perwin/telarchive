@@ -1,0 +1,75 @@
+POST /hst/search.php target=&resolver=NED&radius=5.0&ra=02h27m37.46s&dec=-01d09m22.6s&equinox=J2000&sci_start_time=&sci_actual_duration=&sci_pep_id=&sci_release_date=&sci_data_set_name=&sci_spec_1234=&sci_obset_id=&sci_archive_date=&sci_target_descrip=&sci_aper_1234=&sci_aec%5B%5D=S&sci_pi_last_name=&extra_column_name_1=sci_data_set_name&extra_column_value_1=&extra_column_name_2=sci_data_set_name&extra_column_value_2=&selectedColumnsCsv=Mark%2Csci_data_set_name%2Csci_targname%2Csci_ra%2Csci_dec%2Csci_refnum%2Csci_start_time%2Csci_stop_time%2Csci_actual_duration%2Csci_instrume%2Csci_aper_1234%2Csci_spec_1234%2Csci_pep_id%2Csci_release_date%2Csci_preview_name%2Csci_hlsp%2Cang_sep&availableColumns=Mark&ordercolumn1=ang_sep&ordercolumn2=sci_targname&ordercolumn3=sci_data_set_name&coordformat=sex&outputformat=HTML_Table&max_records=1001&max_rpp=500&action=Search
+
+
+OR, REQUESTING A VO-TABLE:
+
+POST /hst/search.php target=&resolver=NED&radius=5.0&ra=02h27m37.46s&dec=-01d09m22.6s&equinox=J2000&sci_start_time=&sci_actual_duration=&sci_pep_id=&sci_release_date=&sci_data_set_name=&sci_spec_1234=&sci_obset_id=&sci_archive_date=&sci_target_descrip=&sci_aper_1234=&sci_aec%5B%5D=S&sci_pi_last_name=&extra_column_name_1=sci_data_set_name&extra_column_value_1=&extra_column_name_2=sci_data_set_name&extra_column_value_2=&selectedColumnsCsv=Mark%2Csci_data_set_name%2Csci_targname%2Csci_ra%2Csci_dec%2Csci_refnum%2Csci_start_time%2Csci_stop_time%2Csci_actual_duration%2Csci_instrume%2Csci_aper_1234%2Csci_spec_1234%2Csci_pep_id%2Csci_release_date%2Csci_preview_name%2Csci_hlsp%2Cang_sep&availableColumns=Mark&ordercolumn1=ang_sep&ordercolumn2=sci_targname&ordercolumn3=sci_data_set_name&coordformat=sex&outputformat=VOTable&max_records=1001&max_rpp=500&action=Search
+
+
+
+PARSING OUTPUT VO-TABLE:
+
+from xml.dom import minidom
+
+exampleFile = "/Beleriand/dev/telarchive_working/testing/mast_vo_table_output.xml"
+xmldoc = minidom.parse(exampleFile)
+
+# Or, one could convert the string into a StringIO object, where xmlString
+# is presumably something we get from the http request:
+xmlStringFile = StringIO.StringIO(xmlString)
+xmldoc = minidom.parse(xmlStringFile)
+xmlStringFile.close()
+
+
+# list of FIELD elements which describe the table columns
+fieldlist = xmldoc.getElementsByTagName('FIELD')
+nCols = len(fieldlist)
+
+#Locate "Instrument" column
+colNames = [ fieldlist[i].attributes['name'].value for i in range(nCols) ]
+instCol = colNames.index("Instrument")
+# = 8 (i.e., 9th column)
+
+# Get the table itself
+tdlist = xmldoc.getElementsByTagName('TABLEDATA')
+# get the rows within the table
+trlist = tdlist[0].getElementsByTagName("TR")
+nRows = len(trlist)
+
+# ANNOYANCE: each line of the table has an extra "\n" element at the star
+# and end, so there are *18* elements, not 16, and we have to add 1 to
+# get the correct index to extract the instrument name...
+# (perhaps this is a defect in xml.com.minidom ??)
+>>> for i in range(18): print trlist[0].childNodes[i]
+... 
+<DOM Text node "u'\n'">
+<DOM Element: TD at 0x1e570d0>
+<DOM Element: TD at 0x1e57148>
+<DOM Element: TD at 0x1e571c0>
+<DOM Element: TD at 0x1e57238>
+<DOM Element: TD at 0x1e572b0>
+<DOM Element: TD at 0x1e57328>
+<DOM Element: TD at 0x1e573c8>
+<DOM Element: TD at 0x1e57468>
+<DOM Element: TD at 0x1e574e0>
+<DOM Element: TD at 0x1e57558>
+<DOM Element: TD at 0x1e575d0>
+<DOM Element: TD at 0x1e57648>
+<DOM Element: TD at 0x1e576c0>
+<DOM Element: TD at 0x1e57760>
+<DOM Element: TD at 0x1e577d8>
+<DOM Element: TD at 0x1e57828>
+<DOM Text node "u'\n'">
+
+# So we need the following
+OFFSET = 1
+instColFinal = instCol + OFFSET
+# preliminary function definition:
+def GetInstrumentName( tableRowElement, instCol ):
+	return tableRowElement.childNodes[instCol].firstChild.data
+
+# sample usage:
+print( GetInstrumentName(trlist[0], instColFinal) )
+print( GetInstrumentName(trlist[1], instColFinal) )
+
+for i in range(nRows): print( GetInstrumentName(trlist[i], instColFinal) )

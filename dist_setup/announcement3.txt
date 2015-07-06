@@ -1,0 +1,96 @@
+Hola a todos,
+
+I've recently updated my archive-searching script (again), this time by
+adding the ability to search the Sloan Digital Sky Survey (SDSS; Data
+Release 3) and the NOAO Science Archive, and by providing a little more
+analysis of what is available at certain telescope archives.  So I thought
+this might be a good time to remind people about the script -- or to let
+new people know about its existence...
+
+It's basically a command-line program (written in Python) which simplifies
+searching various telescope archives to see if they might have data on a
+particular astronomical object.  This includes the HST archive, as well as
+the ING, ESO, UKIRT, CFHT, and AAT ground-based archives, and Data Release
+3 (DR3) from the Sloan Digital Sky Survey.  The NOAO Science Archive is
+also included, though it has very little publically available data at this
+point.  The program won't *get* the data for you, of course, or even tell
+you very much about it -- for that, you still need to visit the individual
+archive web pages.  But it will save you lots of clicking and typing if you
+just want to find out if there is *any* data available.
+
+Por ejemplo:
+
+To search for data within a 2-arcminute box centered on the planetary
+nebula NGC 7027:
+
+$ telarchive "ngc 7027" 2.0
+        SIMBAD (France):  Found object coordinates: RA = 21 07 01.59, Dec = +42 14 10.2
+
+Searching archives for ngc 7027 (RA=21 07 01.59, dec=+42 14 10.2), with search box =  2.0 arcmin...
+        NOAO Science Archive: No data found
+        ESO Archive: No data found
+        AAT Archive: No data found
+        HST Archive (at ESO): Data exists! ("A total of 85 were found")
+                -- 6 WFPC2, 24 WF, 1 PC, 13 NICMOS, 3 FOC, 25 STIS, 13 FOS
+        Sloan Digital Sky Survey (DR3): No data found.
+        UKIRT Archive: Data exists! ("A total of 517 were retrieved")
+        CFHT Archive: Data exists! ("A total of 213 records were retrieved")
+        ING Archive: Data exists! ("A total of 577 were retrieved")
+                143 images, 391 spectra, 43 unclassified
+                JKT -- RBS (1), FWHL (2), AGBX (102);  INT -- WFC (9), PFCU (30), IDS (66), MES (17), FOS_1 (10);  WHT -- TAURUS_2 (5), unknown (43), ISIS_BLUE_ARM (159), UES (58), ISIS_RED_ARM (75)
+
+
+otro ejemplo:
+
+To search for data within a 6-minute box centered on RA = 02:27:37.7, Dec = -01:09:17
+(J2000 coordinates assumed):
+
+> telarchive --coords="02 27 37.7 -01 09 17" 6.0
+
+Searching archives for 02 27 37.7 -01 09 17, with search box =  6.0 arcmin...
+        UKIRT Archive: No data found
+        ING Archive: Data exists! ("A total of 14 were retrieved")
+                11 images, 3 spectra
+                JKT -- FWHL (8), AGBX (3);  INT -- IDS (3)
+        NOAO Science Archive: No data found
+        CFHT Archive: No data found
+        HST Archive (at ESO): Data exists! ("A total of 5 were found")
+                -- 1 WFPC2, 4 ACS/HRC
+        AAT Archive: Data exists! (One observation/association)
+                -- 0 images, 0 spectra, 0 polarimetry
+        ESO Archive: Data exists! ("A total of 481 were found")
+                163 images, 250 spectra, 0 polarimetry
+                MPI-2.2 -- WFI (5);  ESO-NTT -- SOFI (365);  ESO-VLT -- ISAAC (68), FORS1 (31), FORS2 (12)
+        Sloan Digital Sky Survey (DR3): Imaging data exists!
+
+
+As you can see, for *some* archives it is possible to learn a little about
+what is there.  For ESO , AAT, and ING, this means spectroscopy, imaging,
+and/or polarimetry (latter for ESO and AAT only); for ESO, ING, and HST, it
+also means the actual telescopes and instrument used.
+
+The simplest way to use this is to copy -- or make a symbolic link to -- a shell
+script called "telarchve", which is in my /home/erwin/bin directory.
+Then you can give it whatever name you like.  Por ejemplo:
+
+> ln -s /home/erwin/bin/telarchive ~/telarchive
+
+There are various options; type "archive_search --help" for a list.
+
+Some notes:
+   -- accessing the AAT archive is often very slow.  If your object is northern, you
+can probably speed up the search using the "--noaat" option.
+
+   -- the script normally runs in multi-threaded mode, which makes it faster. 
+BUT it is rather hard to interrupt or stop it (Control-C doesn't really
+work, or at least has to be pressed several times!), due to peculiarities
+in Python's threading implementation.  If you like the ability to interrupt
+things easily, you can run the script with threading turned off, using the
+"--nothreading" option on the command-line.
+
+I hope you find it useful -- let me know if you have any questions or problems
+with it.
+
+cheers,
+
+Peter

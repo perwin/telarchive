@@ -1,0 +1,127 @@
+# Notes on possibly using the new VOTable output of ESO-HST archive
+
+** FROM THE NEW ESO-HST INTERFACE:
+
+(after searching for NGC 3412 using coordinate input:)
+
+The metadata tables in the database can also be accessed programmatically e.g. from scripts. The resulting table is written out in VOTable format which is based on xml.
+The present query result can be obtained from this link. The following parameters have been specified:
+
+votable_out_mode=on
+max_rows_returned=1000
+archive=HST
+filt_flag=N
+availability=available
+members=no
+coord=10:50:53.3 +13:24:44
+search_box=00:05:00
+c_opt_type=%
+is_type=%
+instrument=%
+
+The actual link:
+http://archive.eso.org/wdbl/wdb/hst/hst_meta_science_votable/query?votable_out_mode=on&max_rows_returned=1000&archive=HST&filt_flag=N&availability=available&members=no&coord=10:50:53.3%20%2B13:24:44&search_box=00:05:00&c_opt_type=%25&is_type=%25&instrument=%25
+
+[NOTE: right-click and "Save as..." to actually get the XML file; clicking
+opens it in a Safari window or tab in funky mangled-text form, without the
+XML formatting]
+
+
+** SOME NOTES ON HOW TO PARSE THE VOTABLE:
+
+[] TODO: Try using Python 2.5+ elementtree library; may be more Pythonic
+(and faster) than xml.dom.minidom
+	-- see http://effbot.org/zone/element-index.htm
+	from xml.etree.ElementTree import ElementTree
+	tree = parse(filename)
+	elem = tree.root()
+
+[Python from here on, unless otherwise noted]
+
+# really simple VOTable parsing, using example of ESO-HST VOTable reply:
+
+from xml.dom import minidom
+
+# this is a query for HST obs of NGC 3412; it has two observations
+exampleFile = "/Users/erwin/Desktop/eso-hst_query_n3412.xml"
+
+xmldoc = minidom.parse(exampleFile)
+
+# NOTE: there is also minidom.parseString() for parsing a chunk of text that
+# isn't a file
+# Or, one could convert the string into a StringIO object:
+xmlStringFile = StringIO.StringIO(xmlString)
+xmldoc = minidom.parse(xmlStringFile)
+xmlStringFile.close()
+
+
+# list of FIELD elements which describe the table columns
+fieldlist = xmldoc.getElementsByTagName('FIELD')
+nCols = len(fieldlist)
+
+#Locate "Instrument" column
+colNames = [ fieldlist[i].attributes['name'].value for i in range(nCols) ]
+instCol = colNames.index("Instrument")
+
+# OK, now we know which column the instrument names are in ...
+
+# Get the table itself
+tdlist = xmldoc.getElementsByTagName('TABLEDATA')
+# get the rows within the table
+trlist = tdlist[0].getElementsByTagName("TR")
+nRows = len(trlist)
+
+# extract the instrument name for the first row
+>>> trlist[0].childNodes[7].toxml()
+u'<TD>WFPC2</TD>'
+# to get the instrument name more directly:
+trlist[0].childNodes[7].childNodes[0].data
+# OR, more generally:
+trlist[0].childNodes[instCol].firstChild.data
+
+# preliminary function definition:
+def GetInstrumentName( tableRowElement, instCol ):
+	return tableRowElement.childNodes[instCol].firstChild.data
+
+# sample usage:
+print( GetInstrumentName(trlist[0], instCol) )
+print( GetInstrumentName(trlist[1], instCol) )
+
+
+# * QUICK NOTES ON PARSING A NO-DATA-RETURNED VOTABLE:
+>>> nodatadoc = minidom.parse("/Users/erwin/Desktop/eso-hst_query_nodata.xml")
+>>> infolist_nodata = nodatadoc.getElementsByTagName('INFO')
+>>> infolist_nodata[0].firstChild.data
+u'No data returned !\nPlease go \'Back\' to the query form and re-specify your query.\n\nYour Query :\nCoordinate field : 01:53:13.3 +04:11:45\nSearch Box : 00:05:00\nTarget RA : 28.2636380555555556 .. 28.3471952777777778\nDec : 4.15416666666666667 .. 4.2375\nArchive : HST\nInstrument : %\nData Type : %\nFormat : hours\nMembers : no\nScience Type : N\nAvailability : available\nOptical Element Type : %\n\nSQL Query used.\nselect ..... \nfrom (hst_meta_science join hst_meta_artifact on hst_meta_science.dataset_name=hst_meta_artifact.dataset_name and hst_meta_science.science_extension=hst_meta_artifact.extension left outer join vo..hst_skybot on hst_meta_science.dataset_name=vo..hst_skybot.dataset_name)\n\nwhere hst_meta_artifact.ra between 28.2636380555555556 and 28.3471952777777778\n AND hst_meta_artifact.dec between 4.15416666666666667 and 4.2375\n AND hst_meta_science.archive like \'HST\'\n AND hst_meta_science.filt_flag like \'%[Nn]%\'\n AND  (hst_meta_science.no_members > 0)  AND  ((hst_meta_science.raw_flag ="Y") or (hst_meta_science.cal_flag="Y"))  at isolation read committed\n\n'
+
+# in contrast, the same INFO element in the data-returned XML file looks like this:
+>>> infolist = xmldoc.getElementsByTagName('INFO')
+>>> infolist[0].firstChild.data
+u'1'
+
+
+
+
+# * Alternate approach, using ElementTree library:
+# [MAYBE TRY THIS *LATER*, AFTER WE GET THE PREVIOUS VERSION WORKING PROPERLY!]
+# Parse VOTable
+import xml.etree.ElementTree as ET
+
+tree = ET.parse(exampleFile)
+# or: tree = ET.fromstring(xmlString)
+
+#tree = ElementTree()
+#tree.parse(exampleFile)
+
+# get the table element
+table_elem = tree.find(".//TABLE")
+# get the field elements (column definitions):
+field_elem_list = table_elem.findall("FIELD")
+nCols2 = len(field_elem_list)
+# get list of column titles
+colNames2 = [ field_elem_list[i].attrib["name"] for i in range(nCols2) ]
+
+#Locate "Instrument" column
+instCol2 = colNames2.index("Instrument")
+
+

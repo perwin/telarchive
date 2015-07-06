@@ -1,0 +1,110 @@
+March 2008:
+
+Relevant bits from current HTML form:
+
+<FORM ACTION="/cadcbin/cfht/wdbi.cgi/cfht/wfi/query" METHOD="POST" enctype="multipart/form-data">
+<CENTER><p><INPUT TYPE="submit" VALUE="Search">
+
+
+*** We need to convert cfht_archive to post in multipart/form-data mode.
+Currently, gemini_archive.py does this (uses code in multipart_form.py
+module)
+
+
+
+<OPTION value="dec"> DEC
+<OPTION value="exposure_time desc"> Exposure Time (decr.)
+<OPTION value="exposure_time"> Exposure Time (incr.)
+<OPTION value="runid"> Run ID
+<OPTION value="dataset_name"> Exposure Number
+<OPTION value="creation_date"> Date
+<OPTION SELECTED value=""> No Sorting
+</SELECT>   &nbsp;&nbsp;&nbsp;<b>Return</b> <SELECT name="max_rows_returned"><OPTION value="500"> 500 rows
+	<OPTION value="10"> 10 rows
+	<OPTION value="25"> 25 rows
+	<OPTION value="100"> 100 rows
+	<OPTION value="200"> 200 rows
+	<OPTION value="1000"> 1000 rows
+	<OPTION value="5000"> < 5000 rows
+</SELECT> 
+
+<p><H2>Target Information:</H2>
+<INPUT type=checkbox checked name="tab_tobject">
+Target Name</a>.....:</b> <INPUT name="tobject" size=13 value="" >    
+Resolver: <select name=simbad>
+	<option value=none>CFHT name
+	<option value=simbad>SIMBAD/NED
+<INPUT name="box" size=8 value="00 10 00" >   
+<INPUT type=checkbox checked name="tab_ra"> 
+RA (J2000)</a>......:</b> <INPUT name="ra" size=13 value="" >   
+<INPUT type=checkbox checked name="tab_dec"> <
+DEC (J2000)</a>.....:</b> <INPUT name="dec" size=13 value="" >   
+
+<h2>Observations Constraints:</h2>
+<INPUT type=checkbox checked name="tab_expnum"> 
+Exp. Num.</a>.......:</b> <INPUT name="expnum" size=10 value="" >   
+<INPUT type=checkbox checked name="tab_instrument"> 
+Instrument</a>......:</b> <SELECT name="instrument"><OPTION SELECTED value="%"> any
+	<OPTION value="AOBIR                ">  AOBIR                
+	<OPTION value="AOBVIS               ">  AOBVIS               
+	<OPTION value="BEAR                 ">  BEAR                 
+	<OPTION value="CCD                  ">  CCD                  
+	<OPTION value="CF4                  ">  CF4                  
+	<OPTION value="CF8                  ">  CF8                  
+	<OPTION value="CFH12K MOSAIC        ">  CFH12K MOSAIC        
+	<OPTION value="CFHTIR               ">  CFHTIR               
+	<OPTION value="COUDE                ">  COUDE                
+	<OPTION value="COUDE F/8.2          ">  COUDE F/8.2          
+	<OPTION value="ESPADONS             ">  ESPADONS             
+	<OPTION value="F4                   ">  F4                   
+	<OPTION value="FOCAM                ">  FOCAM                
+	<OPTION value="FTS                  ">  FTS                  
+	<OPTION value="GECKO                ">  GECKO                
+	<OPTION value="HERZBERG             ">  HERZBERG             
+	<OPTION value="HRC                  ">  HRC                  
+	<OPTION value="ISIS                 ">  ISIS                 
+	<OPTION value="MEGAPRIME            ">  MEGAPRIME            
+	<OPTION value="MOCAM                ">  MOCAM                
+	<OPTION value="MOS                  ">  MOS                  
+	<OPTION value="MOSFP                ">  MOSFP                
+	<OPTION value="OASIS                ">  OASIS                
+	<OPTION value="OSIS                 ">  OSIS                 
+	<OPTION value="OSISR                ">  OSISR                
+	<OPTION value="PALILA               ">  PALILA               
+	<OPTION value="PUMA                 ">  PUMA                 
+	<OPTION value="PYTHIAS              ">  PYTHIAS              
+	<OPTION value="REDEYE               ">  REDEYE               
+	<OPTION value="REDEYEN              ">  REDEYEN              
+	<OPTION value="REDEYEW              ">  REDEYEW              
+	<OPTION value="SIS                  ">  SIS                  
+	<OPTION value="SISFP                ">  SISFP                
+	<OPTION value="TIGER                ">  TIGER                
+	<OPTION value="UH8K MOSAIC CAMERA   ">  UH8K MOSAIC CAMERA   
+	<OPTION value="WIRCAM               ">  WIRCAM               
+</SELECT>   
+<INPUT type=checkbox checked name="tab_exposure"> 
+Exposure Time</a>...:</b> <INPUT name="exposure" size=20 value="" >    (seconds; e.g. <600; 800..1200)
+<INPUT type=checkbox checked name="tab_filter">
+Filter</a>..........:</b> <INPUT name="filter" size=20 value="" >    "R"
+<SELECT name="photometric"><OPTION value="%"> Any
+	<OPTION value="1"> Yes
+	<OPTION value="0"> No
+</SELECT>   
+<INPUT type=checkbox checked name="tab_creation_date"> 
+Observation Date</a>:</b> <INPUT name="creation_date" size=20 value="" >    (e.g. 12 June 2002..16 June 2002; > 16 June 2002; 06/16/2002 )<CENTER><p><INPUT TYPE="submit" VALUE="Search"><input type=button value="Display All" onClick="check(this.form)"><INPUT TYPE="reset" VALUE="Reset"></CENTER><p><p><h2>Program Constraints:</h2><INPUT type=checkbox checked name="tab_release_date"> <b><a href="javascript:cadcHelp('cfht','release_date')">Release Date</a>....:</b> <INPUT name="release_date" size=20 value="" >    (e.g. 12 June 2002..16 June 2002; > 16 June 2003; 06/16/2003 )
+<INPUT type=checkbox checked name="tab_runid"> 
+Observing Run ID</a>:</b> <INPUT name="runid" size=20 value="" >    (e.g. 2006AC13 )
+<INPUT type=checkbox checked name="tab_obstype"> 
+Observation Type</a>:</b> <SELECT name="obstype"><OPTION value="%"> Any
+	<OPTION value="OBJECT"> OBJECT
+	<OPTION value="FLAT"> FLAT
+	<OPTION value="DARK"> DARK
+	<OPTION value="BIAS"> BIAS
+	<OPTION value="ACQUIRE"> ACQUIRE
+</SELECT>   
+<INPUT type=checkbox checked name="tab_category"> 
+Data Type</a>.......:</b> <SELECT name="category"><OPTION value="%"> Any
+	<OPTION value="RAW"> RAW
+	<OPTION value="CAL"> Detrended
+	<OPTION value="REF"> Calibrator
+</SELECT>   </pre> <CENTER><p><INPUT TYPE="submit" VALUE="Search"><input type=button value="Display All" onClick="check(this.form)"><INPUT TYPE="reset" VALUE="Reset"></CENTER><p><p></FORM>

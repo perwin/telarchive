@@ -1,0 +1,13 @@
+include COPYING.txt README_fetchsdss.txt changelog.txt INSTALLATION.txt
+include dosearch.py
+include do_fetchsdss.py
+include do_fetchsdss_spectra.py
+exclude telarchive/*unittest.py
+exclude telarchive/zibetti.py telarchive/test_modules.py
+exclude telarchive/footprint_archive.py	
+exclude telarchive/hst_eso_archive.py	
+exclude telarchive/sdss_das_archive.py	
+exclude telarchive/sdss_sql_archive.py	
+exclude telarchive/sdss_dr9_archive.py	
+exclude telarchive/getgsc2.py telarchive/gsc2_archive.py
+exclude telarchive/fetchsdss_old.py telarchive/sdss_dr8sql_archive.py
