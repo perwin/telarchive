@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 #
 #    Simple Python module/script for getting coordinates of astronomical objects
 # from Simbad.  Probably only works if your site has some kind of site account
@@ -33,6 +33,7 @@
 import sys
 #import urllib
 import re
+#from . import simbad_archive
 import simbad_archive
 
 #import archive_class
@@ -102,7 +103,7 @@ findFullCoords = re.compile(r"""
 # should handle older format if that gets reinstated
 findFullCoordsNew = re.compile(r"""
 	ICRS\s+</B>\s+coord.\s+<I>\s+\(ep=J2000\)\s+:\s+</I>\s+</SPAN>\s+</TD>\s+
-    <TD>\s+<B>\s+<TT>\s+
+    <TD\sNOWRAP>\s+<B>\s+<TT>\s+
     (?P<ra>\d\d\s\d\d\s\d\d[.]*\d*\b)\s+
     (?P<dec>(\+|-)\d\d\s\d\d\s\d\d[.]*\d*\b)
 	""", re.VERBOSE)
@@ -126,15 +127,16 @@ def QuerySimbad( archive, objectName ):
 		#connection = urllib.urlopen( archive.URL, archive.EncodeParams() )
 		archive.InsertTarget(objectName)
 		htmlReceived = archive.QueryServer()
-	except IOError, e:
-		messageString = "I/O Error -- " + str(e.args[0]) + ": " + \
-						str(e.args[1]) + "\n"
-		if ( str(e.args[1]) == "(7, 'No address associated with nodename')" ):
-			messageString += 20*" " + "(DNS server is down,"
-			messageString += " or we're not connected to the Internet?)"
-		else:
-			messageString += " (try again later?)"
-		print messageString
+	except IOError as e:
+		messageString = "I/O Error -- " + str(e) + "\n"
+# 		messageString = "I/O Error -- " + str(e.args[0]) + ": " + \
+# 						str(e.args[1]) + "\n"
+# 		if ( str(e.args[1]) == "(7, 'No address associated with nodename')" ):
+# 			messageString += 20*" " + "(DNS server is down,"
+# 			messageString += " or we're not connected to the Internet?)"
+# 		else:
+# 			messageString += " (try again later?)"
+		print(messageString)
 		htmlReceived = ""
 
 	return htmlReceived
@@ -178,12 +180,13 @@ def GetCoordinates( objectName, archiveList=None, saveFile=None, verbose=True ):
 	for i in range(nSimbadArchives):
 		currentArchive = archiveList[i]
 		if verbose:
-			print "\t" + currentArchive.longName + ": ",
+			print("\t" + currentArchive.longName + ": ", end=' ')
 		try:
 			outputHTML = QuerySimbad( currentArchive, objectName )
+			#outputHTML = outputHTML.decode("utf-8")
 			objectCoords = CheckResults(outputHTML)
-		except IOError, e:
-			print "Error connecting to server!"
+		except IOError as e:
+			print("Error connecting to server!")
 			objectCoords = [CONNECTION_REFUSED, e]
 		if ( objectCoords[0] == PRECISE_COORDS_FOUND):
 			# We got some coordinates back!
@@ -195,20 +198,20 @@ def GetCoordinates( objectName, archiveList=None, saveFile=None, verbose=True ):
 			break
 		elif ( objectCoords[0] == NO_COORDS_FOUND):
 			# We were told it can't be found in the database
-			print objectCoords[1]
+			print(objectCoords[1])
 			objectFound = NO_COORDS_FOUND
 			break
 		else:
 			# Problem with the search (e.g., archive server error)
-			print objectCoords[1]
+			print(objectCoords[1])
 			if (i < (nSimbadArchives - 1) ):
-				print "Checking next mirror..."
+				print("Checking next mirror...")
 
 	if (saveFile is not None):
 		outf = open(saveFile, 'w')
 		outf.write(outputHTML)
 		outf.close()
-		print "Wrote HTML to file %s.\n" % saveFile
+		print("Wrote HTML to file %s.\n" % saveFile)
 			
 	return (objectFound, objectCoords)
 
@@ -223,25 +226,25 @@ def main(argv):
 		if ( len(argv) > 2 ):
 			saveHTML = argv[2]
 	else:
-		print "Please enter an object name to search for: ",
+		print("Please enter an object name to search for: ", end=' ')
 		objectName = sys.stdin.readline().strip()
 
 
-	print "\nStarting search..."
+	print("\nStarting search...")
 	success, coordinates = GetCoordinates(objectName, saveFile=saveHTML)
 
 	if ( success == PRECISE_COORDS_FOUND ):
-		print ""
-		print "RA, Dec  =  %s   %s" % (coordinates[1], coordinates[2])
+		print("")
+		print("RA, Dec  =  %s   %s" % (coordinates[1], coordinates[2]))
 	elif ( success == VAGUE_COORDS_FOUND ):
-		print ""
-		print "RA  =   %s" % coordinates[1]
-		print "Dec =  %s\n" % coordinates[2]
+		print("")
+		print("RA  =   %s" % coordinates[1])
+		print("Dec =  %s\n" % coordinates[2])
 	elif ( success == NO_COORDS_FOUND ):
-		print "No coordinates found for object: bad name?"
+		print("No coordinates found for object: bad name?")
 	else:
-		print "No luck querying servers; try again later..."
-	print "Done!\n"
+		print("No luck querying servers; try again later...")
+	print("Done!\n")
 
 
 

@@ -47,7 +47,9 @@ def urlStringToDict( urlString ):
 	
 def SaveText( htmlText, filename=defaultFile ):
 	outf = open(filename, 'w')
-	outf.writelines(htmlText)
+	# save as bytes (assume UTF-8) to handle cases where archives send us
+	# non-ASCII text (e.g., SDSS SAS uses en-dashes in column titles)
+	outf.write(htmlText.encode('utf-8'))
 	outf.close()
 
 	

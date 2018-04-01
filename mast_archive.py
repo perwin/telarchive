@@ -102,7 +102,7 @@ def FindMissions(inputText, nFound=None):
 	missionsFound = findMissions.findall(summaryText)
 	nFound = len(missionsFound)
 	
-	for i in xrange(nFound):
+	for i in range(nFound):
 		currentMission = missionsFound[i]
 		# first element is name of mission, second is number of obs. found
 		msgText += currentMission[0] + " (%s)" % currentMission[1]

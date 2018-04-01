@@ -5,7 +5,7 @@
 # STScI MAST archive.
 
 import re
-import basic_archive, utils, urllib
+import basic_archive, utils, urllib.request, urllib.parse, urllib.error
 
 DEFAULT_TARGET = ""
 DEFAULT_BOXSIZE_STRING = "4.0"
@@ -77,7 +77,7 @@ def FindInstruments( theText ):
 	for line in dataLines:
 		pp = line.split("|")
 		instrument = pp[instIndex].strip()
-		if instrument not in obsDict.keys():
+		if instrument not in list(obsDict.keys()):
 			obsDict[instrument] = 1
 		else:
 			obsDict[instrument] += 1
@@ -93,7 +93,7 @@ def AnalyzeOutputFile( htmlText, nFound ):
 	observationDict = FindInstruments(htmlText)
 
 	messageText = "\n\t\t"
-	modes = observationDict.keys()
+	modes = list(observationDict.keys())
 	nModes = len(modes)
 	for i in range(nModes - 1):
 		thisMode = modes[i]
@@ -147,7 +147,7 @@ class HSTArchive(basic_archive.BasicArchive):
 			foundData = FindInstruments(htmlText)
 			nDataFound = 0
 			if foundData is not None:
-				for k in foundData.keys():
+				for k in list(foundData.keys()):
 					nDataFound += foundData[k]
 	
 		# Next, check to see if there was a screw-up of some kind.

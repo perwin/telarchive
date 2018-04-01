@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 """
 A Python script to search multiple public telescope archives.
@@ -29,7 +29,7 @@ example of a standalone script):
       
       
 
-Copyright 2003-2015 Peter Erwin
+Copyright 2003-2018 Peter Erwin
 
 This program is distributed under the terms of the GNU General Public
 License (see the file COPYING included with the distribution).
@@ -131,12 +131,13 @@ License (see the file COPYING included with the distribution).
 
 # Import various standard modules:
 import sys, os, optparse
-import urllib
+#import urllib
+import urllib.request, urllib.parse, urllib.error
 import getopt
 
 
 # Version number:
-kVersionNumber = "1.7.5"
+kVersionNumber = "2.0a1"
 
 # General constants:
 kHST_ESO = 0
@@ -152,7 +153,8 @@ MAX_BOXSIZE = 60.0
 # threading.py module is installed.  Try importing "thread" first to test for
 # thread-friendliness...
 try:
-	import thread
+#	import thread
+	import _thread
 except ImportError:
 	threadingPresent = 0
 else:
@@ -167,15 +169,16 @@ else:
 # makes it harder for us to search their HTML.
 #    Among the archives which react this way: AAT, HST at ESO, ING, ESO
 #    NOTE: Causes errors in Python 1.5!  Assume nobody uses that anymore...
-class NewURLopener(urllib.FancyURLopener):
+class NewURLopener(urllib.request.FancyURLopener):
 	def __init__(self, *args):
 		self.version = BROWSER_MASQUERADE
-		urllib.FancyURLopener.__init__(self, *args)
+		urllib.request.FancyURLopener.__init__(self, *args)
 
-urllib._urlopener = NewURLopener()
+urllib.request._urlopener = NewURLopener()
 
 
 # Import our own modules:
+#import archive_list, getcoords, utils, module_list
 import archive_list, getcoords, utils, module_list
 
 
@@ -184,13 +187,13 @@ import archive_list, getcoords, utils, module_list
 def FetchCoordinates( objectName ):
 	success, coordinates = getcoords.GetCoordinates(objectName)
 	if ( success >= 1 ):
-		print "Found object coordinates: RA = %s, Dec = %s" % (coordinates[1],
-															   coordinates[2])
+		print("Found object coordinates: RA = %s, Dec = %s" % (coordinates[1],
+															   coordinates[2]))
 		return coordinates[1:]
 	else:
 		msg = "\n   *** Unable to get coordinates for \"%s\". *** \n" % objectName
 		msg += "   Cannot search SDSS archive -- terminating search.\n"
-		print msg
+		print(msg)
 		sys.exit(2)
 
 
@@ -210,21 +213,23 @@ def SearchOneArchive( archive, targetName, debugState=0, saveSuccesses=0 ):
 		# Query archive and save resulting HTML in a list of lines:
 		try:
 			if (debugState > 1):
-				print "Starting query: %s" % archive.EncodeParams()
+				print("Starting query: %s" % archive.EncodeParams())
+			print(archive)
 			htmlReceived = archive.QueryServer()
 			# Search HTML text:
 			(messageString, nDataFound) = archive.AnalyzeHTML(htmlReceived)
-		except IOError, e:
-			if len(e.args) > 1:
-				messageString = "I/O Error -- " + str(e.args[0]) + ": " + \
-								str(e.args[1]) + "\n"
-				if ( str(e.args[1]) == "(7, 'No address associated with nodename')" ):
-					messageString += 20*" " + "(DNS server is down,"
-					messageString += " or we're not connected to the Internet?)"
-				else:
-					messageString += " (try again later?)"
-			else:
-				messageString = "I/O Error -- " + str(e.args[0]) + "\n"
+		except IOError as e:
+			messageString = "I/O Error -- " + str(e) + "\n"
+# 			if len(e.args) > 1:
+# 				messageString = "I/O Error -- " + str(e.args[0]) + ": " + \
+# 								str(e.args[1]) + "\n"
+# 				if ( str(e.args[1]) == "(7, 'No address associated with nodename')" ):
+# 					messageString += 20*" " + "(DNS server is down,"
+# 					messageString += " or we're not connected to the Internet?)"
+# 				else:
+# 					messageString += " (try again later?)"
+# 			else:
+# 				messageString = "I/O Error -- " + str(e.args[0]) + "\n"
 			htmlReceived = ""
 			nDataFound = 0
 		except KeyboardInterrupt:
@@ -246,7 +251,7 @@ def SearchOneArchive( archive, targetName, debugState=0, saveSuccesses=0 ):
 
 		# Print result:
 		messageString = "\t" + archive.longName + ": " + messageString
-		print messageString
+		print(messageString)
 
 		if ( debugState ):
 			if ( not savedFile ):
@@ -258,7 +263,7 @@ def SearchOneArchive( archive, targetName, debugState=0, saveSuccesses=0 ):
 
 	except KeyboardInterrupt:
 		messageString = "\n   Keyboard interrupt -- %s search terminated!\n" % archive.shortName
-		print messageString
+		print(messageString)
 		raise
 
 	return messageString
@@ -273,7 +278,7 @@ def DoSearch( targetName, archiveList, debugSetting = 0, doThreading = True ):
 	(step-by-step if threading is not used, spawning threads if it is."""
 
 	if doThreading is False:
-		print "Multithreading disabled..."
+		print("Multithreading disabled...")
 	
 	try:
 		for currentArchive in archiveList.GetArchives():
@@ -293,43 +298,43 @@ def DoSearch( targetName, archiveList, debugSetting = 0, doThreading = True ):
 					return
 
 	except KeyboardInterrupt:
-		print "KeyboardInterrupt detected --- terminating all searches!\n"
+		print("KeyboardInterrupt detected --- terminating all searches!\n")
 		sys.exit(1)
 
     
 
 
 def PrintHelp():
-	"Basic function to print usage and possible command-line arguments"
-	print "\nUsage: telarchive [options] \"target_name\" [box_size_in_arcmin]"
-	print "            --coords=\"hh mm ss dd mm ss\" : search on coordinates instead of target name"
-#	print "            --targetfile=<filename> : search using list of targets from a file"
-#	print "            --coordsfile=<filename> : search using list of coordinates from a file"
-	print "            -h or --help : Print this message"
-	print "            --archives : List which archives can be searched"
-	print "            --usearchive=<short-hand-name> : search using only specified archive"
-	print "                                             (use --archives to see short-hand names)"
-#	print "            --nosdss or --noSDSS : ignore Sloan Digital Sky Survey"
-##	print "            --noaat or --noAAT : ignore AAT archive (saves time for northern objects)"
-	print "            --threads : turn multithreading on (faster, but harder to stop) [default]"
-	print "            --nothreads : turn multithreading off (slower, easier to halt)"
-	print "            -v or --version : Print version number"
-	print "            -d or --debug : Debugging on (saves *all* returned HTML files)"
-	print "\nExample:  archive_search \"ngc 936\" 5.0"
-	print "        will search the archives for \"ngc 936\" with a search-box size of 5.0 arc minutes"
-	print "\nExample:  archive_search --usearchive=ing \"ngc 936\" 5.0"
-	print "        as above, but only searching the Isaac Newton Group archive"
-	print "\nExample:  archive_search --coords=\"12 44 03.55 -15 26 30.7\" 1.5"
-	print "        will search the archives using the specified coordinates, with a search-box size of 1.5 arc minutes"
-	print "\nDefault search-box size = 4.0 arcmin"
-	print
+	"""Basic function to print usage and possible command-line arguments"""
+	print("\nUsage: telarchive [options] \"target_name\" [box_size_in_arcmin]")
+	print("            --coords=\"hh mm ss dd mm ss\" : search on coordinates instead of target name")
+#	print("            --targetfile=<filename> : search using list of targets from a file")
+#	print("            --coordsfile=<filename> : search using list of coordinates from a file")
+	print("            -h or --help : print this message")
+	print("            --archives : List which archives can be searched")
+	print("            --usearchive=<short-hand-name> : search using only specified archive")
+	print("                                             (use --archives to see short-hand names)")
+#	print("            --nosdss or --noSDSS : ignore Sloan Digital Sky Survey")
+##	print("            --noaat or --noAAT : ignore AAT archive (saves time for northern objects)")
+	print("            --threads : turn multithreading on (faster, but harder to stop) [default]")
+	print("            --nothreads : turn multithreading off (slower, easier to halt)")
+	print("            -v or --version : Print version number")
+	print("            -d or --debug : Debugging on (saves *all* returned HTML files)")
+	print("\nExample:  archive_search \"ngc 936\" 5.0")
+	print("        will search the archives for \"ngc 936\" with a search-box size of 5.0 arc minutes")
+	print("\nExample:  archive_search --usearchive=ing \"ngc 936\" 5.0")
+	print("        as above, but only searching the Isaac Newton Group archive")
+	print("\nExample:  archive_search --coords=\"12 44 03.55 -15 26 30.7\" 1.5")
+	print("        will search the archives using the specified coordinates, with a search-box size of 1.5 arc minutes")
+	print("\nDefault search-box size = 4.0 arcmin")
+	print()
 
 
 
 def PrintArchiveList():
 	"""Basic function to list which archives we can search."""
-	print "\nCurrently supported archives, short-hand names, and their user-interface URLs:\n"
-	print archive_list.ListArchives()
+	print("\nCurrently supported archives, short-hand names, and their user-interface URLs:\n")
+	print(archive_list.ListArchives())
 	print
 
 
@@ -383,7 +388,7 @@ def main(argv):
 
 
 	if (options.printVersion is True):
-		print "\ntelarchive: version %s\n" % kVersionNumber
+		print("\ntelarchive: version %s\n" % kVersionNumber)
 		return 0
 	elif (options.printArchives is True):
 		PrintArchiveList()
@@ -409,10 +414,10 @@ def main(argv):
 		try:
 			coordsList = utils.ProcessCoords(options.coords)
 			targetName = "%s %s" % (coordsList[0], coordsList[1])
-		except utils.CoordinateError, e:
+		except utils.CoordinateError as e:
 			newmsg = "*** Problem with coordinate string \"%s\": ***\n" % e
 			newmsg += str(e) + "\n"
-			print newmsg
+			print(newmsg)
 			return -2
 		
 
@@ -425,20 +430,19 @@ def main(argv):
 			searchBoxSize = float(argument)
 			noBoxSize = 0
 			if ( searchBoxSize > MAX_BOXSIZE ):
-				print "\n%f arc minutes is too large a search radius: it'll take forever!" \
-					  % searchBoxSize
-				print "Try something smaller than %d arcmin." \
-					  % MAX_BOXSIZE
-				print "(Did you forget to put quotation marks around the target name?)\n"
+				print("\n%f arc minutes is too large a search radius: it'll take forever!" 
+					  % searchBoxSize)
+				print("Try something smaller than %d arcmin." % MAX_BOXSIZE)
+				print("(Did you forget to put quotation marks around the target name?)\n")
 				return -2
 			if ( searchBoxSize < 0.0 ):
-				print "\nSearch box size should be a positive number!\n"
+				print("\nSearch box size should be a positive number!\n")
 				return -1
 
 
 
 	if ( (not doCoordSearch) and noTargetName ):
-		print "Please enter a target name to search for: ",
+		print("Please enter a target name to search for: ", end="")
 		targetName = sys.stdin.readline()
 		# chop off newline at end of string:
 		targetName = targetName[:len(targetName) - 1]
@@ -468,7 +472,7 @@ def main(argv):
 				messageString = "Searching archives for coordinates %s" % currentTarget
 			messageString = messageString + ", with search box = "
 			messageString = messageString + "%4.1f arcmin..." % searchBoxSize
-			print messageString
+			print(messageString)
 			
 			# Set up for searching on names or on coordinates
 			if (not doCoordSearch) and (not doGetCoords):
@@ -477,15 +481,15 @@ def main(argv):
 			else:
 				if doGetCoords:
 					# user supplied names, but we need to do search using coordinates
-					print "\n\nFetching coordinates for %s..." % targetName
+					print("\n\nFetching coordinates for %s..." % targetName)
 					coordsList = FetchCoordinates(targetName)
 				else:
 					# user supplied coordinates
 					try:
 						coordsList = utils.ProcessCoords(currentTarget)
-					except utils.CoordinateError, e:
+					except utils.CoordinateError as e:
 						newmsg = "*** Problem with coordinate string \"%s\"\n" % str(e) + "\n"
-						print newmsg
+						print(newmsg)
 						sys.exit(2)
 				theArchiveList.InsertCoords(coordsList)
 				finalTargetName = coordsList[0] + coordsList[1]
@@ -506,12 +510,12 @@ def main(argv):
 
 		messageString = messageString + ", with search box = "
 		messageString = messageString + "%4.1f arcmin..." % searchBoxSize
-		print messageString
+		print(messageString)
 
 		DoSearch( finalTargetName, theArchiveList, options.DEBUG, options.doThreading )
 		
 		return 1
-#	print "Done!\n"
+#	print "Done!\n")
 
 
 

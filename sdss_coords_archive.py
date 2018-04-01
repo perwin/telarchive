@@ -131,12 +131,7 @@ class SloanCoordsArchive(basic_archive.BasicArchive):
 		# Note that here we are using our special multipart/form-data
 		# method for posting to the archive.
 		connection = multipart_form.MultipartPost(self.URL, self.params)
-		# Loop to make sure we get *all* of the HTML (bug of sorts in MacPython 2.0--2.2):
-		htmlReceived = ''
-		newdata = connection.read()
-		while newdata:
-			htmlReceived += newdata
-			newdata = connection.read()
+		htmlReceived = connection.read().decode('utf-8')
 		connection.close()
 		return htmlReceived
 

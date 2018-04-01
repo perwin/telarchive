@@ -4,9 +4,6 @@
 # BasicArchive class, to allow queries to the coordinate-list submission
 # form interface of the SDSS archive.
 
-# The new class includes a modified QueryServer() method which uses 
-# multipart/form posting.
-
 import re
 import basic_archive
 import utils
@@ -23,7 +20,8 @@ DEC_LABEL = None
 RADEC_LABEL = "radecs"
 ARCHIVE_NAME = "Sloan Digital Sky Survey (DR12) Science Archive Server -- Coverage Check"
 ARCHIVE_SHORTNAME = "sdss-dr12"
-ARCHIVE_URL ="http://data.sdss3.org/coverageCheck/search"
+#ARCHIVE_URL ="http://data.sdss3.org/coverageCheck/search"
+ARCHIVE_URL ="https://dr12.sdss.org/coverageCheck/search"
 ARCHIVE_USER_URL = "http://data.sdss3.org/coverageCheck/"
 DICT = {RADEC_LABEL: DEFAULT_RADEC}
 

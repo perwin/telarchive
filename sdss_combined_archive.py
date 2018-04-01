@@ -8,7 +8,7 @@
 # classes.
 
 import re
-import basic_archive, multipart_form
+import basic_archive
 import sdss_coords_archive, sdss_sas_archive, sdss_dr12_archive
 import utils
 
@@ -48,7 +48,7 @@ SEARCHES = []
 
 # Subclass the BasicArchive class to handle deviant input and posting 
 # requirements 
-class SloanCombinedArchive(basic_archive.BasicArchive):
+class SloanCombinedArchive( basic_archive.BasicArchive ):
 
 	def __init__(self, long_name, short_name, url, params_dict,
 				specialSearches, targetLabel, raLabel, decLabel,
@@ -67,14 +67,14 @@ class SloanCombinedArchive(basic_archive.BasicArchive):
 		# we know that params_dict is a dictionary, so make a *copy* of it;
 		# otherwise, we'll be modifying the original instance in the
 		# individual-archive module, which makes things hard to debug...
- 		self.params = params_dict.copy()
- 		self.specialParams = special_params
- 		self.nSearches = len(specialSearches)
- 		self.theSearches = specialSearches
- 		self.targetLabel = targetLabel
- 		self.raLabel = raLabel
- 		self.decLabel = decLabel
- 		self.boxLabel = boxLabel
+		self.params = params_dict.copy()
+		self.specialParams = special_params
+		self.nSearches = len(specialSearches)
+		self.theSearches = specialSearches
+		self.targetLabel = targetLabel
+		self.raLabel = raLabel
+		self.decLabel = decLabel
+		self.boxLabel = boxLabel
 		#self.textSearches = None
 		if publicURL is None:
 			self.publicURL = url

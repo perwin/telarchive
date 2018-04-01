@@ -3,7 +3,8 @@
 # instances of this class via factory functions -- in the individual archive
 # models (ing_archive.py, etc.).
 
-import urllib, urllib2, math
+import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, math
+#from . import archive_analyze
 import archive_analyze
 
 DEFAULT_TIMEOUT = 30.0
@@ -84,28 +85,20 @@ class BasicArchive(object):
 
 
 	def EncodeParams(self):
-		encodedParams = urllib.urlencode(self.params, doseq=True)
+		encodedParams = urllib.parse.urlencode(self.params, doseq=True)
 		if ( self.specialParams != None ):
 			encodedParams += self.specialParams
-		return encodedParams
+		return encodedParams.encode('utf-8')
 	
 	
 	def QueryServer(self):
 		# Opens connection to the archive server, retrieves and returns
 		# whatever HTML the server sends us
-		req = urllib2.Request(self.URL, self.EncodeParams())
+		req = urllib.request.Request(self.URL, self.EncodeParams())
 		req.add_header('User-agent', BROWSER_MASQUERADE)
-		response = urllib2.urlopen(req, timeout=self.timeout)
-		htmlReceived = response.read()
+		response = urllib.request.urlopen(req, timeout=self.timeout)
+		htmlReceived = response.read().decode('utf-8')
 		response.close()
-		#connection = urllib.urlopen(self.URL, self.EncodeParams())
-		# Loop to make sure we get *all* of the HTML (bug of sorts in MacPython 2.0--2.2):
-# 		htmlReceived = ''
-# 		newdata = connection.read()
-# 		while newdata:
-# 			htmlReceived += newdata
-# 			newdata = connection.read()
-# 		connection.close()
 		return htmlReceived
 
 

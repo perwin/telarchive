@@ -5,11 +5,24 @@
 # and also code posted by Jeff Shannon to the Python mailing list on 2 
 # Sept 2004
 
-import urllib2, types
+import types, sys
+
+if sys.version_info[0] > 2:
+	usingPython2 = False
+	import urllib.request, urllib.parse, urllib.error
+	from urllib.parse import urlencode
+	from urllib.request import Request
+	from urllib.request import urlopen
+else:
+	usingPython2 = True
+	import urllib
+	from urllib import urlencode
+	from urllib2 import Request
+	from urllib2 import urlopen
+
 
 CRLF = "\r\n"
 BOUNDARY = "----------ThIs_Is_tHe_bouNdaRY_---$---"
-#BROWSER_MASQUERADE = "Mozilla/4.5 [en]"
 BROWSER_MASQUERADE = "Mozilla/5.0 [en]"
 
 
@@ -38,17 +51,13 @@ def encode_multipart_formdata(fields):
 	L = []
 	for name in fields.keys():
 		value = fields[name]
-		if isinstance(value, types.ListType):
+		if isinstance(value, list):
 			# multiple values for same key
 			# NOTE: not sure if this is the correct way to encode this!
 			for currentValue in values:
 				L.extend( WrapData(name, currentValue, BOUNDARY) )
 		else:
 			L.extend( WrapData(name, value, BOUNDARY) )
-#		L.append("--" + BOUNDARY)
-#		L.append("Content-Disposition: form-data; name=\"%s\"" % name)
-#		L.append("")
-#		L.append( str(value) )
 	L.append("--" + BOUNDARY + "--")
 	L.append("")
 	body = CRLF.join(L)
@@ -64,12 +73,17 @@ def MultipartPost(url, fields):
 	
 	content_type, body = encode_multipart_formdata(fields)
 
-	request = urllib2.Request(url)
+	request = Request(url)
 	request.add_header('User-Agent', BROWSER_MASQUERADE)
 	request.add_header('Content-Type', content_type)
 	request.add_header('Content-Length', str(len(body)))
-	request.add_data(body)
+	if usingPython2:
+		request.add_data(body)
+	else:
+		# Python 3: add_data method is deprecated; body must be
+		# converted from Python 3 string to bytes for Request object
+		request.data = body.encode('utf-8')
 	
-	connection = urllib2.urlopen(request)
+	connection = urlopen(request)
 	return connection
 

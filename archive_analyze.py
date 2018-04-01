@@ -148,7 +148,7 @@ def CountDataSets( dataSetsText ):
 			# mastrec = list of strings (e.g., ['1', '61', '1', '6'])
 			numberFound = sum([int(n) for n in mastrec])
 		else:
-			print "Unable to find number of records retrieved"
+			print("Unable to find number of records retrieved")
 			numberFound = 0
 	return numberFound
 		
@@ -236,7 +236,7 @@ def AnalyzeHTML( htmlText ):
 		else:
 			messageString = "No data found."
 		
-	except SearchError, e:
+	except SearchError as e:
 		messageString = e.value
 		nDataFound = 0
 

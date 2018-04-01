@@ -189,7 +189,7 @@ def FindInstrumentsOLD(inputText, nFound=None):
 		
 	# now, go through finds and construct output message
 	nTelescopesFound = len(telFoundList)
-	print nTelescopesFound
+	print(nTelescopesFound)
 	for i in range( nTelescopesFound ):
 		telName = telFoundList[i]
 		instrumentsFound = instFoundList[i]

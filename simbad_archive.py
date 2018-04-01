@@ -12,6 +12,7 @@
 # (see http://simbad.u-strasbg.fr/simbad/sim-help?Page=sim-url)
 
 
+#from . import basic_archive
 import basic_archive
 
 DEFAULT_TARGET = "No Target"

@@ -5,13 +5,13 @@ class CoordinateError( Exception ):
 	def __init__(self, value):
 		self.value = value
 	def __str__(self):
-		return `self.value`
+		return repr(self.value)
 
 class SearchError( Exception ):
 	def __init__(self, value):
 		self.value = value
 	def __str__(self):
-		return `self.value`
+		return repr(self.value)
 
 
 

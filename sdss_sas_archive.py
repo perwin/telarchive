@@ -4,11 +4,8 @@
 # BasicArchive class, to allow queries to the coordinate-list submission
 # form interface of the SDSS archive.
 
-# The new class includes a modified QueryServer() method which uses 
-# multipart/form posting.
-
 import re
-import basic_archive, multipart_form
+import basic_archive
 import utils
 
 DEFAULT_TARGET = "No Target"

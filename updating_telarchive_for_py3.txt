@@ -1,0 +1,307 @@
+NOTE ON WHAT NEEDS TO BE UPDATED FOR PYTHON 3 IN TELARCHIVE:
+
+** Standard distribution (i.e., what gets installed):
+
+[x] aat_archive.py
+--- aat_archive.py	(original)
++++ aat_archive.py	(refactored)
+@@ -14,7 +14,7 @@
+-import basic_archive
++from . import basic_archive
+
+
+[x] archive_analyze.py
+--- archive_analyze.py	(original)
++++ archive_analyze.py	(refactored)
+@@ -9,7 +9,7 @@
+-from utils import SearchError
++from .utils import SearchError
+
+-			print "Unable to find number of records retrieved"
++			print("Unable to find number of records retrieved")
+
+-	except SearchError, e:
++	except SearchError as e:
+
+
+[x] archive_list.py
+--- archive_list.py	(original)
++++ archive_list.py	(refactored)
+@@ -16,7 +16,7 @@
+-import module_list
++from . import module_list
+
+
+
+[x] archive_search.py
+--- archive_search.py	(original)
++++ archive_search.py	(refactored)
+@@ -131,7 +131,7 @@
+
+-import urllib
++import urllib.request, urllib.parse, urllib.error
+
+
+@@ -152,7 +152,7 @@
+ try:
+-	import thread
++	import _thread
+
+
+@@ -167,16 +167,16 @@
+-class NewURLopener(urllib.FancyURLopener):
++class NewURLopener(urllib.request.FancyURLopener):
+ 	def __init__(self, *args):
+ 		self.version = BROWSER_MASQUERADE
+-		urllib.FancyURLopener.__init__(self, *args)
+-
+-urllib._urlopener = NewURLopener()
++		urllib.request.FancyURLopener.__init__(self, *args)
++
++urllib.request._urlopener = NewURLopener()
+
+ # Import our own modules:
+-import archive_list, getcoords, utils, module_list
++from . import archive_list, getcoords, utils, module_list
+
+
+@@ -409,10 +409,10 @@
+ 		try:
+ 			coordsList = utils.ProcessCoords(options.coords)
+ 			targetName = "%s %s" % (coordsList[0], coordsList[1])
+-		except utils.CoordinateError, e:
++		except utils.CoordinateError as e:
+
+
+@@ -477,15 +477,15 @@
+ 					try:
+ 						coordsList = utils.ProcessCoords(currentTarget)
+-					except utils.CoordinateError, e:
++					except utils.CoordinateError as e:
+
+
+PLUS: lots of print statements...
+
+
+
+[x] basic_archive.py
+@@ -3,8 +3,8 @@
+-import urllib, urllib2, math
+-import archive_analyze
++import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, math
++from . import archive_analyze
+
+@@ -84,7 +84,7 @@
+ 	def EncodeParams(self):
+-		encodedParams = urllib.urlencode(self.params, doseq=True)
++		encodedParams = urllib.parse.urlencode(self.params, doseq=True)
+
+@@ -93,9 +93,9 @@
+ 	def QueryServer(self):
+ 		# Opens connection to the archive server, retrieves and returns
+ 		# whatever HTML the server sends us
+-		req = urllib2.Request(self.URL, self.EncodeParams())
++		req = urllib.request.Request(self.URL, self.EncodeParams())
+ 		req.add_header('User-agent', BROWSER_MASQUERADE)
+-		response = urllib2.urlopen(req, timeout=self.timeout)
++		response = urllib.request.urlopen(req, timeout=self.timeout)
+
+
+[x] cfht_archive.py
+--- cfht_archive.py	(original)
++++ cfht_archive.py	(refactored)
+@@ -11,7 +11,7 @@
+ import re
+-import basic_archive, multipart_form
++from . import basic_archive, multipart_form
+
+
+[x] eso_archive.py
+--- eso_archive.py	(original)
++++ eso_archive.py	(refactored)
+@@ -27,7 +27,7 @@
+-import basic_archive
++from . import basic_archive
+
+@@ -189,7 +189,7 @@
+-	print nTelescopesFound
++	print(nTelescopesFound)
+
+@@ -197,12 +197,12 @@
+ 		for inst_string in instrumentsFound:
+ 			instName = inst_string.strip()
+-			if instName not in newDict.keys():
++			if instName not in list(newDict.keys()):
+ 				# create new dictionary entry and set count = 1
+
+-		theKeys = newDict.keys()
++		theKeys = list(newDict.keys())
+
+
+
+[x] gemini_archive.py
+--- gemini_archive.py	(original)
++++ gemini_archive.py	(refactored)
+@@ -4,7 +4,7 @@
+-import basic_archive, multipart_form
++from . import basic_archive, multipart_form
+
+
+
+[x] getcoords.py
+--- getcoords.py	(original)
++++ getcoords.py	(refactored)
+@@ -33,7 +33,7 @@
+-import simbad_archive
++from . import simbad_archive
+ 
+@@ -126,7 +126,7 @@
+-	except IOError, e:
++	except IOError as e:
+
+-		except IOError, e:
+-			print "Error connecting to server!"
++		except IOError as e:
++			print("Error connecting to server!")
+
+PLUS assorted print statements
+
+
+
+[x] hst_archive.py:
+--- hst_archive.py	(original)
++++ hst_archive.py	(refactored)
+@@ -5,7 +5,7 @@
+-import basic_archive, utils, urllib
++import basic_archive, utils, urllib.request, urllib.parse, urllib.error
+
+@@ -77,7 +77,7 @@
+-		if instrument not in obsDict.keys():
++		if instrument not in list(obsDict.keys()):
+
+@@ -93,7 +93,7 @@
+-	modes = observationDict.keys()
++	modes = list(observationDict.keys())
+
+@@ -147,7 +147,7 @@
+-				for k in foundData.keys():
++				for k in list(foundData.keys()):
+
+
+[x] multipart_form.py
+import urllib2, types -- no urllib2 module
+
+-import urllib2, types
++import urllib.request, urllib.error, urllib.parse, types
+
+-	for name in fields.keys():
++	for name in list(fields.keys()):
+
+-		if isinstance(value, types.ListType):
++		if isinstance(value, list):
+
+-	request = urllib2.Request(url)
++	request = urllib.request.Request(url)
+
+-	connection = urllib2.urlopen(request)
++	connection = urllib.request.urlopen(request)
+
+
+
+[] basic_archive.py
+  File "/Beleriand/dev/telarchive_py3/basic_archive.py", line 99, in QueryServer
+    response = urllib.request.urlopen(req, timeout=self.timeout)
+TypeError: POST data should be bytes, an iterable of bytes, or a file object. It cannot be of type str.
+
+
+
+[] multipart_form.py
+This needs to be rewritten; does not work properly in Python 3
+See here for possible solution:
+	https://stackoverflow.com/questions/1270518/python-standard-library-to-post-multipart-form-data-encoded-data
+	
+
+
+
+
+
+[] fetchsdss.py
+--- fetchsdss.py	(original)
++++ fetchsdss.py	(refactored)
+@@ -21,11 +21,11 @@
+-import os, sys, urllib, re, optparse
++import os, sys, urllib.request, urllib.parse, urllib.error, re, optparse
+
+-import utils, getcoords, get_sdssfiles
+-import sdss_coords_archive, sdss_dr12_archive
++from . import utils, getcoords, get_sdssfiles
++from . import sdss_coords_archive, sdss_dr12_archive
+
+@@ -74,7 +74,7 @@
+-	except IOError, e:
++	except IOError as e:
+
+@@ -299,7 +299,7 @@
+-		except utils.CoordinateError, e:
++		except utils.CoordinateError as e:
+
+PLUS assorted print statements
+
+
+
+[] fetchsdss_spectra.py
+--- fetchsdss_spectra.py	(original)
++++ fetchsdss_spectra.py	(refactored)
+@@ -8,11 +8,11 @@
+-import os, sys, urllib, re, optparse
++import os, sys, urllib.request, urllib.parse, urllib.error, re, optparse
+
+-import utils, getcoords, get_sdssfiles
+-import sdss_dr12_archive, sdss_sas_archive 
++from . import utils, getcoords, get_sdssfiles
++from . import sdss_dr12_archive, sdss_sas_archive 
+
+@@ -59,7 +59,7 @@
+-	except IOError, e:
++	except IOError as e:
+
+@@ -141,7 +141,7 @@
+-		except utils.CoordinateError, e:
++		except utils.CoordinateError as e:
+
+PLUS assorted print statements
+
+
+
+[] get_sdssfiles.py
+--- get_sdssfiles.py	(original)
++++ get_sdssfiles.py	(refactored)
+@@ -8,13 +8,13 @@
+-import urllib
++import urllib.request, urllib.parse, urllib.error
+
+ try:
+-	from cStringIO import StringIO
++	from io import StringIO
+ except:
+-	from StringIO import StringIO
++	from io import StringIO
+ 
+ 
+ # Templates
+@@ -270,7 +270,7 @@
+-	urlf = urllib.urlopen(theURL)
++	urlf = urllib.request.urlopen(theURL)
+ 	infoHeader = urlf.info()
+
+@@ -291,7 +291,7 @@ 	
+-	urlf = urllib.urlopen(theURL)
++	urlf = urllib.request.urlopen(theURL)
+
+PLUS a print statement or two
+
+
+
+
+
+
