@@ -197,7 +197,7 @@ def main(argv):
 	usageString += "\n\nfilter-list contains the desired SDSS filters; it must be \"ugriz\" (no quotation marks) or a subset thereof."
 	usageString += "\n(default is \"ugriz\")"
 	usageString += "\n\nExamples: %prog \"NGC 4321\""
-	usageString += "\n          %prog \"NGC 4321\" ugz --output=n936"
+	usageString += "\n          %prog \"NGC 4321\" ugz --output=n4321"
 	usageString += "\n          %prog ugriz --ref=\"3177 40 1 62\""
 	parser = optparse.OptionParser(usage=usageString, version="%prog " + VERSION_STRING)
 
@@ -372,7 +372,8 @@ def main(argv):
 			print("   %d separate DR7 fields found" % nDR7DataFound)
 			if (options.getData) and (options.getFieldN < 1) and (nDR7DataFound > options.maxFields):
 				print("\nNumber of DR7 fields (%d) is greater than maximum (%d)" % (nDR7DataFound, options.maxFields))
-				print("No data will be retrieved (use \"--max\" to specify larger maximum if desired)")
+				print("No data will be retrieved.")
+				print("\t(use \"--max\" to specify larger maximum if desired, or \"--nodr7\" to skip DR7 images)")
 				options.getData = False
 		elif (nDR7DataFound == 0) and options.verbose:
 			print("Object or coordinates apparently not within SDSS DR7!")
@@ -392,7 +393,8 @@ def main(argv):
 				print("   %d separate DR12 fields found" % nDR12DataFound)
 				if (options.getData) and (options.getFieldN < 1) and (nDR12DataFound > options.maxFields):
 					print("\nNumber of DR12 fields (%d) is greater than maximum (%d)" % (nDR12DataFound, options.maxFields))
-					print("No data will be retrieved (use \"--max\" to specify larger maximum if desired)")
+					print("No data will be retrieved.")
+					print("\t(use \"--max\" to specify larger maximum if desired, or \"--nodr12\" to skip DR12 images)")
 					options.getData = False
 			elif (nDR12DataFound == 0) and options.verbose:
 				print("Object or coordinates apparently not within SDSS DR12!")

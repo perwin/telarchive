@@ -8,23 +8,20 @@
 #       outcome = F2(list_of_url-filename_pairs, destinationDir)
 
 
-import io
-import urllib
-# StringIO: find the best implementation available on this platform
-# (i.e., we prefer cStringIO if it's available)
+import sys, io
 
-# if sys.version_info[0] > 2:
-# 	usingPython2 = False
-# 	import urllib.request, urllib.parse, urllib.error
-# 	from urllib.parse import urlencode
-# 	from urllib.request import Request
-# 	from urllib.request import urlopen
-# else:
-# 	usingPython2 = True
-# 	import urllib
-# 	from urllib import urlencode
-# 	from urllib2 import Request
-# 	from urllib2 import urlopen
+if sys.version_info[0] > 2:
+	usingPython2 = False
+	import urllib.request, urllib.parse, urllib.error
+	from urllib.parse import urlencode
+	from urllib.request import Request
+	from urllib.request import urlopen
+else:
+	usingPython2 = True
+	import urllib
+	from urllib import urlencode
+	from urllib2 import Request
+	from urllib2 import urlopen
 import archive_analyze
 
 
@@ -281,7 +278,7 @@ def GetHeader( urlFilePair ):
 	
 	# open connection to server and get info about reply
 	theURL = urlFilePair[0]
-	urlf = urllib.urlopen(theURL)
+	urlf = urlopen(theURL)
 	infoHeader = urlf.info()
 	urlf.close()
 	return infoHeader
@@ -302,18 +299,17 @@ def GetAndSaveFile( urlFilePair, baseDir, checkOutput=True ):
 	
 	# open connection to server and get info about reply
 	theURL = urlFilePair[0]
-	urlf = urllib.urlopen(theURL)
+	urlf = urlopen(theURL)
 	infoHeader = urlf.info()
 
 	# create BytesIO file to store data temporarily
-#	sioFile = StringIO()
 	sioFile = io.BytesIO()
 	# read the data, looping till we get nothing further (code swiped
 	# and modified from urllib.URLopener.retrieve, Python 2.5 version)
 	blockSize = 1024*8
 	while True:
 		block = urlf.read(blockSize)
-		if block == "":
+		if len(block) == 0:
 			break
 		sioFile.write(block)
 	urlf.close()
