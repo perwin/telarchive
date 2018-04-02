@@ -28,7 +28,7 @@ import logging
 import utils, getcoords, get_sdssfiles
 import sdss_coords_archive, sdss_dr12_archive
 
-VERSION_STRING = "1.2.4"
+VERSION_STRING = "1.3"
 
 NO_COORDS = "NO COORDS"
 DEFAULT_ROOTNAME = "sdss"

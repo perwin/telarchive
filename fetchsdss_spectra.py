@@ -6,15 +6,15 @@
 # 
 #       
 
-
+from __future__ import print_function
 # Import various standard modules:
-import os, sys, urllib, re, optparse
+import os, sys, re, optparse
 
 # Import our modules:
 import utils, getcoords, get_sdssfiles
 import sdss_dr12_archive, sdss_sas_archive 
 
-VERSION_STRING = "1.2.2"
+VERSION_STRING = "1.3"
 
 NO_COORDS = "NO COORDS"
 DEFAULT_ROOTNAME = "sdss"
@@ -59,7 +59,7 @@ def QueryArchive( archive, debug=False ):
 			saveFile = open(saveFileName, 'w')
 			saveFile.write(htmlReceived)
 			saveFile.close()
-	except IOError, e:
+	except IOError as e:
 		messageString = "I/O Error -- " + str(e.args[0]) + ": " + \
 						str(e.args[1]) + "\n"
 		if ( str(e.args[1]) == "(7, 'No address associated with nodename')" ):
@@ -141,7 +141,7 @@ def main(argv):
 		# User gave us coordinate string (via --coords)
 		try:
 			coordsList = utils.ProcessCoords(options.coordinates, decimalDegreeOK=True)
-		except utils.CoordinateError, e:
+		except utils.CoordinateError as e:
 			newmsg = "*** Problem with coordinate string \"%s\"\n" % str(e) + "\n"
 			print(newmsg)
 			return kInputError
@@ -224,7 +224,7 @@ def main(argv):
 		
 
 	if options.verbose:
-		print "Done!\n"
+		print("Done!\n")
 	return nDataFound
 
 

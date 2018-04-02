@@ -8,7 +8,8 @@ exclude telarchive/footprint_archive.py
 exclude telarchive/hst_eso_archive.py	
 exclude telarchive/sdss_das_archive.py	
 exclude telarchive/sdss_sql_archive.py	
-exclude telarchive/sdss_dr9_archive.py	
+exclude telarchive/sdss_dr9_archive.py	telarchive/sdss_dr10_archive.py
 exclude telarchive/ing_archive.py telarchive/ing_archive_new.py
 exclude telarchive/getgsc2.py telarchive/gsc2_archive.py
 exclude telarchive/fetchsdss_old.py telarchive/sdss_dr8sql_archive.py
+exclude telarchive/mast_api_test.py telarchive/noao_archive.py

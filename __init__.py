@@ -1,5 +1,5 @@
 """
-Copyright (c) 2004--2011, Peter Erwin.  All rights reserved.
+Copyright (c) 2004--2018, Peter Erwin.  All rights reserved.
 
 Telarchive is a tool for quick, automated querying of public
 and semi-public telescope archives on the Web.
