@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name="fetchsdss",
-	version="1.2.3",
+	version="1.2.4",
 	author="Peter Erwin",
 	author_email="erwin@mpe.mpg.de",
 	url="http://www.mpe.mpg.de/~erwin/code/",

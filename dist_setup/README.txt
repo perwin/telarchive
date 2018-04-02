@@ -76,28 +76,29 @@ $ telarchive "ngc 7027" 2.0
 
 Searching archives for ngc 7027 (RA = 21 07 01.593, dec = +42 14 10.18), with search box =  2.0 arcmin...
 	ESO Archive: Data exists! (2 observations found)
-		0 images, 2 spectra, 0 echelle, 0 MOS, 0 MXU, 0 IFU, 0 polarimetry, 0 coronography, 0 interferometry
-		APEXHET (2)
-	NOAO Science Archive: No data found.
-	HST archive: Data exists! (109 records found)
-		13 FOS, 26 NICMOS, 25 WFPC, 18 WFPC2, 3 FOC, 24 STIS
+		2 spectra
 	AAT Archive: No data found.
+	HST archive: Data exists! (109 records found)
+		13 FOS, 3 FOC, 25 WFPC, 18 WFPC2, 26 NICMOS, 24 STIS
+	Multimission Archive at STScI (MAST): Data exists! (37 observations found)
+		COPERNICUS (1); FUSE (2); IUE (34)
 	Spitzer archive: Data exists! (13 records found)
 		1 mipssed, 2 iracmap, 3 mipsphot, 7 irsstare
 	Sloan Digital Sky Survey (DR7+DR12): No data found.
-	CFHT Archive: Data exists! (213 observations found)
-		BEAR (200), GECKO (4), AOBVIS (3), AOBIR (6)
-	UKIRT Archive: Data exists! (943 observations found)
-	Multimission Archive at STScI (MAST): Data exists! (64 observations found)
-		COPERNICUS (1); FUSE (2); GALEX (27); IUE (34)
-	ING Archive (old interface): Data exists! (577 observations found)
-		143 images, 391 spectra, 43 unclassified
-		JKT -- RBS (1), FWHL (2), AGBX (102);  INT -- WFC (9), PFCU (30), IDS (66), MES (17), FOS_1 (10);  WHT -- TAURUS_2 (5), unknown (43), ISIS_BLUE_ARM (159), UES (58), ISIS_RED_ARM (75)
-	Gemini Science Archive: Data exists! (563 observations found)
-		355 imaging, 163 long-slit, 45 IFU
-		NIRI (508), michelle (10), GMOS-N (45)
+	UKIRT Archive: Data exists! (259 observations found)
+		UFTI (51), Michelle (208)
+	CFHT Archive: Data exists! (419 observations found)
+		GECKO (4), GRIF (48), BEAR (361), aobir (6)
+	Gemini Observatory Archive: Data exists! (250 observations found)
+		160 LS, 45 imaging, 45 IFS
+		michelle (7), NIRI (198), GMOS-N (45)
 	SMOKA (Subaru Mitaka Okayama Kiso Archive): Data exists! (1628 observations found)
-		Subaru -- HDS (18), Subaru -- OHS/CISCO (38), Subaru -- IRCS (489), Subaru -- COMICS (1046), Kiso -- 1k CCD (3), Okayama -- HIDES (31), Okayama -- SNG (3)
+		Subaru -- HDS (18), Subaru -- OHS/CISCO (38), Subaru -- IRCS (489), 
+		Subaru -- COMICS (1046), Kiso -- 1k CCD (3), Okayama -- HIDES (31), Okayama -- SNG (3)
+	ING Archive (La Palma): Data exists! (893 observations found)
+		595 images, 298 spectra
+		WHT -- ISIS (217), WHIRCAM (6), TAURUS (5), LIRIS (573), LDSS (4), UES (69); 
+		INT -- WFC (13), IDS (5); JKT -- JAG (1)
 
 
 
@@ -111,29 +112,29 @@ $ telarchive --coords="09 24 18.5 +34 30 49" 6.0
 Searching archives for 09 24 18.5 +34 30 49, with search box =  6.0 arcmin...
 	AAT Archive: No data found.
 	UKIRT Archive: No data found.
- 	ING Archive (old interface): Data exists! (10 observations found)
-		0 images, 10 spectra
-		WHT -- ISIS_BLUE_ARM (5), ISIS_RED_ARM (5)
-	NOAO Science Archive: No data found.
+	ING Archive (La Palma): Data exists! (121 observations found)
+		23 images, 98 spectra
+		WHT -- SAURON (61), ACAM (20), AG4 (1), ISIS (25); INT -- WFC (2), IDS (12)
 	ESO Archive: No data found.
 	HST archive: Data exists! (2 records found)
 		2 ACS
 	Sloan Digital Sky Survey (DR7+DR12): Data exists! 
 		3 DR7 fields; 10 DR12 fields; 0 spectra
-	Gemini Science Archive: No data found.
-	CFHT Archive: No data found.
+	Gemini Observatory Archive: No data found.
+	CFHT Archive: Data exists! (90 observations found)
+		OASIS (29), MegaPrime (61)
 	Spitzer archive: Data exists! (2 records found)
 		2 iracmapp
 	Multimission Archive at STScI (MAST): Data exists! (411 observations found)
 		GALEX (411)
-	SMOKA (Subaru Mitaka Okayama Kiso Archive): Data exists! (691 observations found)
-		Kiso -- 1k CCD (1), Kiso -- 2k CCD (27), MITSuME -- Akeno (45), MITSuME -- OAO (618)
+	SMOKA (Subaru Mitaka Okayama Kiso Archive): Data exists! (763 observations found)
+		Kiso -- 1k CCD (1), Kiso -- 2k CCD (27), MITSuME -- Akeno (9), MITSuME -- OAO (726)
 
 
 As you can see, for most of the archives it is possible to learn a little
 about what is there.  Specifically, the script reports the number of
 observations made with different instruments (or spacecraft in the case of
-MAST); for the ING, ESO, and SMOKA archives, the instruments are grouped by
+MAST); for some of the archives, the instruments are also grouped by
 telescope.
 
 
@@ -142,14 +143,6 @@ There are various options; type "telarchive --help" for a list.
 
 
 Some notes:
-
-   -- Access to the CFHT archive is currently disabled; I hope to restore this
-in the near future.
-
-   -- Access to the new version of the ING (Isaac Newton Group) archive does
-not currently work, due to changes in the archive interface, though it looks like
-this will be possible in the near future  At present, the *old* ING archive interface 
-still works; however, it does not track data more recent than 2001.
 
    -- The script normally runs in multi-threaded mode, which makes it 
 faster; it also  means that the order of archives searched may appear to 

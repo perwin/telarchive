@@ -1,3 +1,50 @@
+Telarchive -- Version 1.8.3 (3 Dec 2016)
+
+Minor update to restore access to Gemini archive and fix reporting from ESO
+archive.
+
+
+
+Telarchive -- Version 1.8.2 (30 Nov 2016)
+
+Minor update to restore access to SMOKA.
+
+
+
+Telarchive -- Version 1.8.1 (24 June 2016)
+and
+Fetchsdss -- Version 1.2.4 (24 June 2016)
+
+Updated code in getcoords.py to accomodate small change in Simbad's returned
+HTML, thus restoring coordinate lookup.
+
+Fixed bug in fetchsdss which prevented retrieval of multiple fields for a
+single query (if number of fields available is <= the number specified by
+the "--max" commandline option).
+
+
+
+Telarchive -- Version 1.8.0 (30 August 2015)
+
+Added the new, La Palma-based Isaac Newton Group archive, replacing the old 
+ING archive server which didn't include new data (and wasn't really working anymore).
+Also restored proper access for both CFHT and UKIRT (now using CADC searches
+for both).
+
+Unfortunately, the NOAO archive now uses a JavaScript-based interface which
+telarchive can't handle, so I have (temporarily, at least) removed it from
+the list of archives that telarchive attempts to query.
+
+ 
+
+Telarchive -- Version 1.7.5 (9 May 2015)
+
+Minor updates to restore coordinate lookup via SIMBAD, correct parsing
+of results from certain archives, and to include optical SDSS spectra
+from SDSS DR12.
+
+
+
 Telarchive -- Version 1.7.4 (20 March 2015)
 
 Minor updates to restore access to Gemini Science Archive and AAT Archive.
