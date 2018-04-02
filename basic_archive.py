@@ -3,9 +3,24 @@
 # instances of this class via factory functions -- in the individual archive
 # models (ing_archive.py, etc.).
 
-import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, math
-#from . import archive_analyze
+import sys
+import math
+
+if sys.version_info[0] > 2:
+	usingPython2 = False
+	import urllib.request, urllib.parse, urllib.error
+	from urllib.parse import urlencode
+	from urllib.request import Request
+	from urllib.request import urlopen
+else:
+	usingPython2 = True
+	import urllib
+	from urllib import urlencode
+	from urllib2 import Request
+	from urllib2 import urlopen
 import archive_analyze
+
+
 
 DEFAULT_TIMEOUT = 30.0
 BROWSER_MASQUERADE = "Mozilla/5.0 [en]"
@@ -85,7 +100,7 @@ class BasicArchive(object):
 
 
 	def EncodeParams(self):
-		encodedParams = urllib.parse.urlencode(self.params, doseq=True)
+		encodedParams = urlencode(self.params, doseq=True)
 		if ( self.specialParams != None ):
 			encodedParams += self.specialParams
 		return encodedParams.encode('utf-8')
@@ -94,9 +109,10 @@ class BasicArchive(object):
 	def QueryServer(self):
 		# Opens connection to the archive server, retrieves and returns
 		# whatever HTML the server sends us
-		req = urllib.request.Request(self.URL, self.EncodeParams())
+		#req = urllib.request.Request(self.URL, self.EncodeParams())
+		req = Request(self.URL, self.EncodeParams())
 		req.add_header('User-agent', BROWSER_MASQUERADE)
-		response = urllib.request.urlopen(req, timeout=self.timeout)
+		response = urlopen(req, timeout=self.timeout)
 		htmlReceived = response.read().decode('utf-8')
 		response.close()
 		return htmlReceived

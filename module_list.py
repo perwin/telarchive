@@ -16,3 +16,4 @@ shorthand_dict = { "aat": "aat_archive", "cfht": "cfht_archive", "eso": "eso_arc
 			"gemini": "gemini_archive", "smoka": "smoka_archive", 
 			"spitzer": "spitzer_archive", "ing": "ing_archive_lapalma" }
 
+archive_shortnames = list(shorthand_dict.keys())

@@ -131,8 +131,14 @@ License (see the file COPYING included with the distribution).
 from __future__ import print_function
 import sys, os, optparse
 #import urllib
-import urllib.request, urllib.parse, urllib.error
+#import urllib.request, urllib.parse, urllib.error
 import getopt
+
+if sys.version_info[0] > 2:
+	usingPython2 = False
+else:
+	usingPython2 = True
+
 
 
 # Version number:
@@ -152,8 +158,10 @@ MAX_BOXSIZE = 60.0
 # threading.py module is installed.  Try importing "thread" first to test for
 # thread-friendliness...
 try:
-#	import thread
-	import _thread
+	if usingPython2:
+		import thread
+	else:
+		import _thread
 except ImportError:
 	threadingPresent = 0
 else:
@@ -168,12 +176,12 @@ else:
 # makes it harder for us to search their HTML.
 #    Among the archives which react this way: AAT, HST at ESO, ING, ESO
 #    NOTE: Causes errors in Python 1.5!  Assume nobody uses that anymore...
-class NewURLopener(urllib.request.FancyURLopener):
-	def __init__(self, *args):
-		self.version = BROWSER_MASQUERADE
-		urllib.request.FancyURLopener.__init__(self, *args)
-
-urllib.request._urlopener = NewURLopener()
+# class NewURLopener(urllib.request.FancyURLopener):
+# 	def __init__(self, *args):
+# 		self.version = BROWSER_MASQUERADE
+# 		urllib.request.FancyURLopener.__init__(self, *args)
+# 
+# urllib.request._urlopener = NewURLopener()
 
 
 # Import our own modules:
@@ -213,7 +221,6 @@ def SearchOneArchive( archive, targetName, debugState=0, saveSuccesses=0 ):
 		try:
 			if (debugState > 1):
 				print("Starting query: %s" % archive.EncodeParams())
-			print(archive)
 			htmlReceived = archive.QueryServer()
 			# Search HTML text:
 			(messageString, nDataFound) = archive.AnalyzeHTML(htmlReceived)
@@ -426,7 +433,8 @@ def main(argv):
 		defaultFullList = module_list.archive_shortnames
 		archive_module_list = [ module_list.shorthand_dict[archiveName] 
 						for archiveName in defaultFullList if archiveName not in skipList ]
-		if "sdss" not in archive_module_list:
+		print(archive_module_list)
+		if "sdss_combined_archive" not in archive_module_list:
 			options.doSDSS = False
 	
 	if (options.coords is not None):

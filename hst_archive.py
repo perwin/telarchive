@@ -4,8 +4,9 @@
 # a given range of a specific coordinate in the sky.  It uses the
 # STScI MAST archive.
 
-import re
-import basic_archive, utils, urllib.request, urllib.parse, urllib.error
+import sys, re
+import basic_archive
+
 
 DEFAULT_TARGET = ""
 DEFAULT_BOXSIZE_STRING = "4.0"

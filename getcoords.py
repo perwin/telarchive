@@ -30,6 +30,7 @@
 # 10 Dec 2006: Updated to work with output from SIMBAD4
 #
 
+from __future__ import print_function
 import sys
 #import urllib
 import re

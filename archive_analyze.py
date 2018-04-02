@@ -138,7 +138,7 @@ def AnalyzeHTML( htmlText ):
 	limitReached = False
 
 
-	print("AnalyzeHTML: type of htmlText = ", type(htmlText))
+	#print("AnalyzeHTML: type of htmlText = ", type(htmlText))
 	# Search the text, try to figure out if we got a valid result,
 	# and if any data exists:
 	# First, look for evidence that the archive found data (even if it was a mistake):
