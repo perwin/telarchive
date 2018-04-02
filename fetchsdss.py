@@ -3,7 +3,7 @@
 # specific target (astronomical object or coordinates).
 # 
 # Requires Python 2.5 or higher (due to use of optparse and booleans + preliminary
-# print function syntax)
+# # print function syntax)
 # 
 #       
 # HISTORY:
@@ -19,15 +19,16 @@
 # talks to the SDSS SQL server, which does not have trouble finding DR4
 # sources the way the footprint server has (recently).
 
-
+from __future__ import print_function
 # Import various standard modules:
-import os, sys, urllib, re, optparse
+import os, sys, re, optparse
+import logging
 
 # Import our modules:
 import utils, getcoords, get_sdssfiles
 import sdss_coords_archive, sdss_dr12_archive
 
-VERSION_STRING = "1.2.3"
+VERSION_STRING = "1.2.4"
 
 NO_COORDS = "NO COORDS"
 DEFAULT_ROOTNAME = "sdss"
@@ -40,6 +41,9 @@ kCoordinateLookupError = -3
 kInputError = -4
 
 findNonSDSSFilters = re.compile("[^ugriz]")
+
+
+logging.basicConfig(filename='log_for_fetchsdss.log',level=logging.DEBUG)
 
 
 def FetchCoordinates( objectName, verboseFlag=True ):
@@ -74,8 +78,10 @@ def QueryArchive( archive, debug=False ):
 			saveFile = open(saveFileName, 'w')
 			saveFile.write(htmlReceived)
 			saveFile.close()
-	except IOError, e:
-		messageString = "I/O Error -- " + str(e.args[0])
+	except IOError as e:
+#		messageString = "I/O Error -- " + str(e.args[0])
+# 		messageString = "I/O Error -- " + str(e.args)
+		messageString = "I/O Error"
 		if len(e.args) > 1:
 			messageString += ": " + str(e.args[1])
 			if ( str(e.args[1]) == "(7, 'No address associated with nodename')" ):
@@ -227,8 +233,9 @@ def main(argv):
 						help="do *not* add run and field numbers to saved FITS filenames (if -o option is used)")
 	parser.add_option("--max", dest="maxFields", type="int", default=1,
 						help="maximum number of separate fields to retrieve (default=1)")
-	parser.add_option("--getfield", dest="getFieldN", type="int", default=1,
-						help="retrieve N-th field in list, if more than one field is found")
+	# getFieldN = 0 [default] means get *all* fields (as long as # fields < maxFields)
+	parser.add_option("--getfield", dest="getFieldN", type="int", default=0,
+						help="retrieve N-th field in list (first = 1, second = 2, etc.), if more than one field is found")
 	
 	parser.add_option("--silent", "--quiet", action="store_false", dest="verbose", default=True,
 						help="only print error messages")
@@ -299,7 +306,7 @@ def main(argv):
 		# User gave us coordinate string (via --coords)
 		try:
 			coordsList = utils.ProcessCoords(options.coordinates, decimalDegreeOK=True)
-		except utils.CoordinateError, e:
+		except utils.CoordinateError as e:
 			newmsg = "*** Problem with coordinate string \"%s\"\n" % str(e) + "\n"
 			print(newmsg)
 			return kInputError
@@ -364,7 +371,7 @@ def main(argv):
 		if (nDR7DataFound > 1):
 			print("   %d separate DR7 fields found" % nDR7DataFound)
 			if (options.getData) and (options.getFieldN < 1) and (nDR7DataFound > options.maxFields):
-				print("\nNumber of fields is greater than maximum (%d)" % options.maxFields)
+				print("\nNumber of DR7 fields (%d) is greater than maximum (%d)" % (nDR7DataFound, options.maxFields))
 				print("No data will be retrieved (use \"--max\" to specify larger maximum if desired)")
 				options.getData = False
 		elif (nDR7DataFound == 0) and options.verbose:
@@ -384,7 +391,7 @@ def main(argv):
 			if (nDR12DataFound > 1):
 				print("   %d separate DR12 fields found" % nDR12DataFound)
 				if (options.getData) and (options.getFieldN < 1) and (nDR12DataFound > options.maxFields):
-					print("\nNumber of fields is greater than maximum (%d)" % options.maxFields)
+					print("\nNumber of DR12 fields (%d) is greater than maximum (%d)" % (nDR12DataFound, options.maxFields))
 					print("No data will be retrieved (use \"--max\" to specify larger maximum if desired)")
 					options.getData = False
 			elif (nDR12DataFound == 0) and options.verbose:

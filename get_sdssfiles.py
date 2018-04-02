@@ -8,13 +8,24 @@
 #       outcome = F2(list_of_url-filename_pairs, destinationDir)
 
 
+import io
 import urllib
 # StringIO: find the best implementation available on this platform
 # (i.e., we prefer cStringIO if it's available)
-try:
-	from cStringIO import StringIO
-except:
-	from StringIO import StringIO
+
+# if sys.version_info[0] > 2:
+# 	usingPython2 = False
+# 	import urllib.request, urllib.parse, urllib.error
+# 	from urllib.parse import urlencode
+# 	from urllib.request import Request
+# 	from urllib.request import urlopen
+# else:
+# 	usingPython2 = True
+# 	import urllib
+# 	from urllib import urlencode
+# 	from urllib2 import Request
+# 	from urllib2 import urlopen
+import archive_analyze
 
 
 # Templates
@@ -253,7 +264,7 @@ def MakeSpectrumURLFilePairs( specStringList, filenameRoot ):
 
 
 def SaveSIOtoFile( stringFileObj, filename, baseDir ):
-	"""Transfer (binary) data in a StringIO object to a real (filesystem) file."""
+	"""Transfer (binary) data in a BytesIO object to a real (filesystem) file."""
 	if baseDir[-1] != "/":
 		baseDir += "/"
 	outputPath = baseDir + filename
@@ -286,7 +297,7 @@ def GetAndSaveFile( urlFilePair, baseDir, checkOutput=True ):
 	successful retrieval of FITS file and status = False for failure; header
 	is the mimetools.Message object representing the server-supplied metadata
 	about the reply, which can be checked for more information; and sioFile is
-	the StringIO file object containing the transmitted data (e.g., for reading
+	the BytesIO file object containing the transmitted data (e.g., for reading
 	possible HTML error messages)."""
 	
 	# open connection to server and get info about reply
@@ -294,8 +305,9 @@ def GetAndSaveFile( urlFilePair, baseDir, checkOutput=True ):
 	urlf = urllib.urlopen(theURL)
 	infoHeader = urlf.info()
 
-	# create StringIO file to store data temporarily
-	sioFile = StringIO()
+	# create BytesIO file to store data temporarily
+#	sioFile = StringIO()
+	sioFile = io.BytesIO()
 	# read the data, looping till we get nothing further (code swiped
 	# and modified from urllib.URLopener.retrieve, Python 2.5 version)
 	blockSize = 1024*8
@@ -312,7 +324,7 @@ def GetAndSaveFile( urlFilePair, baseDir, checkOutput=True ):
 	# variable encoding.]
 	status = True
 	if (checkOutput and infoHeader["content-type"] not in ["application/x-gzip", "image/x-fits", "image/jpeg"]):
-			print infoHeader["content-type"]
+			print(infoHeader["content-type"])
 			status = False
 	if (status is True):
 		# save data to a real file on the filesystem:
