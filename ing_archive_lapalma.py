@@ -225,12 +225,6 @@ class INGLaPalmaArchive(basic_archive.BasicArchive):
 		# which will cause an exception to be thrown when added to the strings
 		# self.URL and "?"; so we call decode() to convert it to a (Unicode) string
 		urlFull = self.URL + "?" + self.EncodeParams().decode()
-# 		req = urllib2.Request(urlFull)
-# 		req.add_header('User-agent', BROWSER_MASQUERADE)
-# 		response = urllib2.urlopen(req, timeout=self.timeout)
-# 		htmlReceived = response.read()
-# 		response.close()
-# 		return htmlReceived
 		specialHeader = {'User-agent': BROWSER_MASQUERADE}
 		req = Request(urlFull, self.EncodeParams(), specialHeader)
 		response = urlopen(req, timeout=self.timeout)
