@@ -137,8 +137,6 @@ def AnalyzeHTML( htmlText ):
 	nSetsString = "No information about # datasets found"
 	limitReached = False
 
-
-	#print("AnalyzeHTML: type of htmlText = ", type(htmlText))
 	# Search the text, try to figure out if we got a valid result,
 	# and if any data exists:
 	# First, look for evidence that the archive found data (even if it was a mistake):
@@ -201,11 +199,9 @@ def AnalyzeHTML( htmlText ):
 		nDataFound = 0
 
 	return (messageString, nDataFound)
-# End Function
 
 
 # Helper function to handle looking for connection errors, etc.
-
 def CheckForError( htmlText ):
 	# Default boolean flags:
 	connectionMade = 1       # successfully connected to archive web server

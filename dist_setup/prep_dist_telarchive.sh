@@ -4,7 +4,7 @@
 # 
 # We assume the following:
 #    1. /Beleriand/dev/dist_telarchive/ exists
-#    2. it has within it a symbolic link to telarchive_working
+#    2. it has within it a symbolic link to telarchive_py3
 
 cp telarchive_setup.py /Beleriand/dev/dist_telarchive/setup.py
 cp telarchive_MANIFEST.in /Beleriand/dev/dist_telarchive/MANIFEST.in

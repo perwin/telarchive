@@ -45,7 +45,6 @@ class BasicArchive(object):
 		self.decLabel = decLabel
 		self.boxLabel = boxLabel
 		self.timeout = DEFAULT_TIMEOUT
-		#self.textSearches = None
 		if publicURL is None:
 			self.publicURL = url
 		else:

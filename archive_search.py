@@ -23,7 +23,7 @@ How to call this with a simple Python script (see dosearch.py for an
 example of a standalone script):
    
       from telarchive import archive_search
-      archive_search.main( args )
+      archive_search.main(args)
       
       
 
@@ -130,9 +130,6 @@ License (see the file COPYING included with the distribution).
 # Import various standard modules:
 from __future__ import print_function
 import sys, os, optparse
-#import urllib
-#import urllib.request, urllib.parse, urllib.error
-import getopt
 
 if sys.version_info[0] > 2:
 	usingPython2 = False
@@ -142,7 +139,7 @@ else:
 
 
 # Version number:
-kVersionNumber = "2.0a1"
+kVersionNumber = "2.0b1"
 
 # General constants:
 kHST_ESO = 0
@@ -168,24 +165,7 @@ else:
 	import threading
 	threadingPresent = 1
 	
-# Hack to convince archives to send us complete, tabular HTML.
-# Basically, this tweaks urllib.urlopen() so that it tells the archives
-# we are a Netscape 5.0-class browser, rather than its default description
-# of "Python-urllib/<version-number>".  Some archives refuse to send us
-# tabular HTML if they think we're something else (perhaps Lynx?), which
-# makes it harder for us to search their HTML.
-#    Among the archives which react this way: AAT, HST at ESO, ING, ESO
-#    NOTE: Causes errors in Python 1.5!  Assume nobody uses that anymore...
-# class NewURLopener(urllib.request.FancyURLopener):
-# 	def __init__(self, *args):
-# 		self.version = BROWSER_MASQUERADE
-# 		urllib.request.FancyURLopener.__init__(self, *args)
-# 
-# urllib.request._urlopener = NewURLopener()
-
-
 # Import our own modules:
-#import archive_list, getcoords, utils, module_list
 import archive_list, getcoords, utils, module_list
 
 
@@ -323,7 +303,7 @@ def main(argv):
 	# Set DEBUG = 1 to enable saving of *all* web pages returned:
 	multipleSearches = False
 	whichHSTarchive = kHST_ESO
-	doAAT = 1
+	doAAT = True
 	doSDSS = True
 	doGetCoords = True   # do we need to do a Simbad coordinate lookup?
 	                     # (default = yes because by default we search SDSS archive)

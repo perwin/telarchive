@@ -84,15 +84,15 @@ class ArchiveList(object):
 			archive_modules = LoadArchiveModules()
 		for current_module in archive_modules:
 			thisModuleName = current_module.__name__
-			keep_it = 1
+			keepThisModule = True
 			if thisModuleName in hst_module_names:
 				if hst_module_names[whichHST] != thisModuleName:
-					keep_it = 0
+					keepThisModule = False
 			elif not doAAT and (thisModuleName == aat_module_name):
-					keep_it = 0
+					keepThisModule = False
 			elif not doSDSS and (thisModuleName == sdss_module_name):
-					keep_it = 0
-			if (keep_it):
+					keepThisModule = False
+			if keepThisModule:
 				self.archives.append( current_module.MakeArchive() )
 
 		self.nArchives = len(self.archives)
