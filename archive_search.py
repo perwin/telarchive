@@ -310,33 +310,6 @@ def DoSearch( targetName, archiveList, debugSetting = 0, doThreading = True ):
     
 
 
-# def PrintHelp():
-# 	"""Basic function to print usage and possible command-line arguments"""
-# 	print("\nUsage: telarchive [options] \"target_name\" [box_size_in_arcmin]")
-# 	print("            --coords=\"hh mm ss dd mm ss\" : search on coordinates instead of target name")
-# #	print("            --targetfile=<filename> : search using list of targets from a file")
-# #	print("            --coordsfile=<filename> : search using list of coordinates from a file")
-# 	print("            -h or --help : print this message")
-# 	print("            --archives : List which archives can be searched")
-# 	print("            --usearchive=<short-hand-name> : search using only specified archive")
-# 	print("                                             (use --archives to see short-hand names)")
-# #	print("            --nosdss or --noSDSS : ignore Sloan Digital Sky Survey")
-# ##	print("            --noaat or --noAAT : ignore AAT archive (saves time for northern objects)")
-# 	print("            --threads : turn multithreading on (faster, but harder to stop) [default]")
-# 	print("            --nothreads : turn multithreading off (slower, easier to halt)")
-# 	print("            -v or --version : Print version number")
-# 	print("            -d or --debug : Debugging on (saves *all* returned HTML files)")
-# 	print("\nExample:  archive_search \"ngc 936\" 5.0")
-# 	print("        will search the archives for \"ngc 936\" with a search-box size of 5.0 arc minutes")
-# 	print("\nExample:  archive_search --usearchive=ing \"ngc 936\" 5.0")
-# 	print("        as above, but only searching the Isaac Newton Group archive")
-# 	print("\nExample:  archive_search --coords=\"12 44 03.55 -15 26 30.7\" 1.5")
-# 	print("        will search the archives using the specified coordinates, with a search-box size of 1.5 arc minutes")
-# 	print("\nDefault search-box size = 4.0 arcmin")
-# 	print()
-
-
-
 def PrintArchiveList():
 	"""Basic function to list which archives we can search."""
 	print("\nCurrently supported archives, short-hand names, and their user-interface URLs:\n")
@@ -433,7 +406,6 @@ def main(argv):
 		defaultFullList = module_list.archive_shortnames
 		archive_module_list = [ module_list.shorthand_dict[archiveName] 
 						for archiveName in defaultFullList if archiveName not in skipList ]
-		print(archive_module_list)
 		if "sdss_combined_archive" not in archive_module_list:
 			options.doSDSS = False
 	
