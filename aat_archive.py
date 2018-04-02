@@ -18,7 +18,7 @@ import basic_archive
 
 DEFAULT_TARGET = "No Target"
 DEFAULT_BOXSIZE_STRING = "00 04 00"
-MAX_ROWS_RETURNED = "1000"
+MAX_ROWS_RETURNED = "5000"
 
 # Anglo-Australian Telescope archive:
 TARGET_LABEL = "object"
@@ -26,10 +26,11 @@ RA_LABEL = "raj2000_int"
 DEC_LABEL = "decj2000_int"
 ARCHIVE_NAME = "AAT Archive"
 ARCHIVE_SHORTNAME = "aat"
-#ARCHIVE_URL = "http://site.aao.gov.au/arc-bin/wdb/aat_database/user/query"
-ARCHIVE_URL = "http://apm5.ast.cam.ac.uk/arc-bin/wdb/aat_database/user/query"
-#ARCHIVE_USER_URL = "http://site.aao.gov.au/AATdatabase/aat/index.html"
-ARCHIVE_USER_URL = "http://apm5.ast.cam.ac.uk/arc-bin/wdb/aat_database/observation_log/make"
+# alternate URLs, one at AAO in Australia, the other at Cambridge, UK
+ARCHIVE_URL = "http://site.aao.gov.au/arc-bin/wdb/aat_database/user/query"
+#ARCHIVE_URL = "http://apm5.ast.cam.ac.uk/arc-bin/wdb/aat_database/user/query"
+ARCHIVE_USER_URL = "http://site.aao.gov.au/AATdatabase/aat/index.html"
+#ARCHIVE_USER_URL = "http://apm5.ast.cam.ac.uk/arc-bin/wdb/aat_database/observation_log/make"
 
 
 DICT = {TARGET_LABEL: DEFAULT_TARGET, RA_LABEL: "", DEC_LABEL: "",

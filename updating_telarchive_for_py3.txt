@@ -2,38 +2,105 @@ NOTE ON WHAT NEEDS TO BE UPDATED FOR PYTHON 3 IN TELARCHIVE:
 
 ** Standard distribution (i.e., what gets installed):
 
-[x] aat_archive.py
---- aat_archive.py	(original)
-+++ aat_archive.py	(refactored)
-@@ -14,7 +14,7 @@
--import basic_archive
-+from . import basic_archive
+[x] = updated for minimal Python 3 compatibility
+
+[X] = updated and checked for functionality with Python 3
 
 
-[x] archive_analyze.py
---- archive_analyze.py	(original)
-+++ archive_analyze.py	(refactored)
-@@ -9,7 +9,7 @@
--from utils import SearchError
-+from .utils import SearchError
+ARCHIVE MODULES:
 
--			print "Unable to find number of records retrieved"
-+			print("Unable to find number of records retrieved")
-
--	except SearchError, e:
-+	except SearchError as e:
+[X] aat_archive.py
 
 
-[x] archive_list.py
---- archive_list.py	(original)
-+++ archive_list.py	(refactored)
-@@ -16,7 +16,7 @@
--import module_list
-+from . import module_list
+[X] basic_archive.py
+@@ -3,8 +3,8 @@
+-import urllib, urllib2, math
+-import archive_analyze
++import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, math
++from . import archive_analyze
+
+@@ -84,7 +84,7 @@
+ 	def EncodeParams(self):
+-		encodedParams = urllib.urlencode(self.params, doseq=True)
++		encodedParams = urllib.parse.urlencode(self.params, doseq=True)
+
+@@ -93,9 +93,9 @@
+ 	def QueryServer(self):
+ 		# Opens connection to the archive server, retrieves and returns
+ 		# whatever HTML the server sends us
+-		req = urllib2.Request(self.URL, self.EncodeParams())
++		req = urllib.request.Request(self.URL, self.EncodeParams())
+ 		req.add_header('User-agent', BROWSER_MASQUERADE)
+-		response = urllib2.urlopen(req, timeout=self.timeout)
++		response = urllib.request.urlopen(req, timeout=self.timeout)
+
+
+[X] cfht_archive.py
+
+
+[X] eso_archive.py
+
+
+[X] gemini_archive.py
+
+
+[x] hst_archive.py:
+--- hst_archive.py	(original)
++++ hst_archive.py	(refactored)
+@@ -5,7 +5,7 @@
+-import basic_archive, utils, urllib
++import basic_archive, utils, urllib.request, urllib.parse, urllib.error
+
+@@ -77,7 +77,7 @@
+-		if instrument not in obsDict.keys():
++		if instrument not in list(obsDict.keys()):
+
+@@ -93,7 +93,7 @@
+-	modes = observationDict.keys()
++	modes = list(observationDict.keys())
+
+@@ -147,7 +147,7 @@
+-				for k in foundData.keys():
++				for k in list(foundData.keys()):
+
+
+[ ] ing_archive_lapalma.py
+	-- currently hangs while trying to read data, after connect.
+
+[X] mast_archive.py
+
+
+[ ] smoka_archive.py
+
+
+[X] spitzer_archive.py
+
+
+[X] ukirt_archive.py
+
+
+[X] sdss_coords_archive.py
+
+
+[X] sdss_dr12_archive.py
+
+
+[X] sdss_sas_archive.py
+
+
+[X] sdss_combined_archive.py
 
 
 
-[x] archive_search.py
+OTHER CODE:
+
+[X] archive_analyze.py
+
+
+[X] archive_list.py
+
+
+[X] archive_search.py
 --- archive_search.py	(original)
 +++ archive_search.py	(refactored)
 @@ -131,7 +131,7 @@
@@ -84,71 +151,8 @@ PLUS: lots of print statements...
 
 
 
-[x] basic_archive.py
-@@ -3,8 +3,8 @@
--import urllib, urllib2, math
--import archive_analyze
-+import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, math
-+from . import archive_analyze
 
-@@ -84,7 +84,7 @@
- 	def EncodeParams(self):
--		encodedParams = urllib.urlencode(self.params, doseq=True)
-+		encodedParams = urllib.parse.urlencode(self.params, doseq=True)
-
-@@ -93,9 +93,9 @@
- 	def QueryServer(self):
- 		# Opens connection to the archive server, retrieves and returns
- 		# whatever HTML the server sends us
--		req = urllib2.Request(self.URL, self.EncodeParams())
-+		req = urllib.request.Request(self.URL, self.EncodeParams())
- 		req.add_header('User-agent', BROWSER_MASQUERADE)
--		response = urllib2.urlopen(req, timeout=self.timeout)
-+		response = urllib.request.urlopen(req, timeout=self.timeout)
-
-
-[x] cfht_archive.py
---- cfht_archive.py	(original)
-+++ cfht_archive.py	(refactored)
-@@ -11,7 +11,7 @@
- import re
--import basic_archive, multipart_form
-+from . import basic_archive, multipart_form
-
-
-[x] eso_archive.py
---- eso_archive.py	(original)
-+++ eso_archive.py	(refactored)
-@@ -27,7 +27,7 @@
--import basic_archive
-+from . import basic_archive
-
-@@ -189,7 +189,7 @@
--	print nTelescopesFound
-+	print(nTelescopesFound)
-
-@@ -197,12 +197,12 @@
- 		for inst_string in instrumentsFound:
- 			instName = inst_string.strip()
--			if instName not in newDict.keys():
-+			if instName not in list(newDict.keys()):
- 				# create new dictionary entry and set count = 1
-
--		theKeys = newDict.keys()
-+		theKeys = list(newDict.keys())
-
-
-
-[x] gemini_archive.py
---- gemini_archive.py	(original)
-+++ gemini_archive.py	(refactored)
-@@ -4,7 +4,7 @@
--import basic_archive, multipart_form
-+from . import basic_archive, multipart_form
-
-
-
-[x] getcoords.py
+[X] getcoords.py
 --- getcoords.py	(original)
 +++ getcoords.py	(refactored)
 @@ -33,7 +33,7 @@
@@ -166,26 +170,6 @@ PLUS: lots of print statements...
 
 PLUS assorted print statements
 
-
-
-[x] hst_archive.py:
---- hst_archive.py	(original)
-+++ hst_archive.py	(refactored)
-@@ -5,7 +5,7 @@
--import basic_archive, utils, urllib
-+import basic_archive, utils, urllib.request, urllib.parse, urllib.error
-
-@@ -77,7 +77,7 @@
--		if instrument not in obsDict.keys():
-+		if instrument not in list(obsDict.keys()):
-
-@@ -93,7 +93,7 @@
--	modes = observationDict.keys()
-+	modes = list(observationDict.keys())
-
-@@ -147,7 +147,7 @@
--				for k in foundData.keys():
-+				for k in list(foundData.keys()):
 
 
 [x] multipart_form.py
@@ -208,18 +192,9 @@ import urllib2, types -- no urllib2 module
 
 
 
-[] basic_archive.py
-  File "/Beleriand/dev/telarchive_py3/basic_archive.py", line 99, in QueryServer
-    response = urllib.request.urlopen(req, timeout=self.timeout)
-TypeError: POST data should be bytes, an iterable of bytes, or a file object. It cannot be of type str.
-
-
-
-[] multipart_form.py
+[X] multipart_form.py
 This needs to be rewritten; does not work properly in Python 3
-See here for possible solution:
-	https://stackoverflow.com/questions/1270518/python-standard-library-to-post-multipart-form-data-encoded-data
-	
+
 
 
 

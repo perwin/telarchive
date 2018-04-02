@@ -17,8 +17,6 @@ is in arc minutes (current default value = 4 arc min).
 
 for a full list of options and examples:
 $ archive_search.py -h
-   OR [within a Python session]
->>> archive_search.PrintHelp()
 
 
 How to call this with a simple Python script (see dosearch.py for an
@@ -35,7 +33,7 @@ This program is distributed under the terms of the GNU General Public
 License (see the file COPYING included with the distribution).
 """
 
-# Copyright 2003-2015 Peter Erwin
+# Copyright 2003-2018 Peter Erwin
 # 
 # This file is part of telarchive.
 # 
@@ -130,6 +128,7 @@ License (see the file COPYING included with the distribution).
 
 
 # Import various standard modules:
+from __future__ import print_function
 import sys, os, optparse
 #import urllib
 import urllib.request, urllib.parse, urllib.error
@@ -304,30 +303,30 @@ def DoSearch( targetName, archiveList, debugSetting = 0, doThreading = True ):
     
 
 
-def PrintHelp():
-	"""Basic function to print usage and possible command-line arguments"""
-	print("\nUsage: telarchive [options] \"target_name\" [box_size_in_arcmin]")
-	print("            --coords=\"hh mm ss dd mm ss\" : search on coordinates instead of target name")
-#	print("            --targetfile=<filename> : search using list of targets from a file")
-#	print("            --coordsfile=<filename> : search using list of coordinates from a file")
-	print("            -h or --help : print this message")
-	print("            --archives : List which archives can be searched")
-	print("            --usearchive=<short-hand-name> : search using only specified archive")
-	print("                                             (use --archives to see short-hand names)")
-#	print("            --nosdss or --noSDSS : ignore Sloan Digital Sky Survey")
-##	print("            --noaat or --noAAT : ignore AAT archive (saves time for northern objects)")
-	print("            --threads : turn multithreading on (faster, but harder to stop) [default]")
-	print("            --nothreads : turn multithreading off (slower, easier to halt)")
-	print("            -v or --version : Print version number")
-	print("            -d or --debug : Debugging on (saves *all* returned HTML files)")
-	print("\nExample:  archive_search \"ngc 936\" 5.0")
-	print("        will search the archives for \"ngc 936\" with a search-box size of 5.0 arc minutes")
-	print("\nExample:  archive_search --usearchive=ing \"ngc 936\" 5.0")
-	print("        as above, but only searching the Isaac Newton Group archive")
-	print("\nExample:  archive_search --coords=\"12 44 03.55 -15 26 30.7\" 1.5")
-	print("        will search the archives using the specified coordinates, with a search-box size of 1.5 arc minutes")
-	print("\nDefault search-box size = 4.0 arcmin")
-	print()
+# def PrintHelp():
+# 	"""Basic function to print usage and possible command-line arguments"""
+# 	print("\nUsage: telarchive [options] \"target_name\" [box_size_in_arcmin]")
+# 	print("            --coords=\"hh mm ss dd mm ss\" : search on coordinates instead of target name")
+# #	print("            --targetfile=<filename> : search using list of targets from a file")
+# #	print("            --coordsfile=<filename> : search using list of coordinates from a file")
+# 	print("            -h or --help : print this message")
+# 	print("            --archives : List which archives can be searched")
+# 	print("            --usearchive=<short-hand-name> : search using only specified archive")
+# 	print("                                             (use --archives to see short-hand names)")
+# #	print("            --nosdss or --noSDSS : ignore Sloan Digital Sky Survey")
+# ##	print("            --noaat or --noAAT : ignore AAT archive (saves time for northern objects)")
+# 	print("            --threads : turn multithreading on (faster, but harder to stop) [default]")
+# 	print("            --nothreads : turn multithreading off (slower, easier to halt)")
+# 	print("            -v or --version : Print version number")
+# 	print("            -d or --debug : Debugging on (saves *all* returned HTML files)")
+# 	print("\nExample:  archive_search \"ngc 936\" 5.0")
+# 	print("        will search the archives for \"ngc 936\" with a search-box size of 5.0 arc minutes")
+# 	print("\nExample:  archive_search --usearchive=ing \"ngc 936\" 5.0")
+# 	print("        as above, but only searching the Isaac Newton Group archive")
+# 	print("\nExample:  archive_search --coords=\"12 44 03.55 -15 26 30.7\" 1.5")
+# 	print("        will search the archives using the specified coordinates, with a search-box size of 1.5 arc minutes")
+# 	print("\nDefault search-box size = 4.0 arcmin")
+# 	print()
 
 
 
@@ -358,21 +357,30 @@ def main(argv):
 	noTargetName = True
 	noBoxSize = True
 
-	usageString = "%prog \"target_name\" [box_size_in_arcmin] [options]\n"
+	usageString = "\n%prog \"target_name\" [box_size_in_arcmin] [options]\n"
+	usageString += "%prog --coords=\"<ra-dec-coodrds>\" [box_size_in_arcmin] [options]\n"
+	usageString += "\twhere \"target name\" is an astronomical source name suitable"
+	usageString += " for coordinate lookup via SIMBAD (e.g., \"NGC 1000\")\n"
+	usageString += "\tand \"<ra-dec-coodrds>\" is a string with RA and Dec in the form"
+	usageString += " \"hh mm ss dd mm ss\""
 	parser = optparse.OptionParser(usage=usageString)
 
-	parser.add_option("-v", "--version", action="store_true", dest="printVersion", default=False,
-					  help="print version number and quit")
-	parser.add_option("--archives", action="store_true", dest="printArchives", default=False,
-					  help="list all archives which can be searched")
+	parser.add_option("-v", "--version", action="store_true", dest="printVersion", 
+						default=False, help="print version number and quit")
+	parser.add_option("--archives","--list-archives", action="store_true", 
+						dest="printArchives", default=False,
+						help="list all archives which can be searched")
 	parser.add_option("-d", "--debug", action="store_const", const=1, dest="DEBUG", default=0,
-					  help="debugging on (saves *all* returned HTML files)")
+						help="debugging on (saves *all* returned HTML files)")
 	parser.add_option("--debuglevel", type="int", dest="DEBUG", default=0,
-					  help="set higher levels of debugging")
+						help="set higher levels of debugging")
 	parser.add_option("-c", "--coords", type="str", dest="coords", default=None,
-					  help="\"hh mm ss dd mm ss\" : search on coordinates instead of target name")
-	parser.add_option("--usearchive", type="str", dest="singleArchive", default=None,
-					  help="search using only specified archive")
+						help="\"hh mm ss dd mm ss\" : search on coordinates instead of target name")
+	parser.add_option("--usearchive","--use-archive", type="str", dest="singleArchive", 
+						default=None,
+						help="search using only specified archive")
+	parser.add_option("--skiparchives","--skip-archives", type="str", dest="skipArchives", default=None,
+						help="comma-separated list of archives to NOT use in search")
 # 	parser.add_option("--targetfile", type="str", dest="targetListFile", default=None,
 # 					  help="list of target names to search for [DISABLED]")
 # 	parser.add_option("--coordsfile", type="str", dest="coordsListFile", default=None,
@@ -381,7 +389,7 @@ def main(argv):
 					  help="ignore Sloan Digital Sky Survey")
 	parser.add_option("--nothreads", action="store_false", dest="doThreading", default=True,
 						help="turn multithreading off (slower, easier to halt)")
-	parser.add_option("--timeout", type="float", dest="userTimeout", default=0,
+	parser.add_option("--timeout", type="float", dest="userTimeout", default=30,
 						help="set connection timeout (default = 30 sec)")
 
 	(options, args) = parser.parse_args(argv[1:])
@@ -406,6 +414,19 @@ def main(argv):
 	if (options.singleArchive is not None):
 		archive_module_list = [ module_list.shorthand_dict[options.singleArchive] ]
 		if options.singleArchive != "sdss":
+			options.doSDSS = False
+	
+	if (options.skipArchives is not None):
+		skipList = options.skipArchives.split(",")
+		msg = "Skipping the following archives: "
+		for name in skipList[:-1]:
+			msg += name + ", "
+		msg += skipList[-1]
+		print(msg)
+		defaultFullList = module_list.archive_shortnames
+		archive_module_list = [ module_list.shorthand_dict[archiveName] 
+						for archiveName in defaultFullList if archiveName not in skipList ]
+		if "sdss" not in archive_module_list:
 			options.doSDSS = False
 	
 	if (options.coords is not None):

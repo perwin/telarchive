@@ -19,10 +19,9 @@ DEC_LABEL = None
 RADEC_LABEL = "Entry"
 ARCHIVE_NAME = "Spitzer archive"
 ARCHIVE_SHORTNAME = "spitzer"
-ARCHIVE_URL = "http://heasarc.gsfc.nasa.gov/db-perl/W3Browse/w3table.pl"
+ARCHIVE_URL = "https://heasarc.gsfc.nasa.gov/db-perl/W3Browse/w3table.pl"
 ARCHIVE_USER_URL = "http://heasarc.gsfc.nasa.gov/db-perl/W3Browse/w3table.pl?tablehead=name%3Dspitzmastr&Action=More+Options"
 
-#BASE_URL = "http://iraf-nvo.noao.edu"
 
 DICT = {'Action': 'Start Search', 'Entry': '', 'Radius': '100', 
 'Radius_unit': 'arcsec', 'ResultMax': MAX_ROWS_RETURNED, 
@@ -101,7 +100,7 @@ def AnalyzeOutputFile( htmlText, nFound ):
 	observationDict = FindInstruments(htmlText)
 
 	messageText = "\n\t\t"
-	modes = observationDict.keys()
+	modes = list(observationDict.keys())
 	nModes = len(modes)
 	for i in range(nModes - 1):
 		thisMode = modes[i]

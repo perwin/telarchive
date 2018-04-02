@@ -1,4 +1,5 @@
-# Archive module for the Multimission Archive at STScI
+# Archive module for the Mikulski Archive for Space Telescopes
+# (formerly "Multimission Archive at STScI")
 # 
 # This module defines a new class (MASTArchive) derived from the 
 # BasicArchive class.
@@ -19,7 +20,7 @@ MAX_ROWS_RETURNED = "1"   # The "Summary" field at the end of the returned
 TARGET_LABEL = "target"
 RA_LABEL = "ra"
 DEC_LABEL = "dec"
-ARCHIVE_NAME = "Multimission Archive at STScI (MAST)"
+ARCHIVE_NAME = "Mikulski Archive for Space Telescopes (MAST)"
 ARCHIVE_SHORTNAME = "mast"
 ARCHIVE_URL = "http://archive.stsci.edu/xcorr.php"
 ARCHIVE_USER_URL = ARCHIVE_URL

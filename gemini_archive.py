@@ -16,7 +16,6 @@ RA_LABEL = "ra2000"
 DEC_LABEL = "dec2000"
 ARCHIVE_NAME = "Gemini Science Archive"
 ARCHIVE_SHORTNAME = "gemini"
-#ARCHIVE_URL = "http://www1.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/cadcbin/gsa/wdbi.cgi/gsa/gsa_science/query"
 ARCHIVE_URL = "http://www4.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/cadcbin/en/gsa/wdbi.cgi/gsa/gsa_science/query"
 
 ARCHIVE_USER_URL = "http://www1.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/cadcbin/gsa/wdbi.cgi/gsa/gsa_science/form"
@@ -108,14 +107,7 @@ class GeminiArchive(basic_archive.BasicArchive):
 		# Note that here we are using our special multipart/form-data
 		# method for posting to the archive.
 		connection = multipart_form.MultipartPost(self.URL, self.params)
-		# Loop to make sure we get *all* of the HTML (bug of sorts in MacPython 2.0--2.2):
-# 		htmlReceived = ''
-# 		newdata = connection.read()
-# 		while newdata:
-# 			htmlReceived += newdata
-# 			newdata = connection.read()
-# 		connection.close()
-		htmlReceived = connection.read()
+		htmlReceived = connection.read().decode('utf-8')
 		connection.close()
 		return htmlReceived
 

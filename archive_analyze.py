@@ -19,19 +19,14 @@ NO_NAME = "NO NAME"
 # group #1 of the result.
 findWereRetrieved = re.compile(r"""of (\d+)(| record| records) were retrieved""")
 findNOAORecords = re.compile(r"(\d+)(| record| records) found.")
-findSmokaRecords = re.compile(r"(\d+)(| frame| frames) are found.")
+findSmokaRecords = re.compile(r"(\d+)(| frame| frames) were found.")
 findSpitzerRecords = re.compile(r"#\s+(\d+)\s+ \(Records Found\)")
 findSTScIRecords = re.compile(r"(\d+) records \(\d+ proprietary\) returned")
 findMASTRecords = re.compile(r"(\d+) observations\s+found")
-findESORecords = re.compile(r"""A \s+ total \s+ of \s+ (\d+)(| record| records)|
-						A \s <b>maximum</b> \s of \s (\d+)(| record| records)
-						""", re.VERBOSE)
-# findESORecords = re.compile(r"""
-# 						A \s total \s of \s (\d+) \s were \s found|
-# 						A \s <b>maximum</b> \s of \s (\d+) \s were \s found
-# 						""", re.VERBOSE)
-#		text += r"A <b>maximum</b> of \d+ were found matching the provided criteria|"
-
+findESORecords = re.compile(r"""of \s+ (\d+)(| record| records)""", re.VERBOSE)
+# findESORecords = re.compile(r"""A \s+ total \s+ of \s+ (\d+)(| record| records)|
+# A \s+ maximum \s+ of (\d+)(| record| records)""", re.VERBOSE)
+#A maximum of 5000 records were found matching the provided criteria - any remaining rows were ignored.
 
 #   Check for errors in connecting to SIMBAD, which occasionally happens:
 findSIMBADError = re.compile(r"ERROR connecting to SIMBAD")
@@ -55,13 +50,22 @@ text += r"A <b>maximum</b> of \d+ were retrieved|"
 text += r"A <b>maximum</b> of \d+ records were retrieved|"
 text += r"A total of \d+ were found matching the provided criteria|"
 text += r"A <b>maximum</b> of \d+ were found matching the provided criteria|"
+text += r"A maximum of \d+ records were found matching the provided criteria|"  # ESO for > 5000 records
 text += r"\d+ records \(\d+ proprietary\) returned|"
 text += r"[1-9](\d)* records found.|"   # NOAO (matches if > 0 found)
-text += r"\d+ frames are found.|"   # Smoka
+text += r"\d+ frames were found.|"   # Smoka
 text += r"\d+ observations\s+found|"   # MAST
 text += r"#\s+\d+\s+ \(Records Found\)"   # Spitzer
 text += r"A total of \d+ were found"
 findNReturned = re.compile(text)
+
+# WARNING -- do *not* use "re.VERBOSE" for the following -- it screws up the recognition
+# of spaces!
+text = r"A <b>maximum</b> of \d+ were retrieved|"
+text += r"A <b>maximum</b> of \d+ records were retrieved|"
+text += r"A <b>maximum</b> of \d+ were found matching the provided criteria|"
+text += r"A maximum of \d+ records were found matching the provided criteria"
+findLimit = re.compile(text)
 
 #   The annoying tendency of some archives to return a completely
 # different kind of page if only *one* exposure or "association" was
@@ -72,44 +76,6 @@ findOneReturned = re.compile(text)
 
 #   Checks to see if the proxy server sent us a "no connection" message:
 failedConnection = re.compile(r"The requested URL could not be retrieved")
-
-
-
-#   This class is a structure which stores compiled regular-expression objects
-# for searching the HTML results returned by archives -- specifically, those
-# searches where we need to know the target's name.
-
-# Begin Class
-# class TextSearches(object):
-# 	def __init__(self, targetName):
-# 		
-# 		#   Check to see if name-resolver lookup yielded "Object not in database"
-# 		# (Smart archives say so; others echo default Vernal Equinox coords):
-# 		text = r"The name resolver could not determine coordinates for|"
-# 		text += r"not found in SIMBAD|"
-# 		text += r"Unknown object:|"   # UKIRT
-# 		text += r"Name resolver error|"   # STScI-HST message
-# 		text += r" ERROR with SIMBAD name resolver|"   # NOAO Science Archive
-# 		text += r"SIMBAD coordinates for " + targetName + "|"
-# 		text += r"Error: Cannot resolve object name|"   # SMOKA
-# 		text += r"Warning: Cannot resolve|"   # Spitzer
-# 		text += r"Error: resolver returned no coordinates|"   # MAST
-# 		text += r"WARNING NO COORDINATE FOUND|"   # CFHT (which goes ahead and searches
-# 		                                          # Vernal Equinox anyway...)
-# 		                                          # [Still true as of May 2010!]
-# 		text += r" :\s+00\s00\s00[.]0+,\s\+00\s00\s00[.]0+|"  # CFHT/UKIRT/AAT
-# 		text += r"<td nowrap>00 00 00[.]000</td><td nowrap>\+00 00 00[.]000</td>"   # ING
-# 		self.findNoCoordinates = re.compile(text)
-# 
-# 		#   Check to see if *anything* was said about coordinates (a test for
-# 		# sensible replies from the archive):
-# 		if (targetName != NO_NAME):
-# 			self.findCoordinateText	= re.compile(r"coordinates for " + targetName)
-# 		else:
-# 			self.findCoordinateText	= re.compile(r"DEC")
-
-
-# End Class
 
 
 
@@ -145,21 +111,20 @@ def CountDataSets( dataSetsText ):
 			# extract number and convert to integer
 			numberFound = int(strec.groups(1)[0])
 		elif mastrec:
-			# mastrec = list of strings (e.g., ['1', '61', '1', '6'])
 			numberFound = sum([int(n) for n in mastrec])
 		else:
 			print("Unable to find number of records retrieved")
 			numberFound = 0
 	return numberFound
-		
 
 
-#    Function which searches a big blob of HTML text.  We look for various text
-# fragments: signs of valid or invalid reply, did the archive find data or not,
-# did the archive get valid coordinates from Simbad or NED, etc.  Uses the
-# regular-expression objects defined in TextSearch object (see above); passed
-# as a parameter since the object name has to be provided from elsewhere.
 def AnalyzeHTML( htmlText ):
+	"""Function which searches a big blob of HTML text.  We look for various text
+	fragments: signs of valid or invalid reply, did the archive find data or not,
+	did the archive get valid coordinates from Simbad or NED, etc.  Uses the
+	regular-expression objects defined in TextSearch object (see above); passed
+	as a parameter since the object name has to be provided from elsewhere.
+	"""
 	# Default boolean flags:
 	connectionMade = 1       # successfully connected to archive web server
 	validReply = 0           # we got a genuine reply from the web server
@@ -170,19 +135,24 @@ def AnalyzeHTML( htmlText ):
 	simbadError = 0          # archive complained about some mysterious error from Simbad
 	miscError = 0            # archive said, "An error has occurred" (big help, eh?)
 	nSetsString = "No information about # datasets found"
+	limitReached = False
 
 
+	print("AnalyzeHTML: type of htmlText = ", type(htmlText))
 	# Search the text, try to figure out if we got a valid result,
 	# and if any data exists:
 	# First, look for evidence that the archive found data (even if it was a mistake):
 	dataSets = findNReturned.search(htmlText)
 	if ( dataSets ):
 		dataSetsText = dataSets.group()
-#		nDataFound = CountDataSets(dataSetsText)
 		nDataFound = CountDataSets(htmlText)
+		if findLimit.search(htmlText):
+			limitReached = True
 		validReply = 1
-#		nSetsString = '\"' + dataSetsText + '\"'
-		nSetsString = "%d observations found" % nDataFound
+		if limitReached:
+			nSetsString = "at least %d observations found" % nDataFound
+		else:
+			nSetsString = "%d observations found" % nDataFound
 	else:
 		oneDataSet = findOneReturned.search(htmlText)
 		if ( oneDataSet ):
@@ -195,22 +165,12 @@ def AnalyzeHTML( htmlText ):
 	# cases where an archive gets an "object doesn't exist" message from Simbad,
 	# and then goes ahead and searches anyway (using default Vernal Equinox
 	# position).  In those cases, the archive will say it found data, but it's
-	# WRONG (so we look for clues that it might have happened).
+	# WRONG (so we look for clues that this might have happened).
 	try:
 		if ( findNoDataReturned.search(htmlText) ):
 			# The archive said, "Found no data"
 			validReply = 1
 			nDataFound = 0
-# 		if (textSearches != None):
-# 			if ( textSearches.findCoordinateText.search(htmlText) ):
-# 				# The archive at least printed some object coordinates
-# 				validReply = 1
-# 			if ( textSearches.findNoCoordinates.search(htmlText) ):
-# 				# The archive didn't get coordinates from Simbad
-# 				validReply = 1
-# 				badName = 1
-# 				nDataFound = 0
-# 				raise SearchError( "Archive failed to get coordinates for object" )
 		if ( findSIMBADError.search(htmlText) ):
 			# The archive got a mysterious error message from Simbad
 			validReply = 1
@@ -242,4 +202,47 @@ def AnalyzeHTML( htmlText ):
 
 	return (messageString, nDataFound)
 # End Function
+
+
+# Helper function to handle looking for connection errors, etc.
+
+def CheckForError( htmlText ):
+	# Default boolean flags:
+	connectionMade = 1       # successfully connected to archive web server
+	validReply = 0           # we got a genuine reply from the web server
+	noDataExists = 0         # archive did proper search, found no data
+	badName = 0              # archive complained that Simbad couldn't find target
+	simbadError = 0          # archive complained about some mysterious error from Simbad
+	miscError = 0            # archive said, "An error has occurred" (big help, eh?)
+	nSetsString = "No information about # datasets found"
+
+	messageString = ""       # default for no problems
+
+	# Check to see if there was a screw-up of some kind.  This includes
+	# cases where an archive gets an "object doesn't exist" message from Simbad,
+	# and then goes ahead and searches anyway (using default Vernal Equinox
+	# position).  In those cases, the archive will say it found data, but it's
+	# WRONG (so we look for clues that this might have happened).
+	try:
+		if ( findSIMBADError.search(htmlText) ):
+			# The archive got a mysterious error message from Simbad
+			validReply = 1
+			simbadError = 1
+			raise SearchError( "Archive got error message from Simbad" )
+		if ( findMiscError.search(htmlText) ):
+			# The archive said, helpfully, "An error has occured"
+			validReply = 1
+			miscError = 1
+			raise SearchError( "Archive said \"An error has occured\"" )
+		if ( failedConnection.search(htmlText) ):
+			# Oops, couldn't connect to archive web server
+			connectionMade = 0
+			validReply = 0
+			raise SearchError( "Failed to connect with archive web server" )
+		
+	except SearchError as e:
+		messageString = e.value
+
+	return (messageString)
+
 
