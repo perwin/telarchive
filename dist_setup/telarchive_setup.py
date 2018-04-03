@@ -22,6 +22,7 @@ setup(name="telarchive",
 		"Programming Language :: Python :: 2",
 		"Programming Language :: Python :: 2.7",
 		"Programming Language :: Python :: 3",
+		"Programming Language :: Python :: 3.5",
 		"Programming Language :: Python :: 3.6",
 	],
 	
@@ -29,4 +30,3 @@ setup(name="telarchive",
 	packages=['telarchive'],
 	scripts=['dosearch.py', 'do_fetchsdss.py', 'do_fetchsdss_spectra.py']
 	)
-	

@@ -42,34 +42,34 @@ class MakeQuery(SloanArchiveTestCase):
 		(messageString, nDataFound) = self.theArchive.AnalyzeHTML(htmlOutsideStatic)
 		self.assertEqual(messageString, noDataMessage)
 
- 	def testGoodQuery1a(self):
+	def testGoodQuery1a(self):
 		"""Live search: Do we sucessfully find & analyze NGC 2950? [telarchive mode]"""
 		self.theArchive.InsertCoordinates(goodCoordsList1)
 		self.theArchive.SetMode(None)
- 		textReceived = self.theArchive.QueryServer()
+		textReceived = self.theArchive.QueryServer()
 		(messageString, nDataFound) = self.theArchive.AnalyzeHTML(textReceived)
 		self.assertEqual(messageString, goodMessage)
 		
- 	def testGoodQuery1b(self):
+	def testGoodQuery1b(self):
 		"""Live search: Do we sucessfully find & analyze NGC 2950? ["fetchsdss" mode]"""
 		self.theArchive.InsertCoordinates(goodCoordsList1)
 		self.theArchive.SetMode("fetchsdss")
- 		textReceived = self.theArchive.QueryServer()
+		textReceived = self.theArchive.QueryServer()
 		(messageString, nDataFound) = self.theArchive.AnalyzeHTML(textReceived)
 		self.assertEqual(messageString, goodMessageFull)
 		
- 	def testMultiFieldQuery(self):
+	def testMultiFieldQuery(self):
 		"""Live search: Do we sucessfully find all 3 fields of NGC 2859? [telarchive mode]"""
 		self.theArchive.InsertCoordinates(multiFieldCoordsList)
 		self.theArchive.SetMode(None)
- 		textReceived = self.theArchive.QueryServer()
+		textReceived = self.theArchive.QueryServer()
 		(messageString, nDataFound) = self.theArchive.AnalyzeHTML(textReceived)
 		self.assertEqual(messageString, goodMessage)
 		
 	def testBadQuery(self):
 		"""Live search: Do we get the proper "no data" reply for coordinates outside SDSS?"""
 		self.theArchive.InsertCoordinates(badCoordsList)
- 		textReceived = self.theArchive.QueryServer()
+		textReceived = self.theArchive.QueryServer()
 		(messageString, nDataFound) = self.theArchive.AnalyzeHTML(textReceived)
 		self.assertEqual(messageString, noDataMessage)
 
@@ -77,6 +77,6 @@ class MakeQuery(SloanArchiveTestCase):
 
 if __name__	== "__main__":
 	
-	print "\n** Unit tests for sdss_coords_archive.py **\n"
+	print("\n** Unit tests for sdss_coords_archive.py **\n")
 	unittest.main()	  
 
