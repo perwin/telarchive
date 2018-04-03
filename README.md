@@ -1,10 +1,12 @@
-# Telarchive
+# Telarchive and Fetchsdss
 
 Telarchive is a command-line utility for doing quick searches of multiple astronomical
 telescope data archives -- specifically, to determine if a particular target or location
 on the sky has been observed or not. If the archive makes such information available,
 then brief summaries of what kinds of data (e.g., imaging versus spectroscopy, instruments
 used) are included.
+
+Targets can be searched for using standard astronomical names or via RA,Dec coordinates.
 
 Example of use:
 
@@ -28,6 +30,11 @@ Example of use:
 			2 iracmapp
 		Sloan Digital Sky Survey (DR7+DR12): Data exists! 
 			3 DR7 fields; 10 DR12 fields; 0 spectra
+
+
+Telarchive includes an auxiliary command-line utility for retrieving
+SDSS imaging data called `fetchsdss`.
+
 
 ## Downloads and Installation
 
