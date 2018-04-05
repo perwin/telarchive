@@ -384,7 +384,8 @@ def main(argv):
 		doCoordSearch = True
 		doGetCoords = False
 		try:
-			coordsList = utils.ProcessCoords(options.coords)
+			coordsList = utils.ProcessCoords(options.coords, decimalDegreesOK=True, 
+												convertDecimalDegrees=True)
 			targetName = "%s %s" % (coordsList[0], coordsList[1])
 		except utils.CoordinateError as e:
 			newmsg = "*** Problem with coordinate string \"%s\": ***\n" % e

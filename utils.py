@@ -19,21 +19,26 @@ class SearchError( Exception ):
 
 
 
-def ProcessCoords( coordinateString, decimalDegreeOK=False ):
+def ProcessCoords( coordinateString, decimalDegreesOK=False, convertDecimalDegrees=False ):
 	"""Converts command-line coordinate-list (a string)
 	to a list of strings of the form [ra, dec].
 	coordinateString must have standard	astronomical formatting:
 	"hh mm ss dd mm ss" (where "ss" can also be "ss.s" or "ss.ss")
 	or "hh:mm:ss dd:mm:ss" or "XXhYYmZZs XXdYYmZZs"; optional "+" or "-"
 	in front of the Declination part.
-	Alternately, if decimaDegreeOK=True, then coordinateString can also 
+	
+	Alternately, if decimaDegreesOK=True, then coordinateString can also 
 	have the format "d+.d+ d+.d+" or "d+.d+, d+.d+"(decimal degrees for both RA and Dec).
+	
+	If *both* decimaDegreesOK and convertDecimalDegrees are True, then decimal-degree
+	input is converted to sexagesimal output
 	"""
 	
 	decimalDegreeFormat = False
 	badInput = False
 	
 	if (coordinateString.find("h") >= 0):
+		# sexagesimal XXhYYmSSs format
 		pp = coordinateString.split()
 		pp1 = pp[0].split("h")
 		rah = pp1[0]
@@ -51,19 +56,23 @@ def ProcessCoords( coordinateString, decimalDegreeOK=False ):
 		decPieces = [decd, decm, decs]
 		coordPieces = raPieces + decPieces
 	elif (coordinateString.find(":") >= 0):
+		# sexagesimal hh:m:ss format
 		pieces = coordinateString.split()
 		raPieces = pieces[0].split(":")
 		decPieces = pieces[1].split(":")
 		coordPieces = raPieces + decPieces
 	else:
 		if coordinateString.find(",") > 0:
+			# decimal-degrees "dd.d,dd.d" format (comma-separated)
 			coordPieces = coordinateString.split(",")
 			# remove possible spaces
 			coordPieces = [coordPieces[0].strip(), coordPieces[1].strip()]
 		else:
+			# sexagesimal "hh mm ss" format OR decimal-degrees "dd.d dd.d" format
 			coordPieces = coordinateString.split()
 	if len(coordPieces) != 6:
-		if decimalDegreeOK:
+		# must be decimal degrees (or bad input)
+		if decimalDegreesOK:
 			if ((len(coordPieces) == 2) and (coordPieces[0].find(".") in [1, 2, 3])
 				and (coordPieces[1].find(".") in [1, 2, 3])):
 				decimalDegreeFormat = True
@@ -74,7 +83,7 @@ def ProcessCoords( coordinateString, decimalDegreeOK=False ):
 	if badInput:
 		msg = "Coordinate string (\"%s\") is not in proper format! " % coordinateString
 		msg += "(i.e., \"hh mm ss[.s] dd mm ss[.s]\", \"hh:mm:ss[.s] dd:mm:ss[.s]\","
-		msg += " or \"XXhYYmZZ.Zs +/-XXdYYmZZ.Zs\")"
+		msg += " \"XXhYYmZZ.Zs +/-XXdYYmZZ.Zs\" or \"dd.d dd.d\")"
 		if len(coordPieces) < 5:
 			msg += "   Coordinates may be truncated or low-resolution"
 		raise CoordinateError(msg)
@@ -82,8 +91,8 @@ def ProcessCoords( coordinateString, decimalDegreeOK=False ):
 	# check for valid numerical ranges:
 	badCoords = False
 	if decimalDegreeFormat:
-		ra_d = float(coordPieces[0])
-		dec_d = float(coordPieces[1])
+		ra_d = float(coordPieces[0].rstrip("d"))
+		dec_d = float(coordPieces[1].rstrip("d"))
 		if ( (ra_d >= 0.0) and (ra_d < 360.0) and
 			 (dec_d > -90.0) and (dec_d < 90.0) ):
 			pass
@@ -110,8 +119,13 @@ def ProcessCoords( coordinateString, decimalDegreeOK=False ):
 		raise CoordinateError(msg)
 	
 	if decimalDegreeFormat:
-		ra = coordPieces[0]
-		dec = coordPieces[1]
+		ra_deg_str = coordPieces[0].rstrip("d")
+		dec_deg_str = coordPieces[1].rstrip("d")
+		if convertDecimalDegrees:
+			ra, dec = RADecFromDecimalDeg(ra_deg_str, dec_deg_str)
+		else:
+			ra = ra_deg_str
+			dec = dec_deg_str
 	else:
 		ra = ' '.join(coordPieces[0:3])
 		dec = ' '.join(coordPieces[3:])

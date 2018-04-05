@@ -20,7 +20,7 @@ class CheckProcessCoords(unittest.TestCase):
 		inputStrings = ["bob", "3177 40 1 62"]
 		for inputString in inputStrings:
 			self.assertRaises( utils.CoordinateError, utils.ProcessCoords,
-								inputString, decimalDegreeOK=True )
+								inputString, decimalDegreesOK=True )
 		
 	def testBadValues(self):
 		"""Checking that bad input coordinates raise exceptions in ProcessCoords()"""
@@ -42,7 +42,7 @@ class CheckProcessCoords(unittest.TestCase):
 		inputStrings.append("204.5589 -99.5000")
 		for inputVals in inputStrings:
 			self.assertRaises( utils.CoordinateError, utils.ProcessCoords,
-								inputVals, decimalDegreeOK=True )
+								inputVals, decimalDegreesOK=True )
 
 	def testGoodValues(self):
 		"""Checking that coordinates are properly converted in ProcessCoords()"""
@@ -68,7 +68,18 @@ class CheckProcessCoords(unittest.TestCase):
 		inputStrings.append("10.0005, -88.45")
 		correctResults.append(["10.0005", "-88.45"])
 		for (inputString, correctResult) in zip(inputStrings, correctResults):
-			self.assertEqual( utils.ProcessCoords(inputString, decimalDegreeOK=True), correctResult )
+			self.assertEqual( utils.ProcessCoords(inputString, decimalDegreesOK=True), correctResult )
+
+	def testGoodDecimalConversion(self):
+		"""Checking that coordinates in decimal-degree form are properly converted 
+		into sexagesimal form in ProcessCoords()"""
+		inputStrings =  [ "0.0 0.0", "0.0 -0.0",  "7.5 10.5", "150.0 50.2", "150.0 -50.2"]
+		correctResults = [ ["00 00 00.00", "00 00 00.0"], ["00 00 00.00", "00 00 00.0"],
+							["00 30 00.00", "10 30 00.0"], ["10 00 00.00", "50 12 00.0"],
+							["10 00 00.00", "-50 12 00.0"] ]
+		for (inputString, correctResult) in zip(inputStrings, correctResults):
+			self.assertEqual( utils.ProcessCoords(inputString, decimalDegreesOK=True, 
+											convertDecimalDegrees=True), correctResult )
 
 
 

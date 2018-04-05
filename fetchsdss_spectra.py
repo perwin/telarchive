@@ -140,7 +140,7 @@ def main(argv):
 	else:
 		# User gave us coordinate string (via --coords)
 		try:
-			coordsList = utils.ProcessCoords(options.coordinates, decimalDegreeOK=True)
+			coordsList = utils.ProcessCoords(options.coordinates, decimalDegreesOK=True)
 		except utils.CoordinateError as e:
 			newmsg = "*** Problem with coordinate string \"%s\"\n" % str(e) + "\n"
 			print(newmsg)
