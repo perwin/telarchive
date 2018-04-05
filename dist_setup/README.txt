@@ -131,6 +131,11 @@ Searching archives for 09 24 18.5 +34 30 49, with search box =  6.0 arcmin...
 		Kiso -- 1k CCD (1), Kiso -- 2k CCD (27), MITSuME -- Akeno (9), MITSuME -- OAO (726)
 
 
+Note that coordinate searches can use coordinates in any of the following formats:
+	sexagesimal: "hh mm ss dd mm ss"; "hh:mm:ss dd:mm:ss"; "XXhYYmZZs XXdYYmZZs"
+	decimal degrees: "dd dd"; "XXd YYd";
+
+
 As you can see, for most of the archives it is possible to learn a little
 about what is there.  Specifically, the script reports the number of
 observations made with different instruments (or spacecraft in the case of
