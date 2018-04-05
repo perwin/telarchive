@@ -1,6 +1,30 @@
 # Notes on how to test querying an archive
 
 
+# 0. How to capture HTTP request from user-accessible web page
+
+* Firefox: use Live HTTP Headers plug-in
+
+* Safari:
+Develop -> Show Page Resources
+In 3rd-from-top header bar (below the tab bar):
+	click on far-right side-bar icon to show sidebar
+		Look under Request & Response fold-down menu itme
+		(If there isn't anything for Request, reload the page!)
+			Click on small gray right-pointing arrow
+				In middle header of 3rd-from-top header bar, click on Response to select
+				"Request" instead of "Response" (if "Request" isn't already selected)
+
+Now the panel below the Request/Response bar will have the text of the HTTP request
+
+
+
+# 1. Determine if archive wants standard POST, or if it wants multipart-form
+
+
+
+# 2. Standard POST protocol:
+
 Give the following Generator output captured by Live HTTP Headers:
 POST /db-perl/W3Browse/w3query.pl navtrail=%3Ca+class%3D%27navpast%27+href%3D%27%2Fcgi-bin%2FW3Browse%2Fw3browse.pl%27%3E+Choose+Tables%3C%2Fa%3E+%3E+%3Ca+class%3D%27navpast%27+href%3D%27%2Fcgi-bin%2FW3Browse%2Fw3table.pl%3FREAL_REMOTE_HOST%3D130.183.74.117%26tablehead%3Dname%253Dspitzmastr%26Action%3DMore%2BOptions%26REAL_REMOTE_HOST%3D130%252E183%252E74%252E117%26Equinox%3D2000%26Action%3DMore%2BOptions%26sortby%3Dpriority%26ResultMax%3D1000%26maxpriority%3D99%26Coordinates%3DEquatorial%26tablehead%3Dname%253Dspitzmastr%26Action%3DParameter%2BSearch%0D%0A%0D%0A%27%3EParameter+Search%3C%2Fa%3E&popupFrom=Query+Results&tablehead=name%3Dheasarc_spitzmastr%26description%3DSpitzer+Space+Telescope+Observation+Log%26url%3Dhttp%3A%2F%2Fheasarc.gsfc.nasa.gov%2FW3Browse%2Fspitzer%2Fspitzmastr.html%26archive%3DN%26radius%3D3%26mission%3DSPITZER%26priority%3D3%26tabletype%3DObservation&dummy=Examples+of+query+constraints%3A&varon=name&bparam_name=&bparam_name%3A%3Aunit=+&bparam_name%3A%3Aformat=char25&bparam_ra=&bparam_ra%3A%3Aunit=degree&bparam_ra%3A%3Aformat=float8%3A.5f&bparam_dec=&bparam_dec%3A%3Aunit=degree&bparam_dec%3A%3Aformat=float8%3A.5f&bparam_time=&bparam_time%3A%3Aunit=mjd&bparam_time%3A%3Aformat=float8&bparam_duration=&bparam_duration%3A%3Aunit=min&bparam_duration%3A%3Aformat=float4%3A.2f&bparam_pi_lname=&bparam_pi_lname%3A%3Aunit=+&bparam_pi_lname%3A%3Aformat=char10&bparam_status=&bparam_status%3A%3Aunit=+&bparam_status%3A%3Aformat=char9&bparam_lii=&bparam_lii%3A%3Aunit=degree&bparam_lii%3A%3Aformat=float8%3A.5f&bparam_bii=&bparam_bii%3A%3Aunit=degree&bparam_bii%3A%3Aformat=float8%3A.5f&bparam_pi_fname=&bparam_pi_fname%3A%3Aunit=+&bparam_pi_fname%3A%3Aformat=char10&bparam_program_id=&bparam_program_id%3A%3Aunit=+&bparam_program_id%3A%3Aformat=int4&bparam_program_category=&bparam_program_category%3A%3Aunit=+&bparam_program_category%3A%3Aformat=char10&bparam_program_name=&bparam_program_name%3A%3Aunit=+&bparam_program_name%3A%3Aformat=char30&bparam_program_title=&bparam_program_title%3A%3Aunit=+&bparam_program_title%3A%3Aformat=char200&varon=aot&bparam_aot=&bparam_aot%3A%3Aunit=+&bparam_aot%3A%3Aformat=char10&bparam_aor_key=&bparam_aor_key%3A%3Aunit=+&bparam_aor_key%3A%3Aformat=int4&bparam_aor_label=&bparam_aor_label%3A%3Aunit=+&bparam_aor_label%3A%3Aformat=char40&Entry=12+22+54.899%2C+%2B15+49+20.57&Coordinates=J2000&Radius=100&Radius_unit=arcsec&NR=CheckCaches%2FGRB%2FSIMBAD%2FNED&Time=&ResultMax=1000&displaymode=PureTextDisplay&Action=Start+Search&table=heasarc_spitzmastr
 
@@ -24,15 +48,15 @@ for key in fulldict.keys():
 	fulldict_unquote[key3] = val3
 
     
-# set up a SimpleArchive object:
-from telarchive import basic_archive
-ARCHIVE_URL = "http://heasarc.gsfc.nasa.gov/db-perl/W3Browse/w3query.pl"
-test_archive = basic_archive.BasicArchive("Test", "test", ARCHIVE_URL, {}, [], "name", "ra", "dec")
+# set up a SimpleArchive object in a Python sessions:
+>>> from telarchive import basic_archive
+>>> ARCHIVE_URL = "http://heasarc.gsfc.nasa.gov/db-perl/W3Browse/w3query.pl"
+>>> test_archive = basic_archive.BasicArchive("Test", "test", ARCHIVE_URL, {}, [], "name", "ra", "dec")
 
 # put test name or coords into proper dictionary entry:
-fulldict_unquote['Entry'] = "NGC 4321"
+>>> fulldict_unquote['Entry'] = "NGC 4321"
 # update archive object's dictionary and tell it to run query; save output to a text file:
-test_archive.params = fulldict_unquote
-output = test_archive.QueryServer()
-outf = open("/Users/erwin/Desktop/out.html", 'w');outf.write(output);outf.close()
+>>> test_archive.params = fulldict_unquote
+>>> output = test_archive.QueryServer()
+>>> outf = open("/Users/erwin/Desktop/out.html", 'w');outf.write(output);outf.close()
 

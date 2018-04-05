@@ -64,13 +64,14 @@ ARCHIVE MODULES:
 +				for k in list(foundData.keys()):
 
 
-[ ] ing_archive_lapalma.py
-	-- currently hangs while trying to read data, after connect.
+[X] ing_archive_lapalma.py
+
 
 [X] mast_archive.py
 
 
 [ ] smoka_archive.py
+	-- generic access problems (can't access from web browser, either)
 
 
 [X] spitzer_archive.py
@@ -200,7 +201,7 @@ This needs to be rewritten; does not work properly in Python 3
 
 
 
-[] fetchsdss.py
+[X] fetchsdss.py
 --- fetchsdss.py	(original)
 +++ fetchsdss.py	(refactored)
 @@ -21,11 +21,11 @@
@@ -248,7 +249,7 @@ PLUS assorted print statements
 
 
 
-[] get_sdssfiles.py
+[X] get_sdssfiles.py
 --- get_sdssfiles.py	(original)
 +++ get_sdssfiles.py	(refactored)
 @@ -8,13 +8,13 @@

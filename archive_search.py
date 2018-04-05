@@ -206,16 +206,6 @@ def SearchOneArchive( archive, targetName, debugState=0, saveSuccesses=0 ):
 			(messageString, nDataFound) = archive.AnalyzeHTML(htmlReceived)
 		except IOError as e:
 			messageString = "I/O Error -- " + str(e) + "\n"
-# 			if len(e.args) > 1:
-# 				messageString = "I/O Error -- " + str(e.args[0]) + ": " + \
-# 								str(e.args[1]) + "\n"
-# 				if ( str(e.args[1]) == "(7, 'No address associated with nodename')" ):
-# 					messageString += 20*" " + "(DNS server is down,"
-# 					messageString += " or we're not connected to the Internet?)"
-# 				else:
-# 					messageString += " (try again later?)"
-# 			else:
-# 				messageString = "I/O Error -- " + str(e.args[0]) + "\n"
 			htmlReceived = ""
 			nDataFound = 0
 		except KeyboardInterrupt:
@@ -321,8 +311,9 @@ def main(argv):
 	usageString += "%prog --coords=\"<ra-dec-coodrds>\" [box_size_in_arcmin] [options]\n"
 	usageString += "\twhere \"target name\" is an astronomical source name suitable"
 	usageString += " for coordinate lookup via SIMBAD (e.g., \"NGC 1000\")\n"
-	usageString += "\tand \"<ra-dec-coodrds>\" is a string with RA and Dec in the form"
-	usageString += " \"hh mm ss dd mm ss\""
+	usageString += "\tand \"<ra-dec-coodrds>\" is a string with RA and Dec in one of the following forms:"
+	usageString += "\n\t\"hh mm ss dd mm ss\" or \"hh:mm:ss dd:mm:ss\" or \"XXhXXmXXs XXdXXmXXs\""
+	usageString += " or \"dd.d dd.d\""
 	parser = optparse.OptionParser(usage=usageString)
 
 	parser.add_option("-v", "--version", action="store_true", dest="printVersion", 
@@ -496,7 +487,7 @@ def main(argv):
 		DoSearch( finalTargetName, theArchiveList, options.DEBUG, options.doThreading )
 		
 		return 1
-#	print "Done!\n")
+#	print("Done!\n")
 
 
 

@@ -1,5 +1,6 @@
 # Utility functions for archive_search
 
+import math
 import urllib
 
 
@@ -118,13 +119,15 @@ def ProcessCoords( coordinateString, decimalDegreeOK=False ):
 
 
 def RADecToDecimalDeg(ra_str, dec_str):
-	# Takes two string representing RA and Dec in 'hh mm ss', 'dd mm ss' format
-	# and returns a 2-element tuple containg the equivalent values in decimal
-	# degrees (as numbers, not strings).
-	# Alternately, if input string is already in "dd.ddddd dd.ddddd" format,
-	# returns the 2-element tuple containing the numerical values.
-	# Currently assumes input RA and Dec are strings in hh mm ss and dd mm ss
-	# format [if in hh:mm:ss format, change split() to split(':')]
+	"""
+	Takes two string representing RA and Dec in 'hh mm ss', 'dd mm ss' format
+	and returns a 2-element tuple containg the equivalent values in decimal
+	degrees (as numbers, not strings).
+	Alternately, if input string is already in "dd.ddddd dd.ddddd" format,
+	returns the 2-element tuple containing the numerical values.
+	Currently assumes input RA and Dec are strings in hh mm ss and dd mm ss
+	format [if in hh:mm:ss format, change split() to split(':')]
+	"""
 
 	dec_pieces = dec_str.split()
 	
@@ -162,6 +165,61 @@ def RADecToDecimalDeg(ra_str, dec_str):
 		raise CoordinateError(msg)
 	return (ra_deg, dec_deg)
 
+
+def RADecFromDecimalDeg(ra_str_deg, dec_str_deg):
+	"""
+	Takes two string representing RA and Dec in "dd.ddd", "dd.ddd" format
+	and returns a 2-element tuple containg the equivalent values our standard
+	sexagesimal format: "hh mm ss.ss", "dd mm ss.s" (as strings)
+	"""
+
+	ra_deg = float(ra_str_deg)
+	dec_deg = float(dec_str_deg)
+	if not ( (0.0 <= ra_deg < 360.0) and (-90.0 <= dec_deg <= 90.0) ):
+		msg = "RA (\"%sd\") and/or Dec (\"%sd\") are outside bounds!" % \
+				(ra_str_deg, dec_str_deg)
+		raise CoordinateError(msg)
+
+	ra_h_decimal = ra_deg / 15.0
+	ra_m_decimal = 60*(ra_h_decimal - math.floor(ra_h_decimal))
+	ra_s_decimal = 60*(ra_m_decimal - math.floor(ra_m_decimal))
+	# check to make sure that output doesn't look funny (e.g., 59.996 rounding to "60.00")
+	if ("%05.2f" % ra_s_decimal) == "60.00":
+		ra_m_decimal += 1
+		ra_s_decimal = 0.0
+	if math.floor(ra_m_decimal) == 60.0:
+		ra_h_decimal += 1
+		ra_m_decimal = 0.0
+	if math.floor(ra_h_decimal) == 24.0:
+		ra_h_decimal = 0.0
+	ra_hms_str = "%02d %02d %05.2f" % (math.floor(ra_h_decimal), math.floor(ra_m_decimal),
+									ra_s_decimal)
+
+	dec_d_decimal = dec_deg
+	if (dec_d_decimal < 0):
+		negVals = True
+	else:
+		negVals = False
+	# if input value was "-0.0", then dec_d_decimal = -0.0, which is *not* < 0,
+	# but will still mess up the final output. So we always take the absolute value,
+	# to force -0.0 ==> 0.0
+	dec_d_abs = abs(dec_d_decimal)
+	dec_m_decimal = 60*(dec_d_abs - math.floor(dec_d_abs))
+	dec_s_decimal = 60*(dec_m_decimal - math.floor(dec_m_decimal))
+	if ("%05.2f" % dec_s_decimal) == "60.00":
+		dec_m_decimal += 1
+		dec_s_decimal = 0.0
+	if math.floor(dec_m_decimal) == 60.0:
+		dec_d_abs += 1
+		dec_m_decimal = 0.0
+	if math.floor(dec_d_abs) >= 90.0:
+		dec_d_abs = 90.0
+	dec_dms_str = "%02d %02d %04.1f" % (math.floor(dec_d_abs), math.floor(dec_m_decimal),
+									dec_s_decimal)
+	if negVals:
+		dec_dms_str = "-" + dec_dms_str
+	
+	return (ra_hms_str, dec_dms_str)
 
 
 def ConstructCountString( inputList ):

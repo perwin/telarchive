@@ -57,22 +57,22 @@ class CheckProcessCoords(unittest.TestCase):
 		for (inputString, correctResult) in zip(inputStrings, correctResults):
 			self.assertEqual( utils.ProcessCoords(inputString), correctResult )
 
- 	def testGoodDecimalValues(self):
- 		"""Checking that coordinates in decimal-degree form are properly converted in ProcessCoords()"""
- 		inputStrings = ["25.00345 -23.22398"]
- 		correctResults = [["25.00345", "-23.22398"]]
- 		inputStrings.append("0.0005,88.45")
- 		correctResults.append(["0.0005", "88.45"])
- 		inputStrings.append("0.0005,-88.45")
- 		correctResults.append(["0.0005", "-88.45"])
- 		inputStrings.append("10.0005, -88.45")
- 		correctResults.append(["10.0005", "-88.45"])
+	def testGoodDecimalValues(self):
+		"""Checking that coordinates in decimal-degree form are properly converted in ProcessCoords()"""
+		inputStrings = ["25.00345 -23.22398"]
+		correctResults = [["25.00345", "-23.22398"]]
+		inputStrings.append("0.0005,88.45")
+		correctResults.append(["0.0005", "88.45"])
+		inputStrings.append("0.0005,-88.45")
+		correctResults.append(["0.0005", "-88.45"])
+		inputStrings.append("10.0005, -88.45")
+		correctResults.append(["10.0005", "-88.45"])
 		for (inputString, correctResult) in zip(inputStrings, correctResults):
 			self.assertEqual( utils.ProcessCoords(inputString, decimalDegreeOK=True), correctResult )
 
 
 
-class CheckRADecConversion(unittest.TestCase):
+class CheckRADecConversion_RADecToDecimalDeg(unittest.TestCase):
 	def testBadInput(self):
 		"""Checking that bad inputs raise exceptions in RADecToDecimalDeg()"""
 		inputStrings =  [ ("25 30 00.0", "-10 30 00.0"), ("10 00 00.0", "-95 12 00.0"),
@@ -121,11 +121,55 @@ class CheckRADecConversion(unittest.TestCase):
 		for inputVals in inputStrings:
 			result.append( utils.RADecToDecimalDeg(inputVals[0], inputVals[1]) )
 		self.assertEqual(correctResult, result)
+
+
+
+
+# Note that RADecFromDecimalDeg returns *string* output, not floating-point!
+class CheckRADecConversion_RADecFromDecimalDeg(unittest.TestCase):
+	def testBadInput(self):
+		"""Checking that bad inputs raise exceptions in RADecFromDecimalDeg()"""
+		inputStrings =  [ ("365.0", "-10.0"), ("10.0", "-95.9")]
+		for inputVals in inputStrings:
+			self.assertRaises( utils.CoordinateError, utils.RADecFromDecimalDeg,
+								inputVals[0], inputVals[1] )
+
+	def testZeroValues(self):
+		"""Checking that RA=Dec=0 produce good output values in RADecFromDecimalDeg()"""
+		inputStrings =  [ ("0.0", "0.0"), ("0.0", "-0.0") ]
+		correctResult = [ ("00 00 00.00", "00 00 00.0"), ("00 00 00.00", "00 00 00.0") ]
+		result = []
+		for inputVals in inputStrings:
+			result.append( utils.RADecFromDecimalDeg(inputVals[0], inputVals[1]) )
+		self.assertEqual(correctResult, result)
+		
+	def testPosValues(self):
+		"""Checking that good input value (Dec > 0) produces good output values in RADecFromDecimalDeg()"""
+		inputStrings = [ ("7.5", "10.5"), ("150.0", "50.2"),
+						("359.99995833333332", "89.999972222222219") ]
+		correctResult =  [ ("00 30 00.00", "10 30 00.0"), ("10 00 00.00", "50 12 00.0"),
+						("23 59 59.99", "89 59 59.9")]
+		result = []
+		for inputVals in inputStrings:
+			result.append( utils.RADecFromDecimalDeg(inputVals[0], inputVals[1]) )
+		self.assertEqual(correctResult, result)
+		
+	def testNegValues(self):
+		"""Checking that good input value (Dec < 0) produces good output values in RADecFromDecimalDeg()"""
+		inputStrings = [ ("7.5", "-10.5"), ("150.0", "-50.2"),
+						("359.99995833333332", "-89.999972222222219"), 
+						("40.670124999999999", "-0.013444444444444445") ]
+		correctResult =  [ ("00 30 00.00", "-10 30 00.0"), ("10 00 00.00", "-50 12 00.0"),
+						("23 59 59.99", "-89 59 59.9"), ("02 42 40.83", "-00 00 48.4")]
+		result = []
+		for inputVals in inputStrings:
+			result.append( utils.RADecFromDecimalDeg(inputVals[0], inputVals[1]) )
+		self.assertEqual(correctResult, result)
 		
 
 
 
 if __name__	== "__main__":
 	
-	print "\n** Unit tests for utils.py **\n"
+	print("\n** Unit tests for utils.py **\n")
 	unittest.main()	  
