@@ -1,10 +1,9 @@
 #! /usr/bin/env python
-#   A Python script to find and download SDSS spectra for or near
-# specific target (astronomical object or coordinates).
+#   A Python script to find and download SDSS spectra for or near specific target 
+# (astronomical object or coordinates).
 # 
 # Requires Python 2.6 or higher
 # 
-#       
 
 from __future__ import print_function
 # Import various standard modules:
@@ -12,7 +11,8 @@ import os, sys, re, optparse
 
 # Import our modules:
 import utils, getcoords, get_sdssfiles
-import sdss_dr12_archive, sdss_sas_archive 
+# import sdss_sas_archive
+import sdss_dr12_archive, sdss_dr14spec_archive
 
 VERSION_STRING = "1.3"
 
@@ -47,7 +47,7 @@ def QueryArchive( archive, debug=False ):
 	"""Handles submission of request and evaluation of results for a single archive.
 	Requires a BasicArchive object [see basic_archive.py] or derived object.
 	Returns a tuple of (messageString, nDataFound).
-	If debug = 1, then *all* returned HTML is saved to a file."""
+	If debug = True, then *all* returned HTML is saved to a file."""
 
 	# Query archive and save resulting HTML in a list of lines:
 	try:
@@ -165,34 +165,46 @@ def main(argv):
 
 
 	# If necessary, see if coordinates are within SDSS
-	nDR12DataFound = 0
-	if doCoordsQuery:
-		if options.verbose:
-			print("\nQuerying SDSS DR12 Science Archive Server to see if these coordinates are within survey area...")
-		# Create an instance of sdss_dr12_archive and prep it for queries
-		dr12Server = sdss_dr12_archive.MakeArchive()
-		dr12Server.SetMode("fetchsdss")
-		dr12Server.InsertCoordinates(coordsList)
-		(responseString, nDR12DataFound) = QueryArchive(dr12Server)
-		if options.verbose:
-			print("   server response = %s" % responseString)
-		if (nDR12DataFound > 1):
-			print("   %d separate DR12 fields found" % nDR12DataFound)
-		
-		if (nDR12DataFound > 1):
-			# SDSS imaged these coords, so search for spectra
-			specServer = sdss_sas_archive.MakeArchive()
-			specServer.InsertCoordinates(coordsList)
-			if options.specSearchRadius is not None:
-				specServer.InsertRadius(options.specSearchRadius)
-			specServer.SetMode("fetchsdss")
-			if options.verbose:
-				print("\nQuerying server to search for spectra near coordinates...")
-			(spectrumResponse, nSpectraFound) = QueryArchive(specServer, debug=True)
-			print("\n" + spectrumResponse + "\n")
-			if (nSpectraFound > 0):
-				spectrumExists = True
+# 	nDR12DataFound = 0
+# 	if doCoordsQuery:
+# 		if options.verbose:
+# 			print("\nQuerying SDSS DR12 Science Archive Server to see if these coordinates are within survey area...")
+# 		# Create an instance of sdss_dr12_archive and prep it for queries
+# 		dr12Server = sdss_dr12_archive.MakeArchive()
+# 		dr12Server.SetMode("fetchsdss")
+# 		dr12Server.InsertCoordinates(coordsList)
+# 		(responseString, nDR12DataFound) = QueryArchive(dr12Server)
+# 		if options.verbose:
+# 			print("   server response = %s" % responseString)
+# 		if (nDR12DataFound > 1):
+# 			print("   %d separate DR12 fields found" % nDR12DataFound)
+# 		
+# 		if (nDR12DataFound > 1):
+# 			# SDSS imaged these coords, so search for spectra
+# 			specServer = sdss_sas_archive.MakeArchive()
+# 			specServer.InsertCoordinates(coordsList)
+# 			if options.specSearchRadius is not None:
+# 				specServer.InsertRadius(options.specSearchRadius)
+# 			specServer.SetMode("fetchsdss")
+# 			if options.verbose:
+# 				print("\nQuerying server to search for spectra near coordinates...")
+# 			(spectrumResponse, nSpectraFound) = QueryArchive(specServer, debug=True)
+# 			print("\n" + spectrumResponse + "\n")
+# 			if (nSpectraFound > 0):
+# 				spectrumExists = True
 	
+	# See if DR14 archive has spectra
+	specServer = sdss_dr14spec_archive.MakeArchive()
+	specServer.SetMode("fetchsdss")
+	specServer.InsertCoordinates(coordsList)
+	if options.specSearchRadius is not None:
+		specServer.InsertRadius(options.specSearchRadius)
+	if options.verbose:
+		print("\nQuerying server to search for spectra near coordinates...")
+	(spectrumResponse, nSpectraFound) = QueryArchive(specServer, debug=True)
+	print("\n" + spectrumResponse)
+	if (nSpectraFound > 0):
+		spectrumExists = True
 	
 	# Data exists, and we are going to get it, so request files from archive
 	if options.getData and spectrumExists:

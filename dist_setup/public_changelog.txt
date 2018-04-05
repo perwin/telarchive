@@ -1,10 +1,12 @@
-Telarchive -- Version 2.0 (2 April 2018)
+Telarchive -- Version 2.0 (6 April 2018)
 and
-Fetchsdss -- Version 1.3 (2 April 2018)
+Fetchsdss -- Version 1.3 (6 April 2018)
 
 Major update to make telarchive and fetchsdss compatible with Python 3.
 
-Fixes to make ESO searches correctly parse instrument and mode counts.
+Fixes to make ESO and SMOKA searches correctly parse instrument and mode counts.
+
+Updated SDSS spectroscopic searches to use DR14.
 
 Added "--skip-archives" option to telarchive, to enable skipping of one
 or more archives in a search (e.g., when it's know that a particular

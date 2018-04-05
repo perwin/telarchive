@@ -59,9 +59,13 @@ def SearchForSpectra( csvText ):
 	
 	In the case of *no* data, there will only be the first two lines.
 	"""
+	spectraInfo = []
 	lines = csvText.splitlines()
 	nLines = len(lines)
-	return nLines - 2
+	if nLines > 2:
+		for line in lines[2:]:
+			spectraInfo.append(line.split(","))
+	return nLines - 2, spectraInfo
 
 
 # Subclass the BasicArchive class
@@ -102,7 +106,7 @@ class SloanDR14Archive(basic_archive.BasicArchive):
 		connection = multipart_form.MultipartPost(self.URL, self.params)
 		textReceived = connection.read().decode('utf-8')
 		connection.close()
-		return htmlRectextReceivedeived
+		return textReceived
 
 
 	def AnalyzeHTML(self, csvText):
@@ -125,7 +129,7 @@ class SloanDR14Archive(basic_archive.BasicArchive):
 		# Now, check to see if there's any data present or not:
 		if (foundValidReply is not None):
 			validReply = True
-			nDataFound = SearchForSpectra(csvText)
+			nDataFound, spectraInfo = SearchForSpectra(csvText)
 	
 		# Evaluate results of search and construct returned string:
 		if ( connectionMade ):
@@ -138,6 +142,10 @@ class SloanDR14Archive(basic_archive.BasicArchive):
 					else:
 						messageString += " (%d spectra within " % nDataFound
 					messageString += "r = %.3f arcmin)" % rad_arcmin
+					if (self.mode == "fetchsdss"):
+						for specInfo in spectraInfo:
+							messageString += "\n\t\t(SDSS plate, mjd, fiber = "
+							messageString += "%s %s %s)" % (specInfo[0], specInfo[1], specInfo[2])
 				else:
 					messageString = "No spectroscopic data found."
 			else:

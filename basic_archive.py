@@ -80,7 +80,8 @@ class BasicArchive(object):
 
 	def InsertCoordinates(self, coords_list):
 		# Coordinate list is a two-element list of strings; each string must
-		# be in the usual "hh mm ss.s" format, though decimal values are optional.
+		# be in the usual "hh mm ss.s" sexigesimal format, though decimal values 
+		# for the seconds are optional.
 		#    Override this for SDSS searches, which require decimal degrees!
 		self.params[self.raLabel] = coords_list[0]
 		self.params[self.decLabel] = coords_list[1]

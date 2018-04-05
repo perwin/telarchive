@@ -9,7 +9,8 @@
 
 import re
 import basic_archive
-import sdss_coords_archive, sdss_sas_archive, sdss_dr12_archive
+import sdss_coords_archive, sdss_dr12_archive
+import sdss_dr14spec_archive
 import utils
 
 DEFAULT_TARGET = "No Target"
@@ -59,7 +60,7 @@ class SloanCombinedArchive( basic_archive.BasicArchive ):
 		self.nSpecFound = 0
 		self.dr7_archive = sdss_coords_archive.MakeArchive()
 		self.dr12_archive = sdss_dr12_archive.MakeArchive()
-		self.spec_archive = sdss_sas_archive.MakeArchive()
+		self.spec_archive = sdss_dr14spec_archive.MakeArchive()
 
 		self.longName = long_name
 		self.shortName = short_name
@@ -126,9 +127,8 @@ class SloanCombinedArchive( basic_archive.BasicArchive ):
 		(msg_dr7, self.nDataFound_dr7) = self.dr7_archive.AnalyzeHTML(html_dr7)
 		html_dr12 = self.dr12_archive.QueryServer()
 		(msg_dr12, self.nDataFound_dr12) = self.dr12_archive.AnalyzeHTML(html_dr12)
-		if (self.nDataFound_dr12 > 0):
-			html_spec = self.spec_archive.QueryServer()
-			msg_spec,self.nSpecFound = self.spec_archive.AnalyzeHTML(html_spec)
+		txt_spec = self.spec_archive.QueryServer()
+		msg_spec, self.nSpecFound = self.spec_archive.AnalyzeHTML(txt_spec)
 		
 		return html_dr12
 			
