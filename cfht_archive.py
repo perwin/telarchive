@@ -10,6 +10,8 @@
 # It requests CSV data rather than HTML, to make parsing the results easier.
 
 import sys, re
+from contextlib import closing
+
 import basic_archive, utils, archive_analyze
 if sys.version_info[0] > 2:
 	usingPython2 = False
@@ -145,9 +147,10 @@ class CFHTArchive(basic_archive.BasicArchive):
 			self.SetupSQLQuery()
 		specialHeader = {'User-agent': BROWSER_MASQUERADE}
 		req = Request(self.URL, self.EncodeParams(), specialHeader)
-		response = urlopen(req, timeout=self.timeout)
-		csvReceived = response.read()
-		response.close()
+		#response = urlopen(req, timeout=self.timeout)
+		with closing(urlopen(req, timeout=self.timeout)) as response:
+			csvReceived = response.read()
+		#response.close()
 
 		# convert result from bytes to Unicode string so Python 3 doesn't choke;
 		# specify 'utf-8' instead of 'ascii' in case we get Unicode characters

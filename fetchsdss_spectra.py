@@ -198,7 +198,7 @@ def main(argv):
 	specServer.SetMode("fetchsdss")
 	specServer.InsertCoordinates(coordsList)
 	if options.specSearchRadius is not None:
-		specServer.InsertRadius(options.specSearchRadius)
+		specServer.InsertSpectroscopyRadius(options.specSearchRadius)
 	if options.verbose:
 		print("\nQuerying server to search for spectra near coordinates...")
 	(spectrumResponse, nSpectraFound) = QueryArchive(specServer, debug=True)

@@ -4,18 +4,23 @@ Fetchsdss -- Version 1.3 (6 April 2018)
 
 Major update to make telarchive and fetchsdss compatible with Python 3.
 
-Updated SDSS spectroscopic searches to use DR14.
+Updated SDSS spectroscopic searches to use Data Release 14.
 
 Fixes to make ESO and SMOKA searches correctly parse instrument and mode counts.
 
-Coordinate searches now allow decimal degrees as inputs.
+Updated Gemini Observatory searches to use 
+
+Coordinate searches ("--coords=") now allow decimal degrees as inputs.
 
 Added "--skip-archives" option to telarchive, to enable skipping of one
-or more archives in a search (e.g., when it's know that a particular
-archive or archives are temporarily inaccessible).
+or more archives in a search (e.g., when a particular archive or
+archives are temporarily inaccessible).
 
 Added aliases for some command-line options (e.g., "--list-archives" is
-synonym for "--archives").
+a synonym for "--archives").
+
+The current code for telarchive is now on Github at
+   https://github.com/perwin/telarchive
 
 
 

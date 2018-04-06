@@ -334,6 +334,8 @@ def main(argv):
 # 					  help="list of target names to search for [DISABLED]")
 # 	parser.add_option("--coordsfile", type="str", dest="coordsListFile", default=None,
 # 					  help="list of coordinates to search for")
+	parser.add_option("--sdss-spec-radius", type="float", dest="sdssSpecSearchRadius", default=None,
+					  help="search radius in arcmin for SDSS spectroscopy (default = 0.1)")
 	parser.add_option("--nosdss", "--noSDSS", action="store_false", dest="doSDSS", default=True,
 					  help="ignore Sloan Digital Sky Survey")
 	parser.add_option("--nothreads", action="store_false", dest="doThreading", default=True,
@@ -424,7 +426,7 @@ def main(argv):
 	# Instantiate object holding array of individual-archive objects:
 	theArchiveList = archive_list.ArchiveList( targetName, coordsList, searchBoxSize,
 											 whichHSTarchive, doAAT, options.doSDSS,
-											 archive_module_list )
+											 options.sdssSpecSearchRadius, archive_module_list )
 
 	if options.userTimeout > 0:
 		theArchiveList.InsertTimeout(options.userTimeout)

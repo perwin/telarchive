@@ -74,15 +74,17 @@ class ArchiveList(object):
 
 	def __init__( self, targetName = DEFAULT_TARGET, coordinates = NO_COORDS,
 				 boxSize = DEFAULT_BOXSIZE, whichHST = kHST_ESO, doAAT=True,
-				 doSDSS=True, moduleNameList=None ):
+				 doSDSS=True, sdssSpecRadius=None, moduleNameList=None ):
 		# Instantiate individual SingleArchive objects and add them to the list.
 		# Check to include only the right HST archive, and exclude AAT 
 		# and/or SDSS if asked.
 		self.archives = []
+		self.sdssModuleIndex = None
 		if (moduleNameList != None):
 			archive_modules = LoadArchiveModules(moduleNameList)
 		else:
 			archive_modules = LoadArchiveModules()
+		i = -1
 		for current_module in archive_modules:
 			thisModuleName = current_module.__name__
 			keepThisModule = True
@@ -95,8 +97,13 @@ class ArchiveList(object):
 					keepThisModule = False
 			if keepThisModule:
 				self.archives.append( current_module.MakeArchive() )
+				i += 1
+				if (thisModuleName == sdss_module_name):
+					self.sdssModuleIndex = i
 
 		self.nArchives = len(self.archives)
+		self.specSearchRadius = sdssSpecRadius
+		
 		self.SetUpQuery( targetName, coordinates, boxSize )
 
 
@@ -127,6 +134,9 @@ class ArchiveList(object):
 			self.InsertName(targetName)
 		else:
 			self.InsertCoords(coordinates)
+		# special for SDSS spectroscopy searches
+		if (self.sdssModuleIndex is not None) and self.specSearchRadius is not None:
+			self.archives[self.sdssModuleIndex].InsertSpectroscopyRadius(self.specSearchRadius)
 
 
 	def GetArchives(self):

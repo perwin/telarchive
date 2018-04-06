@@ -11,6 +11,8 @@ import re
 import basic_archive, multipart_form
 import utils
 
+DEFAULT_TIMEOUT = 30.0
+BROWSER_MASQUERADE = "Mozilla/5.0 [en]"
 DEFAULT_BOXSIZE_STRING = "00 04 00"
 
 # SDSS DR14 spectroscopic search
@@ -78,6 +80,11 @@ class SloanDR14Archive(basic_archive.BasicArchive):
 	def InsertBoxSize(self, box_size):
 		# Useless for SDSS searches, so we do nothing
 		pass
+
+
+	def InsertSpectroscopyRadius(self, radius):
+		# Assume search radius for spectra is in arcmin
+		self.params['radius'] = radius
 
 
 	def InsertTarget(self, target_name):

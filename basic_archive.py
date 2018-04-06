@@ -5,6 +5,7 @@
 
 import sys
 import math
+from contextlib import closing
 
 if sys.version_info[0] > 2:
 	usingPython2 = False
@@ -112,9 +113,10 @@ class BasicArchive(object):
 		#req = urllib.request.Request(self.URL, self.EncodeParams())
 		req = Request(self.URL, self.EncodeParams())
 		req.add_header('User-agent', BROWSER_MASQUERADE)
-		response = urlopen(req, timeout=self.timeout)
-		htmlReceived = response.read().decode('utf-8')
-		response.close()
+		#response = urlopen(req, timeout=self.timeout)
+		with closing(urlopen(req, timeout=self.timeout)) as response:
+			htmlReceived = response.read().decode('utf-8')
+		#response.close()
 		return htmlReceived
 
 

@@ -81,5 +81,5 @@ class MakeQuery(HSTArchiveTestCase):
 
 if __name__	== "__main__":
 	
-	print "\n** Unit tests for hst_archive.py **\n"
+	print("\n** Unit tests for hst_archive.py **\n")
 	unittest.main()	  

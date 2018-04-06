@@ -13,29 +13,36 @@ be in sexagesimal -- e.g. "hh mm ss dd mm ss" -- or degree formats).
 
 Example of use:
 
-	$ telarchive 'NGC 2859'
-		SIMBAD (Simbad 4, France):  Found object coordinates: RA = 09 24 18.549, Dec = +34 30 48.16
+	$ telarchive 'NGC 4321'
+		SIMBAD (Simbad 4, France):  Found object coordinates: RA = 12 22 54.899, Dec = +15 49 20.57
 
-	Searching archives for NGC 2859 (RA = 09 24 18.549, dec = +34 30 48.16), with search box =  4.0 arcmin...
-		HST archive: Data exists! (2 records found)
-			2 ACS
-		Mikulski Archive for Space Telescopes (MAST): No data found.
-		AAT Archive: No data found.
-		UKIRT Archive: No data found.
-		CFHT Archive: Data exists! (106 observations found)
-			MegaPrime (77), OASIS (29)
-		ESO Archive: No data found.
+	Searching archives for NGC 4321 (RA = 12 22 54.899, dec = +15 49 20.57), with search box =  4.0 arcmin...
+		CFHT Archive: Data exists! (269 observations found)
+			MegaPrime (223), HRCAM (46)
+		UKIRT Archive: Data exists! (58 observations found)
+			UFTI (58)
+		Mikulski Archive for Space Telescopes (MAST): Data exists! (155 observations found)
+			FUSE (1); HUT (1); IUE (40); SWIFTUVOT (106); UIT (6); XMM-OM (1)
 		Gemini Science Archive: No data found.
-		ING Archive (La Palma): Data exists! (121 observations found)
-			23 images, 98 spectra
-			WHT -- ACAM (20), AG4 (1), ISIS (25), SAURON (61); INT -- IDS (12), WFC (2)
-		Spitzer archive: Data exists! (2 records found)
-			2 iracmapp
+		AAT Archive: Data exists! (41 observations found)
+			-- 22 images, 21 spectra, 0 polarimetry
+		Spitzer archive: Data exists! (31 records found)
+			5 iracmap, 5 irsmap, 4 irspeakup, 2 mipsscan, 1 mipssed, 12 iracmapp, 2 irsstare
+		ING Archive (La Palma): Data exists! (253 observations found)
+			117 images, 136 spectra
+			WHT -- AF2 (17), ISIS (62), LIRIS (25), PFIP (10), PNS (9), SAURON (52), TAURUS (5); INT -- WFC (71); JKT -- JAG (2)
+		HST archive: Data exists! (285 records found)
+			37 ACS, 45 STIS, 14 WFPC, 6 WFC3, 170 WFPC2, 7 FOS, 6 FOC
+		ESO Archive: Data exists! (765 observations found)
+			109 continuum, 45 spectra, 318 images, 40 mos, 60 polarimetry, 126 spectrum,nodding, 21 ifu, 38 echelle, 8 image,pre
+			APEXBOL (109), EMMI (29), FORS1 (109), HAWKI (48), ISAAC (126), MUSE (1), EMMI/1.57 (9), SOFI (225), WFI (4)
+		SMOKA (Subaru Mitaka Okayama Kiso Archive): Data exists! (1154 observations found)
+			Subaru -- FOCAS (10), Subaru -- MOIRCS (60), Kiso -- 1k CCD (30), Kiso -- 2k CCD (155), Okayama -- SNG (8), MITSuME -- OAO (891)
 		Sloan Digital Sky Survey (DR7+DR12): Data exists! 
-			3 DR7 fields; 10 DR12 fields; 0 spectra
+			1 DR7 field; 6 DR12 fields; 0 spectra (within 0.10 arcmin of search center)
 
 
-Telarchive should work with both version 2 and 3 of Python. (It has been tested with
+Telarchive should work with both versions 2 and 3 of Python. (It has been tested with
 Python 2.7, 3.5, and 3.6.)
 
 

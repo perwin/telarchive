@@ -6,21 +6,21 @@ import gemini_archive
 import unittest
 
 
-#  Successful search (target was observed = M83 w/ 1.0 arcmin box = 77 obs):
-htmlFile = "html/Gemini_M83_result.html"
+#  Successful search (target was observed = NGC 1291 w/ 4-arcmin box = 82 obs):
+htmlFile = "testing/ngc_1291_gemini.json"
 foundDataHTML = open(htmlFile).read()
 
 #  Unsuccessful search (target not observed):
-noData_htmlFile = "html/Gemini_NoData.html"
-foundNoDataHTML = open(noData_htmlFile).read()
+foundNoDataHTML = "[]"
 
-goodSearchParams="""
-action=Search&target=M83&resolver=SIMBAD&ra=&dec=&equinox=J2000&radius_acs=1.0&missions%5B%5D=FUSE&radius_fuse=1.0&radius_wfpc2=1.0&missions%5B%5D=IUE&radius_iue=1.0&radius_wfpc2_asn=1.0&missions%5B%5D=EUVE&radius_euve=1.0&radius_wfpc1=1.0&missions%5B%5D=COPERNICUS&radius_copernicus=1.0&radius_fos=1.0&missions%5B%5D=UIT&radius_uit=5.0&radius_ghrs=1.0&missions%5B%5D=HUT&radius_hut=1.0&radius_stis=1.0&missions%5B%5D=WUPPE&radius_wuppe=1.0&radius_nicmos=1.0&missions%5B%5D=BEFS&radius_befs=1.0&radius_foc=1.0&missions%5B%5D=IMAPS&radius_imaps=1.0&radius_fgs=1.0&missions%5B%5D=TUES&radius_tues=1.0&radius_hsp=1.0&missions%5B%5D=VLAFIRST&radius_vlafirst=1.0&missions%5B%5D=GALEX&radius_galex=1.0&outputformat=HTML_Table&max_records=1
-"""
+# coords for NGC 1291:
+n1291CoordsList = ["03 17 18.600", "-41 06 29.05"]
 
-#  Bad object name:
-#htmlFile = "ngc_bob_ing.html"
-#badQueryHTML = open(htmlFile).read()
+# number of files found as of 1 Dec 2016, using 4x4-arcmin box
+kCorrectNDataFound = 82
+kCorrectInstrumentCount = "\n\t\t14 images, 59 long-slit spectra, 9 ifu\n\t\tGMOS-S: 21, GNIRS: 61"
+
+#goodSearchURL = """https://archive.gemini.edu/jsonsummary/canonical/science/NotTwilight/NotFail/ra=204.2443488-204.2635678/dec=-29.8737500--29.8570833"""
 
 
 
@@ -37,47 +37,46 @@ class CheckAnalyzeHTML(GeminiArchiveTestCase):
 		self.assertEqual(correctResult, result)
 		
 	def testDataExistsHTML(self):
-		"""Analyzing (old, locally stored) HTML text indicating data exists"""
-		correctResult = ('Data exists! (74 observations found)', 74)
+		"""Analyzing (old, locally stored) JSON text indicating data exists"""
+		correctResult = ('Data exists! (%d observations found)' % kCorrectNDataFound, kCorrectNDataFound)
 		result = self.theArchive.AnalyzeHTML( foundDataHTML )
 		self.assertEqual(correctResult, result)
 		
- 	def testSpecialSearches1(self):
- 		"""Checking HTML text to find and count types of observations"""
- 		correctResult = "\n\t\t52 imaging, 22 long-slit"
- 		result = self.theArchive.theSearches[0](foundDataHTML, 1)
- 		self.assertEqual(correctResult, result)
+# 	def testSpecialSearches1(self):
+# 		"""Checking HTML text to find and count types of observations"""
+# 		correctResult = "\n\t\tGMOS-S: 21, GNIRS: 61"
+# 		result = self.theArchive.theSearches[0](foundDataHTML, 1)
+# 		self.assertEqual(correctResult, result)
 		
- 	def testSpecialSearches2(self):
- 		"""Checking HTML text to find and count instruments"""
- 		correctResult = "\n\t\tGMOS-S (31), NIRI (43)"
- 		result = self.theArchive.theSearches[1](foundDataHTML, 1)
- 		self.assertEqual(correctResult, result)
+	def testSpecialSearches2(self):
+		"""Checking HTML text to find and count instruments"""
+		result = self.theArchive.theSearches[0](foundDataHTML, 1)
+		self.assertEqual(kCorrectInstrumentCount, result)
 		
 
 class MakeQuery(GeminiArchiveTestCase):
 	def setUp(self):
 		self.theArchive = gemini_archive.MakeArchive()	
-		self.theArchive.InsertTarget("M83")
-		self.theArchive.InsertBoxSize(1.0)
+		self.theArchive.InsertCoordinates(n1291CoordsList)
+		self.theArchive.InsertBoxSize(4.0)
+		print("MakeQuery.setUp: running live search for \"NGC 1291\"...")
 		self.textReceived = self.theArchive.QueryServer()
 		
 	def testFindingData(self):
 		"""Live search: Do we sucessfully find data for M83?"""
-		correctResult = ('Data exists! (77 observations found)', 77)
+		correctResult = ('Data exists! (%d observations found)' % kCorrectNDataFound, kCorrectNDataFound)
 		result = self.theArchive.AnalyzeHTML(self.textReceived)
 		self.assertEqual(correctResult, result)
 		
- 	def testCountingData(self):
- 		"""Live search: Do we find and count modes & instruments for M83?"""
- 		correctCount = "\n\t\t3 IFU, 52 imaging, 22 long-slit\n\t\tGMOS-S (34), NIRI (43)"
- 		instCount = self.theArchive.DoSpecialSearches(self.textReceived, 1)
- 		self.assertEqual(correctCount, instCount)
+	def testCountingData(self):
+		"""Live search: Do we find and count modes & instruments for M83?"""
+		instCount = self.theArchive.DoSpecialSearches(self.textReceived, 1)
+		self.assertEqual(kCorrectInstrumentCount, instCount)
 
 
 
 
 if __name__	== "__main__":
 	
-	print "\n** Unit tests for gemini_archive.py **\n"
+	print("\n** Unit tests for gemini_archive.py **\n")
 	unittest.main()	  

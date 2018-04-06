@@ -95,7 +95,7 @@ def MakeModeString( number, name ):
 		nameFinal = modeNamePlurals[nameFinal]
 	return "%d %s" % (number, nameFinal)
 
-def FindESOTypesAndInstruments( inputText, nFound=None ):
+def FindESOModesAndInstruments( inputText, nFound=None ):
 
 	tableRows = GetTableRows(inputText)
 
@@ -134,7 +134,7 @@ def FindESOTypesAndInstruments( inputText, nFound=None ):
 
 
 # Put all the functions in a list:
-SEARCHES = [FindESOTypesAndInstruments]
+SEARCHES = [FindESOModesAndInstruments]
 
 
 # Factory function to create specialized instance of BasicArchive

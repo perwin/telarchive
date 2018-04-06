@@ -76,6 +76,7 @@ class SloanCombinedArchive( basic_archive.BasicArchive ):
 		self.raLabel = raLabel
 		self.decLabel = decLabel
 		self.boxLabel = boxLabel
+		self.spectroscopy_radius = self.spec_archive.params['radius']
 		#self.textSearches = None
 		if publicURL is None:
 			self.publicURL = url
@@ -90,9 +91,15 @@ class SloanCombinedArchive( basic_archive.BasicArchive ):
 		
 		
 	def InsertRadius(self, radius):
-		# assume radius is in arcmin
+		# assume input radius is in arcmin
 		radius_deg = float(radius)/60.0
 		self.params['radius'] = str(radius_deg)
+
+
+	def InsertSpectroscopyRadius(self, radius):
+		# assume input spectroscopy search radius is in arcmin
+		self.spectroscopy_radius = radius
+		self.spec_archive.InsertSpectroscopyRadius(radius)
 
 
 	def InsertTarget(self, target_name):
@@ -123,6 +130,7 @@ class SloanCombinedArchive( basic_archive.BasicArchive ):
 		# This is a unique variation on the usual approach, since we're telling
 		# our embedded ArchiveServer objects to do their own queries, and then
 		# analyze their own HTML
+		# Store nDataFound for each archive in corresponding object data members
 		html_dr7 = self.dr7_archive.QueryServer()
 		(msg_dr7, self.nDataFound_dr7) = self.dr7_archive.AnalyzeHTML(html_dr7)
 		html_dr12 = self.dr12_archive.QueryServer()
@@ -150,7 +158,8 @@ class SloanCombinedArchive( basic_archive.BasicArchive ):
 			specString = "spectrum"
 		else:
 			specString = "spectra"
-		msg += "%d %s" % (self.nSpecFound, specString)
+		msg += "%d %s (within %s arcmin of search center)" % (self.nSpecFound, 
+							specString, self.spectroscopy_radius)
 		return msg
 
 
@@ -160,7 +169,9 @@ class SloanCombinedArchive( basic_archive.BasicArchive ):
 		# or not, etc.  Uses the regular-expression objects defined above.
 		#    htmlText = big blob of HTML text (entire reply from archive, in a string)
 		
-		# We assume that QueryServer() has already been called
+		# We assume that QueryServer() has already been called (plus, since all DR7
+		# images are also in DR12, we don't bother checking the DR7 result for this
+		# purpose)
 		if (self.nDataFound_dr12 + self.nSpecFound) > 0:
 			msg = "Data exists! "
 		else:
