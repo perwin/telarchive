@@ -7,7 +7,8 @@ import sys, math
 # LoadArchiveModules()
 # 
 # Once everyone's in Python 2.5 or higher, where we can specify relative
-# imports, this won't be so kludgy.
+# imports, this won't be so kludgy. (Or maybe we should keep it, since
+# relative imports are tricky...)
 import telarchive
 
 

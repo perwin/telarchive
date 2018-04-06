@@ -68,8 +68,6 @@ License (see the file COPYING included with the distribution).
 # FITS headers  (or things like, e.g., middle-of-the-day bias frames).
 #
 #   Other archives which we might include at some future date:
-#     [] Spitzer
-#        http://archive.spitzer.caltech.edu/show_searchByTargetPage.do
 #     [] JCMT -- available via http://cadcwww.dao.nrc.ca/jcmt/
 #           Some preliminary notes:
 #              <> JCMT has *two* discrete interfaces (SCUBA and spectroscopy)
