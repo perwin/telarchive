@@ -1,13 +1,13 @@
 # Archive class specialization for CFHT archive
 # 
-# This module defines a new class (CFHTArchive) derived from the 
-# BasicArchive class, to allow queries to the archive of the Canada-France-
-# Hawaii Telescope.
+# This module defines a new class (CFHTArchive) derived from the BasicArchive class, 
+# to allow queries to the archive of the Canada-France-Hawaii Telescope.
 
 # The new class uses the (not really officially public?) SQL interface to the
 # CADC archive, which can be figured out by looking at the
 # "Download complete query results: VOTable CSV TSV" links on the web page
 # when a query is executed.
+# It requests CSV data rather than HTML, to make parsing the results easier.
 
 import sys, re
 import basic_archive, utils, archive_analyze
@@ -39,19 +39,14 @@ ARCHIVE_URL = "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync"
 ARCHIVE_USER_URL = "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/search/?collection=CFHT&noexec=true"
 
 # The following is a default request
-#DEFAULT_QUERY_STRING = """SELECT Observation.observationURI AS "Preview", Observation.collection AS "Collection", Observation.sequenceNumber AS "Sequence Number", Plane.productID AS "Product ID", COORD1(CENTROID(Plane.position_bounds)) AS "RA (J2000.0)", COORD2(CENTROID(Plane.position_bounds)) AS "Dec. (J2000.0)", Observation.target_name AS "Target Name", Plane.time_bounds_cval1 AS "Start Date", Plane.time_exposure AS "Int. Time", Observation.instrument_name AS "Instrument", Plane.energy_bandpassName AS "Filter", Plane.calibrationLevel AS "Cal. Lev.", Observation.type AS "Obs. Type", Observation.proposal_id AS "Proposal ID", Observation.proposal_pi AS "P.I. Name", Plane.dataRelease AS "Data Release", Observation.observationID AS "Obs. ID", Plane.energy_bounds_cval1 AS "Min. Wavelength", Plane.energy_bounds_cval2 AS "Max. Wavelength", AREA(Plane.position_bounds) AS "Field of View", Plane.position_bounds AS "Polygon", Plane.position_sampleSize AS "Pixel Scale", Plane.energy_resolvingPower AS "Resolving Power", Plane.dataProductType AS "Data Type", Observation.target_moving AS "Moving Target", Plane.provenance_name AS "Provenance Name", Plane.provenance_keywords AS "Provenance Keywords", Observation.intent AS "Intent", Observation.target_type AS "Target Type", Observation.target_standard AS "Target Standard", Plane.metaRelease AS "Meta Release", Observation.algorithm_name AS "Algorithm Name", Observation.proposal_title AS "Proposal Title", Observation.proposal_keywords AS "Proposal Keywords", Plane.position_resolution AS "IQ", Observation.instrument_keywords AS "Instrument Keywords", Plane.energy_transition_species AS "Molecule", Plane.energy_transition_transition AS "Transition", Observation.proposal_project AS "Proposal Project", Plane.energy_emBand AS "Band", Plane.provenance_reference AS "Prov. Reference", Plane.provenance_version AS "Prov. Version", Plane.provenance_project AS "Prov. Project", Plane.provenance_producer AS "Prov. Producer", Plane.provenance_runID AS "Prov. Run ID", Plane.provenance_lastExecuted AS "Prov. Last Executed", Plane.provenance_inputs AS "Prov. Inputs", Plane.energy_restwav AS "Rest-frame Energy", Observation.requirements_flag AS "Quality", Plane.planeID AS "planeID", isDownloadable(Plane.planeURI) AS "DOWNLOADABLE", Plane.planeURI AS "CAOM Plane URI" FROM caom2.Plane AS Plane JOIN caom2.Observation AS Observation ON Plane.obsID = Observation.obsID WHERE  ( Observation.collection = \'CFHT\' AND INTERSECTS( CIRCLE(\'ICRS\',221.546343, -0.222948, 0.1), Plane.position_bounds ) = 1 AND  ( Plane.quality_flag IS NULL OR Plane.quality_flag != \'junk\' ) )"""
-# The following works as a minimal request
-# (minimal useful values: Observation.instrument_name AS "Instrument"; Plane.dataProductType AS "Data Type"
-
 DEFAULT_QUERY_STRING = """SELECT Observation.collection AS "Collection", Plane.dataProductType AS "Data Type", Observation.instrument_name AS "Instrument" FROM caom2.Plane AS Plane JOIN caom2.Observation AS Observation ON Plane.obsID = Observation.obsID WHERE  ( Observation.collection = \'CFHT\' AND INTERSECTS( CIRCLE(\'ICRS\',221.546343, -0.222948, 0.1), Plane.position_bounds ) = 1 AND  ( Plane.quality_flag IS NULL OR Plane.quality_flag != \'junk\' ) )"""
-# Note -- the following uses the new string-formatting API, which requires Python 2.6 or later!
 QUERY_TEMPLATE = """SELECT Observation.collection AS "Collection", Plane.dataProductType AS "Data Type", Observation.instrument_name AS "Instrument" FROM caom2.Plane AS Plane JOIN caom2.Observation AS Observation ON Plane.obsID = Observation.obsID WHERE  ( Observation.collection = \'CFHT\' AND INTERSECTS( CIRCLE(\'ICRS\',{0}, {1}, {2:.3f}), Plane.position_bounds ) = 1 AND  ( Plane.quality_flag IS NULL OR Plane.quality_flag != \'junk\' ) )"""
 
 DICT = { 'LANG': 'ADQL', 'FORMAT': 'csv', 'QUERY': DEFAULT_QUERY_STRING,
 		'REQUEST': 'doQuery' }
 
 
-# Code to parse HTML text and count up instrument uses
+# Code to parse CSV text and count up instrument uses
 
 def GetDataLines( inputText ):
 	"""
@@ -143,7 +138,7 @@ class CFHTArchive(basic_archive.BasicArchive):
 	# SQL format 
 	def QueryServer( self ):
 		# Opens connection to the archive server, retrieves and returns
-		# whatever HTML the server sends us.
+		# whatever HTML or CSV the server sends us.
 		
 		# Special setup for position + box-size
 		if self.dec_string != UNSPECIFIED_DEC_STRING:
@@ -151,23 +146,18 @@ class CFHTArchive(basic_archive.BasicArchive):
 		specialHeader = {'User-agent': BROWSER_MASQUERADE}
 		req = Request(self.URL, self.EncodeParams(), specialHeader)
 		response = urlopen(req, timeout=self.timeout)
-		htmlReceived = response.read()
+		csvReceived = response.read()
 		response.close()
 
 		# convert result from bytes to Unicode string so Python 3 doesn't choke;
 		# specify 'utf-8' instead of 'ascii' in case we get Unicode characters
-		return htmlReceived.decode('utf-8')
+		return csvReceived.decode('utf-8')
 
 
-	def AnalyzeHTML( self, htmlText):
+	def AnalyzeHTML( self, csvText):
 	
-		# check for possible errors
-		errMessage = archive_analyze.CheckForError(htmlText)
-		if errMessage != "":
-			return (errMessage, 0)
-		
 		# Search for possible observations (or straightforward "none found" message)
-		nDataFound = GetNFound(htmlText)
+		nDataFound = GetNFound(csvText)
 		if ( nDataFound > 0 ):
 			if nDataFound == 1:
 				nSetsString = "One observation"
@@ -187,4 +177,3 @@ def MakeArchive():
 	return CFHTArchive(ARCHIVE_NAME, ARCHIVE_SHORTNAME, 
 			ARCHIVE_URL, DICT, SEARCHES, TARGET_LABEL, RA_LABEL, DEC_LABEL,
 			boxLabel="box")
-
