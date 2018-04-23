@@ -51,9 +51,43 @@ Python 2.7, 3.5, and 3.6.)
 Telarchive includes an auxiliary command-line utility for retrieving
 SDSS imaging data called `fetchsdss`.
 
-The following command will XXX
+The following command will search for SDSS images (both DR7 and DR12) containing NGC 2950,
+without downloading anything
 
-do_fetchsdss.py
+    $ do_fetchsdss.py "NGC 2950" --nodata
+
+    Doing coordinate lookup for "ngc 2950"...
+	    SIMBAD (Simbad 4, France):  Found object coordinates: RA = 09 42 35.116, Dec = +58 51 04.39
+
+    Querying SDSS DR7 Data Archive Server for availability...
+    (no files will be retrieved)...
+       server response = Imaging data exists!
+	    	(run, rerun, camcol, field = 1345 41 3 234)
+
+    Querying SDSS DR12 Science Archive Server for availability...
+    (no files will be retrieved)...
+       server response = DR12 imaging data exists!
+    		(run, camcol, field = 1331 4 259)
+    		(run, camcol, field = 1345 3 235)
+    		(run, camcol, field = 1302 3 249)
+    		(run, camcol, field = 1345 3 234)
+    		(run, camcol, field = 1302 3 248)
+    		(run, camcol, field = 1345 3 233)
+       6 separate DR12 fields found
+    Done!
+
+To download the full set of ugriz DR7 images, saving them with the prefix "n2950"
+(yielding images with names `n2950u_1345-234.fits.gz`, etc.)
+
+    $ do_fetchsdss.py "NGC 2950" --nodr12 -o n2950
+
+To download just (run, camcol, field = 1331 4 259) from the DR12 images:
+
+    $ do_fetchsdss.py --ref="1331 4 259" -o n2950
+
+You can also download just a subset of the individual-filter images (e.g., just
+the *g* image), or search using celestial coordinates instead of an object name; 
+use `do_fetchsdss.py -h` to see the full set of options.
 
 There is also a separate command-line utility for finding and retrieving
 SDSS spectroscopy. As an example, the following will search for SDSS
