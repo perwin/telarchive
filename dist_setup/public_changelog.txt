@@ -8,7 +8,7 @@ Updated SDSS spectroscopic searches to use Data Release 14.
 
 Fixes to make ESO and SMOKA searches correctly parse instrument and mode counts.
 
-Updated Gemini Observatory searches to use 
+Updated Gemini Observatory searches to use web API.
 
 Coordinate searches ("--coords=") now allow decimal degrees as inputs.
 

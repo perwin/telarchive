@@ -9,7 +9,7 @@ versus spectroscopy, instruments used) are included.
 
 Targets can be searched for using standard astronomical names (using
 SIMBAD for name resolution) or via RA,Dec coordinates (coordinates can
-be in sexagesimal -- e.g. "hh mm ss dd mm ss" -- or degree formats).
+be in sexagesimal -- e.g. "hh mm ss dd mm ss" -- or decimal-degree formats).
 
 Example of use:
 

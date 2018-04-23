@@ -201,10 +201,13 @@ def main(argv):
 	usageString += "\n          %prog ugriz --ref=\"3177 40 1 62\""
 	parser = optparse.OptionParser(usage=usageString, version="%prog " + VERSION_STRING)
 
-	hstring = "RA and Dec as string (\"hh mm ss dd mm ss\" or \"hh:mm:ss dd:mm:ss\""
-	hstring += " or decimal degrees [\"ra.dddd dec.dddd\"])"
+
+	parser.add_option("-v", "--version", action="store_true", dest="printVersion", 
+						default=False, help="print version number and quit")
 	parser.add_option("-o", "--output", dest="filename", default=DEFAULT_ROOTNAME,
 						help="root name for saved image files (\"_<run>-<field>\" will be appended)")
+	hstring = "RA and Dec as string (\"hh mm ss dd mm ss\" or \"hh:mm:ss dd:mm:ss\""
+	hstring += " or decimal degrees [\"ra.dddd dec.dddd\"])"
 	parser.add_option("--coords", dest="coordinates", default=NO_COORDS,
 						help=hstring)
 	helpmsg = "specify a specific SDSS field directly as \"run rerun camcol field\" (DR7)"

@@ -66,8 +66,7 @@ for key in fulldict.keys():
 
 Given the following multipart-form submission (via Safari's Developer menu):
 
-txt = 
-"""Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryEvRFO1SKyJyRwWpO
+txt = """Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryEvRFO1SKyJyRwWpO
 
 ------WebKitFormBoundaryEvRFO1SKyJyRwWpO
 Content-Disposition: form-data; name="searchtool"
@@ -81,18 +80,35 @@ Skyserver.Search.SQS
 Content-Disposition: form-data; name="ReturnHtml"
 
 true
-------WebKitFormBoundaryEvRFO1SKyJyRwWpO--
+------WebKitFormBoundaryEvRFO1SKyJyRwWpO
+Content-Disposition: form-data; name="TableName"
+
+
+------WebKitFormBoundaryEvRFO1SKyJyRwWpO
 """
 
-txtLines = txt.splitlines()
-for line in txtLines:
-	if line.find("boundary=") > -1:
-		pp = line.split("boundary=")
-		boundaryString = pp[1].strip()
-		print(boundaryString)
+def GetFormDict( formEntries ):
+	newDict = {}
+	for formEntry in formEntries:
+		pp = formEntry.split("name=")
+		ppp = pp[1].split()
+		key = ppp[0].replace('"', '')
+		if len(ppp) == 3:
+			value = ppp[1]
+		else:
+			value = ''
+		newDict[key] = value
+	return newDict
 
-formDataEntries = [entry for entry in txt.split(boundaryString) if entry.find("Content-Disposition") > -1]
+def GetFormDictFromText( txt ):
+	txtLines = txt.splitlines()
+	for line in txtLines:
+		if line.find("boundary=") > -1:
+			pp = line.split("boundary=")
+			boundaryString = pp[1].strip()
 
+	formDataEntries = [entry for entry in txt.split(boundaryString) if entry.find("Content-Disposition") > -1]
 
-x = txt.index("boundary=")
+	formDict = GetFormDict(formDataEntries)
+	return formDict
 
