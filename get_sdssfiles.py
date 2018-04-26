@@ -22,7 +22,7 @@ else:
 	from urllib import urlencode
 	from urllib2 import Request
 	from urllib2 import urlopen
-import archive_analyze
+from . import archive_analyze
 
 
 # Templates

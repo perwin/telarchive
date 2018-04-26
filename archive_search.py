@@ -164,7 +164,7 @@ else:
 	threadingPresent = 1
 	
 # Import our own modules:
-import archive_list, getcoords, utils, module_list
+from . import archive_list, getcoords, utils, module_list
 
 
 

@@ -10,9 +10,9 @@ from __future__ import print_function
 import os, sys, re, optparse
 
 # Import our modules:
-import utils, getcoords, get_sdssfiles
+from . import utils, getcoords, get_sdssfiles
 # import sdss_sas_archive
-import sdss_dr12_archive, sdss_dr14spec_archive
+from . import sdss_dr12_archive, sdss_dr14spec_archive
 
 VERSION_STRING = "1.3"
 
