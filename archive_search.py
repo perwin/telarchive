@@ -137,7 +137,7 @@ else:
 
 
 # Version number:
-kVersionNumber = "2.0.0"
+kVersionNumber = "2.0.2"
 
 # General constants:
 kHST_ESO = 0

@@ -1,0 +1,52 @@
+NOTES ON DEVELOPMENT AND DISTRIBUTION:
+
+** MAKING A DISTRIBUTION AND UPLOADING IT TO PyPI:
+
+$ cd dist_setup
+(edit setup.py if necessary -- e.g., update version number)
+$ ./prep_dist_telarchive.sh
+
+$ cd /Beleriand/dev/dist_telarchive
+$ rm dist/*
+$ python setup.py sdist bdist_wheel
+$ twine upload dist/*
+
+
+* SAME, BUT NOW UPLOADING TO testPyPI:
+[NOTE: AS OF APRIL 2018, WE CAN UPLOAD TO testPyPI, BUT NOT INSTALL FROM IT]
+
+$ cd /Beleriand/dev/dist_telarchive
+$ rm dist/*
+$ python setup.py sdist bdist_wheel
+$ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+The following is supposed to work, but does not:
+pip install --index-url https://test.pypi.org/simple/ your-package
+
+
+
+** TESTING DISTRIBUTION ON CLEAN INSTALLS
+
+We have created virtual environments for clean Python 2.7 and 3.6 installations:
+/Beleriand/dev/virtualenvs
+
+* To test Python 2.7 install:
+
+$ cd /Beleriand/dev/virtualenvs/test27
+$ source bin/activate
+(test27)$ pip install telarchive  (or pip install --upgrade telarchive, if this is a new try)
+OR
+(test27)$ pip install --index-url https://test.pypi.org/simple/ telarchive
+
+Check installed scripts in /Beleriand/dev/virtualenvs/test27/bin/ ...
+
+* To test Python 3.6 install:
+
+$ cd /Beleriand/dev/virtualenvs/test3
+$ source bin/activate
+(test3)$ pip install telarchive  (or pip install --upgrade telarchive, if this is a new try)
+OR
+(test3)$ pip install --index-url https://test.pypi.org/simple/ telarchive
+
+Check installed scripts in /Beleriand/dev/virtualenvs/test3/bin/ ...
+

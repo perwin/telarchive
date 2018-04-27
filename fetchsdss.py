@@ -2,11 +2,8 @@
 #   A Python script to find and download SDSS image tarballs for a
 # specific target (astronomical object or coordinates).
 # 
-# Requires Python 2.5 or higher (due to use of optparse and booleans + preliminary
-# # print function syntax)
-# 
 #       
-# HISTORY:
+# OLD HISTORY:
 #   May 2015: Fixes accomodating DR12 (mainly just spectral search, plus renaming)
 #   Aug 2013: Minor changes to include DR10 search and retrieval
 #   March 2013: Updated to include DR9 search and retrieval; package also includes
@@ -25,8 +22,8 @@ import os, sys, re, optparse
 import logging
 
 # Import our modules:
-import utils, getcoords, get_sdssfiles
-import sdss_coords_archive, sdss_dr12_archive
+from . import utils, getcoords, get_sdssfiles
+from . import sdss_coords_archive, sdss_dr12_archive
 
 VERSION_STRING = "1.3"
 
@@ -202,8 +199,8 @@ def main(argv):
 	parser = optparse.OptionParser(usage=usageString, version="%prog " + VERSION_STRING)
 
 
-	parser.add_option("-v", "--version", action="store_true", dest="printVersion", 
-						default=False, help="print version number and quit")
+# 	parser.add_option("-v", "--version", action="store_true", dest="printVersion", 
+# 						default=False, help="print version number and quit")
 	parser.add_option("-o", "--output", dest="filename", default=DEFAULT_ROOTNAME,
 						help="root name for saved image files (\"_<run>-<field>\" will be appended)")
 	hstring = "RA and Dec as string (\"hh mm ss dd mm ss\" or \"hh:mm:ss dd:mm:ss\""

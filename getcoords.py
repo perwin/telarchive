@@ -36,9 +36,9 @@ import os, sys, re
 # module is used (e.g. imported by another script vs run as a script)
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
-import simbad_archive
-print(simbad_archive.__file__)
-print(__name__)
+from . import simbad_archive
+# print(simbad_archive.__file__)
+# print(__name__)
 #import simbad_archive
 
 #import archive_class

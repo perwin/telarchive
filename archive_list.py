@@ -17,7 +17,7 @@ DEFAULT_BOXSIZE = 4.0
 MAX_ROWS_RETURNED = "1000"
 NO_COORDS = [0, 0]
 
-import module_list
+from . import module_list
 
 sdss_module_name = module_list.shorthand_dict["sdss"]
 aat_module_name = module_list.shorthand_dict["aat"]
