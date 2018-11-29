@@ -19,7 +19,7 @@ NO_NAME = "NO NAME"
 # group #1 of the result.
 findWereRetrieved = re.compile(r"""of (\d+)(| record| records) were retrieved""")
 findNOAORecords = re.compile(r"(\d+)(| record| records) found.")
-findSmokaRecords = re.compile(r"(\d+)(| frame| frames) were found.")
+findSmokaRecords = re.compile(r"(\d+)(| frame| frames) are|were found.")
 findSpitzerRecords = re.compile(r"#\s+(\d+)\s+ \(Records Found\)")
 findSTScIRecords = re.compile(r"(\d+) records \(\d+ proprietary\) returned")
 findMASTRecords = re.compile(r"(\d+) observations\s+found")
@@ -53,7 +53,7 @@ text += r"A <b>maximum</b> of \d+ were found matching the provided criteria|"
 text += r"A maximum of \d+ records were found matching the provided criteria|"  # ESO for > 5000 records
 text += r"\d+ records \(\d+ proprietary\) returned|"
 text += r"[1-9](\d)* records found.|"   # NOAO (matches if > 0 found)
-text += r"\d+ frames were found.|"   # Smoka
+text += r"\d+ frames were|are found.|"   # Smoka
 text += r"\d+ observations\s+found|"   # MAST
 text += r"#\s+\d+\s+ \(Records Found\)"   # Spitzer
 text += r"A total of \d+ were found"

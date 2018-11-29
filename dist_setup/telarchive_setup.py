@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 setup(name="telarchive",
-	version="2.0.2",
+	version="2.0.3",
 	description="Script for automated searches of several major astronomical telescope archives",
 	# [ ] long_description
 	url="http://www.mpe.mpg.de/~erwin/code/",

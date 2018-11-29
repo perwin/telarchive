@@ -19,12 +19,13 @@ RA_LABEL = "longitudeC"
 DEC_LABEL = "latitudeC"
 ARCHIVE_NAME = "SMOKA (Subaru Mitaka Okayama Kiso Archive)"
 ARCHIVE_SHORTNAME = "smoka"
-ARCHIVE_URL = "http://smoka.nao.ac.jp/search"
-ARCHIVE_USER_URL = "http://smoka.nao.ac.jp/search.jsp"
+ARCHIVE_URL = "https://smoka.nao.ac.jp/fssearch"
+ARCHIVE_USER_URL = "https://smoka.nao.ac.jp/fssearch"
 
 instruments_list = ["SUP", "FCS", "HDS", "OHS", "IRC", "CIA", "COM", "CAC", "MIR",
-			"MCS", "K3D", "HIC", "FMS", "KCC", "KCD", "ISL", "KLS", "HID", "OAS", 
-			"CSD", "MTA", "MTO", "HWP"]
+			"MCS", "K3D", "HIC", "FMS", "HSC", "CRS", "KCC", "KCD", "KWF", "ISL", "KLS", 
+			"HID", "OAS", "CSD", "MCT", "MTA", "MTO", "HWP", "HNR"]
+
 mode_list = ["IMAG", "SPEC", "IPOL"]
 # We need to construct special strings for "instruments", "multiselect_0",
 # "obs_mode", and "multiselect_1"
@@ -56,26 +57,14 @@ INSTRUMENT_DICT = {"SUP": "Subaru -- Suprime-Cam", "FCS": "Subaru -- FOCAS",
 					"COM": "Subaru -- COMICS", "CAC": "Subaru -- CAC", 
 					"MIR": "Subaru -- MIRTOS", "MCS": "Subaru -- MOIRCS", 
 					"K3D": "Subaru -- Kyoto-3DII", "HIC": "Subaru -- HiCIAO",
-					"FMS": "Subaru -- FMOS",
-					"KCC": "Kiso -- 1k CCD", "KCD": "Kiso -- 2k CCD",
+					"FMS": "Subaru -- FMOS", "HSC": "Subaru -- Hyper Suprime-Cam",
+					"CRS": "Subaru -- CHARIS",
+					"KCC": "Kiso -- 1k CCD", "KCD": "Kiso -- 2k CCD", "KWF": "Kiso -- KWF",
 					"ISL": "Okayama -- ISLE", "KLS": "Okayama -- KOOLS",
 					"HID": "Okayama -- HIDES", "OAS": "Okayama -- OASIS", 
-					"CSD": "Okayama -- SNG", 
+					"CSD": "Okayama -- SNG", "MCT": "Okayama -- MuSCAT", 
 					"MTA": "MITSuME -- Akeno", "MTO": "MITSuME -- OAO",
-					"HWP": "Hiroshima -- HOWPol" }
-# INSTRUMENT_DICT = {"SUP_im": "Subaru -- Suprime-Cam", "FCS_im": "Subaru -- FOCAS",
-# 					"OHS_im": "Subaru -- OHS/CISCO", "IRC_im": "Subaru -- IRCS",
-# 					"CIA_im": "Subaru -- CIAO", "COM_im": "Subaru -- COMICS",
-# 					"CAC_im": "Subaru -- CAC", "MIR_im": "Subaru -- MIRTOS",
-# 					"MCS_im": "Subaru -- MOIRCS", "K3D_im": "Subaru -- Kyoto-3DII",
-# 					"KCC_im": "Kiso -- 1k CCD", "KCD_im": "Kiso -- 2k CCD",
-# 					"OAS_im": "Okayama -- OASIS", "MTO_im": "MITSuME -- OAO",
-# 					"MTA_im": "MITSuME -- Akeno",
-# 					"FCS_sp": "Subaru -- FOCAS", "HDS_sp": "Subaru -- HDS",
-# 					"OHS_sp": "Subaru -- OHS/CISCO", "IRC_sp": "Subaru -- IRCS",
-# 					"CIA_sp": "Subaru -- CIAO", "COM_sp": "Subaru -- COMICS",
-# 					"MCS_sp": "Subaru -- MOIRICS", "K3D_sp": "Subaru -- Kyoto-3DII",
-# 					"CSD_sp": "Okayama -- SNG", "HID_sp": "Okayama -- HIDES" }
+					"HWP": "Hiroshima -- HOWPol", "HNR": "Hiroshima -- HONIR" }
 
 
 findInst = re.compile(r"<tr><td>(?P<inst>\w+)</td><td>(?P<count>\d+)")
@@ -84,8 +73,6 @@ findInst = re.compile(r"<tr><td>(?P<inst>\w+)</td><td>(?P<count>\d+)")
 
 def FindSmokaInfo(inputText, nFound):
 	
-#	imagingString = r"<td>Imaging</td>"
-#	spectroscopyString = r"<td>Spectroscopy</td>"
 	summaryString = "results are summarized below"
 	
 	foundData = {}
@@ -115,37 +102,7 @@ def FindSmokaInfo(inputText, nFound):
 			instrument = m.group('inst')
 			foundData[instrument] = nFrames
 			foundInst.append(instrument)	
-
-# 	lines = inputText.split()
-# 	for line in lines:
-# 		if line.find(imagingString) >= 0:
-# 			res = findImagingResult.search(line)
-# 			nFrames = int(res.groups()[1])
-# 			if nFrames > 0:
-# 				instrument = res.groups()[0]
-# 				foundData[instrument + "_im"] = nFrames
-# 				foundInst.append(instrument + "_im")
-# 				nImages += nFrames
-# 		elif line.find(spectroscopyString) >= 0:
-# 			res = findSpecResult.search(line)
-# 			nFrames = int(res.groups()[1])
-# 			if nFrames > 0:
-# 				instrument = res.groups()[0]
-# 				foundData[instrument + "_sp"] = nFrames
-# 				foundInst.append(instrument + "_sp")
-# 				nSpec += nFrames
-	
-	
-# 	if (nImages == 1):
-# 		imName = " image"
-# 	else:
-# 		imName = " images"
-# 	if (nSpec == 1):
-# 		spName = " spectrum"
-# 	else:
-# 		spName = " spectra"
-# 	messageText = "\n\t\t" + str(nImages) + imName + " and " + str(nSpec) + spName
-# 	messageText += "\n\t\t"
+		
 	messageText = "\n\t\t"
 	for j in range(len(foundInst)):
 		key = foundInst[j]
