@@ -73,6 +73,9 @@ def MakeModeString( number, name ):
 	return "%d %s" % (number, niceName)
 
 def FindGeminiModesAndInstruments( inputText, nFound=None ):
+	outf = open("json_output.json", 'w')
+	outf.write(inputText)
+	outf.close()
 	jsonList = json.loads(inputText)
 	modeCountList = GetModes(jsonList)
 	instCountList = GetInstruments(jsonList)

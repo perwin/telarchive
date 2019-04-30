@@ -1,3 +1,9 @@
+Telarchive -- Version 2.0.3 (30 Nov 2018)
+
+Minor update to restore access to SMOKA archive.
+
+
+
 Telarchive -- Version 2.0 (6 April 2018)
 and
 Fetchsdss -- Version 1.3 (6 April 2018)
